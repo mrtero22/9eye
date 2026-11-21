@@ -1,0 +1,86 @@
+---
+// Screenshot: the Playlist Checker report — every check with its result on the left, the problems on the right.
+import CheckerFrame from './CheckerFrame.astro';
+
+const mono = "font-family:'Geist Mono Variable',ui-monospace,monospace";
+const tick = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>';
+
+type Check = [name: string, errors?: number, warnings?: number];
+const groups: { name: string; checks: Check[] }[] = [
+  { name: 'Programmes', checks: [['Episode numbers'], ['Parts per episode'], ['Part continuity'], ['Against the schedule', 1], ['Missing programmes'], ['End credits', 1], ['One end credit per run'], ['Next bumpers', 1], ['Next placement']] },
+  { name: 'Commercials', checks: [['Booked vs in playlist', 1], ['Unbooked commercials'], ['Spot length', 1], ['Advertiser tag'], ['Commercial category'], ['Running campaigns']] },
+  { name: 'Breaks', checks: [['Break placement'], ['Idents'], ['Duplicates in a break'], ['Length range']] },
+  { name: 'Promos and timing', checks: [['Expired promos', 0, 1], ['Early starts', 0, 1]] },
+];
+
+type Problem = { level: 'Error' | 'Warning'; check: string; text: string; row?: number; time: string };
+const problems: Problem[] = [
+  { level: 'Error', check: 'Against the schedule', text: 'Harbor Lights: the schedule has episode 13, the playlist has episode 12.', row: 163, time: '14:02:10:00' },
+  { level: 'Error', check: 'End credits', text: 'Copper Valley 7, the 21:00 run, has no end credits after part 4.', row: 318, time: '21:44:51:07' },
+  { level: 'Error', check: 'Next bumpers', text: 'The next bumper before Kestrel Road is for Silent Meridian.', row: 262, time: '18:58:41:12' },
+  { level: 'Error', check: 'Booked vs in playlist', text: 'Brightmilk 15 sec: 6 booked, 5 in the playlist.', time: 'Whole day' },
+  { level: 'Error', check: 'Spot length', text: 'Velora_30sec_Dec26 says 30 sec in its title but plays 00:00:25:00.', row: 78, time: '09:46:05:15' },
+  { level: 'Warning', check: 'Expired promos', text: 'Promo_Glass_Orchard_END_15_Nov_2026 ended two days ago.', row: 46, time: '08:12:33:04' },
+  { level: 'Warning', check: 'Early starts', text: 'The Glass Orchard 3 starts 12 min before its 22:00 target.', row: 322, time: '21:48:02:16' },
+];
+const levelStyle = { Error: 'background:#fdecec;color:#b42318', Warning: 'background:#fdf4e3;color:#9a5200' };
+const tiles: [string, string, string][] = [['Items', '486', '#18181b'], ['Checks passed', '14 of 21', '#0f766e'], ['Errors', '5', '#b42318'], ['Warnings', '2', '#9a5200']];
+---
+<CheckerFrame page="Report" address="Playlist Checker · northvale-one_2026-11-17.xml" label="The Playlist Checker report: 21 checks in four groups with their results, and the five errors and two warnings found in the day's playlist, each with its row and time.">
+  <div style="flex: 1; min-height: 0; display: flex; gap: 16px; padding: 16px 20px">
+    <div style="width: 360px; flex: none; display: flex; flex-direction: column; border: 1px solid #e4e4e7; border-radius: 10px; background: #fff; overflow: hidden">
+      <div style="height: 38px; flex: none; display: flex; align-items: center; padding: 0 14px; border-bottom: 1px solid #e4e4e7; font-weight: 600">Checks<span style="flex: 1"></span><span style="font-weight: 400; color: #6b6b74; font-size: 12px">21 rules · this channel</span></div>
+      {groups.map((g) => (
+        <Fragment>
+          <div style="height: 26px; flex: none; display: flex; align-items: center; padding: 0 14px; background: #fafafa; border-bottom: 1px solid #f0f0f2; color: #52525b; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase">{g.name}</div>
+          {g.checks.map(([name, errors = 0, warnings = 0]) => (
+            <div style={`height:22px;flex:none;display:flex;align-items:center;gap:8px;padding:0 14px;${errors ? 'background:#fffafa' : ''}`}>
+              <span style="flex: 1; white-space: nowrap">{name}</span>
+              {errors ? <span style={`${mono};${levelStyle.Error};font-size:11px;height:18px;min-width:18px;padding:0 5px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center`}>{errors}</span>
+                : warnings ? <span style={`${mono};${levelStyle.Warning};font-size:11px;height:18px;min-width:18px;padding:0 5px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center`}>{warnings}</span>
+                : <span style="color: #0d9488; display: inline-flex" set:html={tick} />}
+            </div>
+          ))}
+        </Fragment>
+      ))}
+    </div>
+
+    <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+      <div style="flex: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px">
+        {tiles.map(([label, value, color]) => (
+          <div style="display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border: 1px solid #e4e4e7; border-radius: 10px; background: #fff">
+            <span style="color: #6b6b74; font-size: 12px">{label}</span>
+            <span style={`font-size:22px;font-weight:600;letter-spacing:-0.02em;color:${color}`}>{value}</span>
+          </div>
+        ))}
+      </div>
+      <div style="flex: 1; min-height: 0; display: flex; flex-direction: column; border: 1px solid #e4e4e7; border-radius: 10px; background: #fff; overflow: hidden">
+        <div style="height: 40px; flex: none; display: flex; align-items: center; gap: 8px; padding: 0 16px; border-bottom: 1px solid #e4e4e7">
+          <b>Problems</b><span style={`${mono};color:#6b6b74;font-size:12px`}>7</span>
+          <span style="flex: 1"></span>
+          <span style="display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: 999px; background: #18181b; color: #fff; font-size: 12px; font-weight: 500">All</span>
+          <span style="display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: 999px; border: 1px solid #e4e4e7; font-size: 12px; font-weight: 500">Errors</span>
+          <span style="display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: 999px; border: 1px solid #e4e4e7; font-size: 12px; font-weight: 500">Warnings</span>
+        </div>
+        {problems.map((p) => (
+          <div style="flex: none; display: flex; align-items: center; gap: 14px; padding: 10px 16px; border-bottom: 1px solid #f0f0f2">
+            <span style={`flex:none;width:66px;display:inline-flex;justify-content:center;height:22px;align-items:center;border-radius:4px;font-size:11px;font-weight:500;${levelStyle[p.level]}`}>{p.level}</span>
+            <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+              <span style="font-size: 12px; color: #6b6b74">{p.check}</span>
+              <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{p.text}</span>
+            </span>
+            <span style={`${mono};flex:none;width:150px;display:flex;flex-direction:column;align-items:flex-end;gap:2px;font-size:12px;color:#52525b`}><span>{p.row ? `Row ${p.row}` : '—'}</span><span>{p.time}</span></span>
+            <span style={`flex:none;width:72px;text-align:right;font-weight:500;color:${p.row ? '#0f766e' : '#a1a1aa'}`}>{p.row ? 'Go to row' : 'Details'}</span>
+          </div>
+        ))}
+        <span style="flex: 1"></span>
+        <div style="height: 56px; flex: none; display: flex; align-items: center; gap: 10px; padding: 0 16px; border-top: 1px solid #e4e4e7; background: #fafafa">
+          <span style="color: #52525b; font-size: 12px">Schedule and booked spots loaded from Google Sheets at 05:41</span>
+          <span style="flex: 1"></span>
+          <span style="display: inline-flex; align-items: center; height: 32px; padding: 0 14px; border-radius: 6px; border: 1px solid #d4d4d8; background: #fff; font-weight: 500">Open playlist</span>
+          <span style="display: inline-flex; align-items: center; height: 32px; padding: 0 14px; border-radius: 6px; background: #0d9488; color: #fff; font-weight: 500">Run auto timing</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</CheckerFrame>

@@ -1,0 +1,11 @@
+# Cloudflare Pages headers (decision 0022). The site's address is 9eye.org: keep the pages.dev
+# copies (the project address and every preview deployment) out of search results.
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+
+https://:version.:project.pages.dev/*
+  X-Robots-Tag: noindex
+
+# Built CSS, scripts and fonts have a content hash in their name: they never change, so browsers keep them.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable

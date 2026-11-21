@@ -1,0 +1,26 @@
+{
+  "v": 3,
+  "createdOnFiles": { "v": 1, "at": "2026-10-27T10:00:00Z" },
+  "title": "9eye website",
+  "launch": { "view": "canvas" },
+  "pages": [],
+  "boards": {
+    "the Main mockup (private)": { "x": 0, "y": 0, "w": 1440, "h": 9600, "title": "Home (AI-first)", "expand": "fill", "is_interactive": true },
+    "Platform.dc.html": { "x": 1520, "y": 0, "w": 1440, "h": 4600, "title": "Platform", "expand": "fill", "is_interactive": true },
+    "Pricing.dc.html": { "x": 3040, "y": 0, "w": 1440, "h": 2600, "title": "Pricing", "expand": "fill", "is_interactive": true },
+    "Demo.dc.html": { "x": 4560, "y": 0, "w": 1440, "h": 1600, "title": "Request a demo", "expand": "fill", "is_interactive": true },
+    "Contact.dc.html": { "x": 6080, "y": 0, "w": 1440, "h": 1500, "title": "Contact", "expand": "fill", "is_interactive": true },
+    "Privacy.dc.html": { "x": 7600, "y": 0, "w": 1440, "h": 3000, "title": "Privacy policy (draft)", "expand": "fill", "is_interactive": true },
+    "Shot.dc.html": { "x": 0, "y": 10020, "w": 1200, "h": 760, "title": "Product shot: Templates (fictional channel)" },
+    "ShotOrders.dc.html": { "x": 1280, "y": 10020, "w": 1200, "h": 760, "title": "Product shot: Scheduling, order list" },
+    "ShotOrder.dc.html": { "x": 2560, "y": 10020, "w": 1200, "h": 760, "title": "Product shot: Scheduling, one series order" },
+    "Agent.dc.html": { "x": 3840, "y": 10020, "w": 460, "h": 600, "title": "Agent panel (concept, Preview)" },
+    "Social.dc.html": { "x": 4380, "y": 10020, "w": 1200, "h": 630, "title": "Social image 1200 × 630" }
+  },
+  "order": ["the Main mockup (private)", "Platform.dc.html", "Pricing.dc.html", "Demo.dc.html", "Contact.dc.html", "Privacy.dc.html", "Shot.dc.html", "ShotOrders.dc.html", "ShotOrder.dc.html", "Agent.dc.html", "Social.dc.html"],
+  "notes": {
+    "pagesTitle": { "x": 0, "y": -320, "text": "Website pages", "kind": "title1", "maxW": 9040 },
+    "imagesTitle": { "x": 0, "y": 9700, "text": "Product images", "kind": "title1", "maxW": 5580 }
+  },
+  "designSystems": []
+}

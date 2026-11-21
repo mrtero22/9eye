@@ -1,0 +1,58 @@
+---
+// The check-and-fix loop: the flow on the left, a sample run on the right (loop.ts plays it).
+import { LOOP, lineHtml, status } from '../scripts/loop-model';
+
+const end = status(LOOP.length - 1);
+const arrow = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>';
+---
+<div class="split" style="margin-top: 48px" data-loop>
+  <div class="loop-flow">
+    <div class="loop-card" data-card="0">
+      <span class="loop-card__n">1</span>
+      <div><h3>The playlist check agent runs your validators</h3><p>Every check you set for the channel: timing, gaps, overlaps, media, rights, clash codes and your own rules.</p></div>
+    </div>
+    <span class="flow-arrow" aria-hidden="true" set:html={arrow} />
+    <div class="loop-box">
+      <span class="loop-box__label"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"></path><path d="M3 4v5h5"></path></svg>Loop · repeats until every check passes</span>
+      <div class="loop-card" data-card="1">
+        <span class="loop-card__n">2</span>
+        <div><h3>Each failure goes to the agent connected to that validator</h3><p>A late start to the timing agent, an empty gap to the filler agent, a clash to the ad placement agent.</p></div>
+      </div>
+      <div class="loop-card" data-card="2">
+        <span class="loop-card__n">3</span>
+        <div><h3>That agent fixes it</h3><p>Inside its skills and your rules, logged with the reason.</p></div>
+      </div>
+      <div class="loop-card" data-card="3">
+        <span class="loop-card__n">4</span>
+        <div><h3>The whole day is checked again</h3><p>A fix must not cause a new problem. If anything is left, the loop runs again.</p></div>
+      </div>
+    </div>
+    <span class="flow-arrow" aria-hidden="true" set:html={arrow} />
+    <div class="grid" style="--min: 220px; gap: 8px">
+      <div class="loop-card loop-card--ok" data-card="4">
+        <span class="loop-card__n"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"></path></svg></span>
+        <div><h3>Every check passes</h3><p>The day is ready for your approval, then playout.</p></div>
+      </div>
+      <div class="loop-card loop-card--warn" data-card="5">
+        <span class="loop-card__n"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg></span>
+        <div><h3>Still failing? The operator is told</h3><p>What is wrong, why, and what the agents tried — long before air.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" style="display: flex; flex-direction: column">
+    <div class="loop-log__head">
+      <span class="icon-box icon-box--sm" style="background: #16a34a1f; color: #16a34a"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2.5"></circle><circle cx="18" cy="12" r="2.5"></circle><circle cx="6" cy="18" r="2.5"></circle><path d="M8.3 7.1 15.7 10.9M8.3 16.9l7.4-3.8"></path></svg></span>
+      <b style="font-weight: 600">Playlist check</b>
+      <span class="round" data-part="round">{LOOP[LOOP.length - 1].round}</span>
+      <span class="spacer"></span>
+      <span class="meta">Tessa One · Sun 15 Nov · sample run</span>
+    </div>
+    <ol class="loop-log__list" data-part="lines" set:html={LOOP.map((l) => lineHtml(l, false)).join('')} />
+    <div class="loop-log__status" data-part="status" style={`color:${end.color}`}>{end.text}</div>
+  </div>
+</div>
+
+<script>
+  import '../scripts/loop.ts';
+</script>

@@ -1,0 +1,54 @@
+{
+  "_about": "Sample data of the free TV schedule template (/tools/tv-schedule-template). Read by scripts/tv-schedule-template.py, which writes public/downloads/tv-schedule-template.xlsx, and by the page, which shows the same day. Fictional channel and titles.",
+  "channel": "Tessa One (example)",
+  "date": "2026-11-09",
+  "dayStart": "06:00:00",
+  "fps": 25,
+  "adLimitMinutes": 12,
+  "types": ["Programme", "Commercial", "Promo", "Sponsorship", "Station ID", "Filler", "Live"],
+  "items": [
+    { "type": "Programme", "title": "Morning News", "episode": "Part 1", "houseId": "NEWS-AM-1", "duration": "0:27:30", "frames": 0, "planned": "06:00:00" },
+    { "type": "Commercial", "title": "Spot: Bakery", "episode": "30s", "houseId": "AD-1001", "duration": "0:00:30" },
+    { "type": "Commercial", "title": "Spot: Car dealer", "episode": "20s", "houseId": "AD-1002", "duration": "0:00:20" },
+    { "type": "Commercial", "title": "Spot: Mobile network", "episode": "30s", "houseId": "AD-1003", "duration": "0:00:30" },
+    { "type": "Promo", "title": "Promo: Prime Movie tonight", "episode": "", "houseId": "PR-201", "duration": "0:00:25" },
+    { "type": "Station ID", "title": "Channel ident", "episode": "", "houseId": "ID-01", "duration": "0:00:05" },
+    { "type": "Programme", "title": "Morning News", "episode": "Part 2", "houseId": "NEWS-AM-2", "duration": "0:26:15", "frames": 12 },
+    { "type": "Commercial", "title": "Spot: Furniture store", "episode": "30s", "houseId": "AD-1004", "duration": "0:00:30" },
+    { "type": "Commercial", "title": "Spot: Insurance", "episode": "45s", "houseId": "AD-1005", "duration": "0:00:45" },
+    { "type": "Commercial", "title": "Spot: Supermarket", "episode": "30s", "houseId": "AD-1006", "duration": "0:00:30" },
+    { "type": "Promo", "title": "Promo: Cartoons", "episode": "", "houseId": "PR-202", "duration": "0:00:20" },
+    { "type": "Sponsorship", "title": "Weather sponsor", "episode": "", "houseId": "SP-01", "duration": "0:00:05" },
+    { "type": "Programme", "title": "Weather", "episode": "", "houseId": "WX-AM", "duration": "0:02:14", "frames": 13 },
+    { "type": "Programme", "title": "Morning News", "episode": "Part 3", "houseId": "NEWS-AM-3", "duration": "0:27:00", "frames": 0, "planned": "07:00:00" },
+    { "type": "Commercial", "title": "Spot: Bakery", "episode": "30s", "houseId": "AD-1001", "duration": "0:00:30" },
+    { "type": "Commercial", "title": "Spot: Airline", "episode": "30s", "houseId": "AD-1007", "duration": "0:00:30" },
+    { "type": "Commercial", "title": "Spot: Bank", "episode": "20s", "houseId": "AD-1008", "duration": "0:00:20" },
+    { "type": "Promo", "title": "Promo: Live Match Saturday", "episode": "", "houseId": "PR-203", "duration": "0:00:30" },
+    { "type": "Commercial", "title": "Spot: Mobile network", "episode": "30s", "houseId": "AD-1003", "duration": "0:00:30" },
+    { "type": "Commercial", "title": "Spot: Car dealer", "episode": "20s", "houseId": "AD-1002", "duration": "0:00:20" },
+    { "type": "Station ID", "title": "Channel ident", "episode": "", "houseId": "ID-01", "duration": "0:00:05" },
+    { "type": "Programme", "title": "Cartoons", "episode": "S01E03", "houseId": "KID-0103", "duration": "0:22:00", "frames": 0, "planned": "07:30:00" },
+    { "type": "Commercial", "title": "Spot: Toy shop", "episode": "30s", "houseId": "AD-1009", "duration": "0:00:30" },
+    { "type": "Promo", "title": "Promo: Cartoons", "episode": "", "houseId": "PR-202", "duration": "0:00:20" },
+    { "type": "Programme", "title": "Cartoons", "episode": "S01E04", "houseId": "KID-0104", "duration": "0:22:00" },
+    { "type": "Commercial", "title": "Spot: Toy shop", "episode": "30s", "houseId": "AD-1009", "duration": "0:00:30" },
+    { "type": "Commercial", "title": "Spot: Supermarket", "episode": "30s", "houseId": "AD-1006", "duration": "0:00:30" },
+    { "type": "Station ID", "title": "Channel ident", "episode": "", "houseId": "ID-01", "duration": "0:00:05" },
+    { "type": "Programme", "title": "Lifestyle Magazine", "episode": "Ep 112", "houseId": "MAG-112", "duration": "0:24:30", "frames": 0, "planned": "08:15:30" }
+  ],
+  "week": {
+    "days": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    "weekday": [
+      [6, "News: Morning News"], [4, "Kids: Cartoons"], [2, "Series: Daytime Drama"], [1, "News: Midday News"],
+      [3, "Series: Daytime Drama"], [4, "Movie: Afternoon Movie"], [4, "Kids: Cartoons"], [1, "News: Evening News"],
+      [1, "Magazine: Lifestyle"], [2, "Series: Prime Drama"], [4, "Movie: Prime Movie"], [1, "News: Late News"],
+      [1, "Sport: Highlights"], [4, "Movie: Late Movie"], [10, "Music: Night Clips"]
+    ],
+    "weekend": [
+      [8, "Kids: Weekend Cartoons"], [6, "Sport: Live Match"], [1, "News: Midday News"], [5, "Movie: Family Movie"],
+      [4, "Series: Drama Marathon"], [1, "News: Evening News"], [3, "Sport: Weekend Review"], [5, "Movie: Prime Movie"],
+      [1, "News: Late News"], [4, "Movie: Late Movie"], [10, "Music: Night Clips"]
+    ]
+  }
+}

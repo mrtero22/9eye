@@ -1,0 +1,40 @@
+---
+// Screenshot sources, served only by the dev server (scripts/shots.mjs captures them into public/images).
+// The production build has no pages here.
+import '@fontsource-variable/geist';
+import '@fontsource-variable/geist-mono';
+import TemplatesShot from '../../shots/TemplatesShot.astro';
+import OrdersShot from '../../shots/OrdersShot.astro';
+import OrderShot from '../../shots/OrderShot.astro';
+import SocialCard from '../../shots/SocialCard.astro';
+import CheckerCaptureShot from '../../shots/CheckerCaptureShot.astro';
+import CheckerReportShot from '../../shots/CheckerReportShot.astro';
+import CheckerPlaylistShot from '../../shots/CheckerPlaylistShot.astro';
+
+export function getStaticPaths() {
+  return import.meta.env.DEV ? ['templates', 'orders', 'order', 'og', 'checker-capture', 'checker-report', 'checker-playlist'].map((name) => ({ params: { name } })) : [];
+}
+
+const { name } = Astro.params;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>Screenshot source: {name}</title>
+    <style is:global>
+      body { margin: 0; background: #fff; -webkit-font-smoothing: antialiased; }
+      * { box-sizing: border-box; }
+    </style>
+  </head>
+  <body>
+    {name === 'templates' && <TemplatesShot />}
+    {name === 'orders' && <OrdersShot />}
+    {name === 'order' && <OrderShot />}
+    {name === 'og' && <SocialCard />}
+    {name === 'checker-capture' && <CheckerCaptureShot />}
+    {name === 'checker-report' && <CheckerReportShot />}
+    {name === 'checker-playlist' && <CheckerPlaylistShot />}
+  </body>
+</html>

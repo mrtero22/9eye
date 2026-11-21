@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Agents · team room</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.ds{--bg:#fafafa;--surface:#ffffff;--surface-2:#f4f4f5;--surface-3:#e9e9ec;--hairline:#f0f0f2;--border:#e4e4e7;--border-strong:#d4d4d8;--text:#18181b;--text-2:#52525b;--text-3:#6b6b74;--accent:#2563eb;--accent-soft:#eaf1ff;--accent-text:#1d4ed8;--red:#dc2626;--red-soft:#fdeeee;--red-text:#b91c1c;--amber:#d97706;--amber-soft:#fdf4e3;--amber-text:#9a5200;--green:#16a34a;--green-soft:#e8f6ec;--green-text:#15803d;--m1:#2563eb;--m2:#7c3aed;--m3:#0891b2;--m4:#c2410c;--m5:#15803d;--shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.08);--fs:14px;--fs-sm:13px;--ctl:32px;color-scheme:light;font-family:'Geist',ui-sans-serif,system-ui,sans-serif;font-size:var(--fs);line-height:1.5;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
+.ds.dark{--bg:#0a0a0b;--surface:#111113;--surface-2:#1a1a1d;--surface-3:#232327;--hairline:#19191c;--border:#26262a;--border-strong:#38383e;--text:#f4f4f5;--text-2:#a8a8b0;--text-3:#8b8b94;--accent-soft:#15203a;--accent-text:#93b4ff;--red-soft:#2a1313;--red-text:#fca5a5;--amber-soft:#2a2011;--amber-text:#fcd34d;--green-soft:#102419;--green-text:#86efac;--m1:#5b8def;--m2:#a78bfa;--m3:#22b8cf;--m4:#fb923c;--m5:#4ade80;color-scheme:dark}
+.ds *{box-sizing:border-box}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,monospace;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.ds button,.ds textarea{font:inherit;color:inherit}
+.ds button:focus-visible,.ds a:focus-visible,.ds textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+@media (pointer:coarse){.ctl{min-height:44px}}
+.hov:hover{background:var(--surface-2)!important}
+.tnl:hover{color:var(--text)!important}
+a{color:#1d4ed8}a:hover{color:#1e40af}
+@media (max-width:720px){.tn-links,.tn-hide{display:none!important}}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="min-height: 100vh; background: var(--bg); color: var(--text); display: flex; flex-direction: column">
+
+<header style="display: flex; align-items: center; gap: 8px; height: 52px; padding: 0 16px; border-bottom: 1px solid var(--border); background: var(--surface)">
+<span style="display: flex; align-items: center; gap: 8px; padding: 0 8px"><span style="width: 24px; height: 24px; border-radius: 6px; background: var(--text); color: var(--bg); display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px">A</span><span class="tn-hide" style="font-weight: 600">Aurora Media</span></span>
+<span aria-hidden="true" class="tn-hide" style="width: 1px; height: 20px; background: var(--border); margin: 0 8px"></span>
+<nav aria-label="Main" class="tn-links" style="display: flex; align-self: stretch; gap: 4px; min-width: 0; overflow-x: auto">
+<a class="tnl" href="the Home mockup (private)" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; color: var(--text-2); border-bottom: 2px solid transparent">Home</a>
+<a class="tnl" href="the Catalog mockup (private)" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; color: var(--text-2); border-bottom: 2px solid transparent">Media</a>
+<a class="tnl" href="the Week mockup (private)" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; color: var(--text-2); border-bottom: 2px solid transparent">Layouts</a>
+<a class="tnl" href="the Scheduling mockup (private)" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; color: var(--text-2); border-bottom: 2px solid transparent">Scheduling</a>
+<a class="tnl" href="PlaylistAgent.dc.html" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; color: var(--text-2); border-bottom: 2px solid transparent">Playlist</a>
+<a class="tnl" href="the Orders mockup (private)" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; color: var(--text-2); border-bottom: 2px solid transparent">Ads</a>
+<a class="tnl" href="AgentTeam.dc.html" aria-current="page" style="display: inline-flex; align-items: center; gap: 6px; padding: 0 10px; text-decoration: none; font-weight: 500; color: var(--text); border-bottom: 2px solid var(--text)">Agents<span class="mono" style="display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; font-size: 11px; background: var(--accent); color: #ffffff">{{waiting}}</span></a>
+</nav>
+<span style="flex: 1"></span>
+<button class="ctl hov" aria-pressed="{{dark}}" onClick="{{toggleDark}}" style="height: 32px; padding: 0 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text-3); cursor: pointer; font-size: 12.5px">Theme</button>
+<span style="width: 28px; height: 28px; border-radius: 50%; background: var(--surface-3); display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600">DE</span>
+</header>
+
+<div style="flex: 1; display: flex; flex-wrap: wrap; min-height: 0">
+
+<nav aria-label="Rooms and agents" style="flex: 0 1 260px; min-width: 220px; border-right: 1px solid var(--border); background: var(--surface); padding: 14px 10px; display: flex; flex-direction: column; gap: 14px">
+<button class="ctl" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: var(--ctl); border-radius: 6px; font-weight: 500; cursor: pointer; background: var(--accent); color: #ffffff; border: 1px solid var(--accent)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>New agent</button>
+<a href="AgentTeam.dc.html" class="hov" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 10px; border-radius: 7px; text-decoration: none; color: var(--text); font-size: var(--fs-sm)"><span style="flex: 1">Waiting for you</span><span class="mono" style="display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; font-size: 11px; background: var(--amber-soft); color: var(--amber-text)">{{waiting}}</span></a>
+<div style="display: flex; flex-direction: column; gap: 1px"><span style="padding: 0 10px 4px; font-size: 12px; font-weight: 500; color: var(--text-3)">Rooms</span>
+<sc-for list="{{rooms}}" as="r" hint-placeholder-count="3"><span aria-current="{{r.current}}" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 10px; border-radius: 7px; background: {{r.bg}}; color: {{r.fg}}; font-size: var(--fs-sm); font-weight: {{r.weight}}"><span style="color: var(--text-3)">#</span><span style="flex: 1">{{r.name}}</span><sc-if value="{{r.unread}}" hint-placeholder-val="{{false}}"><span style="width: 7px; height: 7px; border-radius: 50%; background: var(--accent)"></span></sc-if></span></sc-for>
+</div>
+<div style="display: flex; flex-direction: column; gap: 1px"><span style="padding: 0 10px 4px; font-size: 12px; font-weight: 500; color: var(--text-3)">Agents</span>
+<sc-for list="{{agents}}" as="a" hint-placeholder-count="5"><a class="hov" href="AgentProfile.dc.html" style="display: flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 10px; border-radius: 7px; text-decoration: none; color: var(--text); font-size: var(--fs-sm)"><span style="position: relative; width: 22px; height: 22px; flex: none; border-radius: 6px; background: {{a.color}}; color: #ffffff; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600">{{a.mark}}<span style="position: absolute; right: -3px; bottom: -3px; width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--surface); background: {{a.dot}}"></span></span><span style="flex: 1; display: flex; flex-direction: column; line-height: 1.25; min-width: 0"><span style="font-weight: 500">{{a.name}}</span><span style="font-size: 11.5px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{a.status}}</span></span></a></sc-for>
+</div>
+<a href="#settings" style="margin-top: auto; padding: 0 10px; font-size: 12.5px; text-decoration: none; color: var(--text-3)">Providers and keys are in Settings › AI access</a>
+</nav>
+
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; background: var(--bg)">
+<div style="display: flex; align-items: center; gap: 10px; height: 56px; padding: 0 24px; border-bottom: 1px solid var(--border); background: var(--surface)">
+<span style="display: flex; flex-direction: column; line-height: 1.25"><span style="font-weight: 600"># playlist-checks</span><span style="font-size: 12px; color: var(--text-3)">Dana, Omar, Playlist checker, Media fixer, Ads booker · what the checks find, and who fixes it</span></span>
+</div>
+
+<div style="flex: 1; display: flex; flex-direction: column; gap: 18px; padding: 20px 24px; max-width: 920px">
+<span style="align-self: center; font-size: 12px; color: var(--text-3)">Today · Tuesday 17 Nov</span>
+
+<div style="display: flex; gap: 12px"><span style="width: 32px; height: 32px; flex: none; border-radius: 8px; background: var(--m1); color: #ffffff; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600">PC</span>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px">
+<span style="display: flex; align-items: baseline; gap: 8px"><span style="font-weight: 600">Playlist checker</span><span style="font-size: 11.5px; padding: 0 5px; border-radius: 4px; background: var(--surface-2); color: var(--text-3)">agent</span><span class="mono" style="font-size: 12px; color: var(--text-3)">18:00</span><span style="font-size: 12px; color: var(--text-3)">· routine "Check tomorrow"</span></span>
+<span>I checked tomorrow on 5 channels. Two problems:</span>
+<div style="display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); font-size: var(--fs-sm)">
+<span>1. <b style="font-weight: 600">DELTA SD</b> · main · 21:00 — "Painted Trail - 14" has media not ready. <span style="color: var(--accent-text); font-weight: 500">@Media fixer</span> can you look?</span>
+<span>2. <b style="font-weight: 600">MELODY HD</b> · ads — 3 booked spots of Harborview Films are not in the day. <span style="color: var(--accent-text); font-weight: 500">@Ads booker</span></span>
+</div>
+<span style="font-size: 12px; color: var(--text-3)">11 steps · 34 s</span>
+</div></div>
+
+<div style="display: flex; gap: 12px; margin-left: 44px; padding-left: 14px; border-left: 2px solid var(--border)"><span style="width: 28px; height: 28px; flex: none; border-radius: 7px; background: var(--m2); color: #ffffff; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">MF</span>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px">
+<span style="display: flex; align-items: baseline; gap: 8px"><span style="font-weight: 600">Media fixer</span><span style="font-size: 11.5px; padding: 0 5px; border-radius: 4px; background: var(--surface-2); color: var(--text-3)">agent</span><span class="mono" style="font-size: 12px; color: var(--text-3)">18:01</span></span>
+<span>Episode 14 has no file yet. Its <b style="font-weight: 600">Version 2</b> cut is ready and has the same length (<span class="mono">00:44:10:00</span>). I can put it in the 21:00 slot instead.</span>
+<div style="display: flex; flex-direction: column; gap: 10px; padding: 12px; border-radius: 10px; border: 1px solid {{c1Border}}; background: var(--surface); max-width: 520px">
+<span style="display: flex; align-items: center; gap: 8px"><span style="font-size: 12px; font-weight: 500; color: {{c1StateColor}}">{{c1State}}</span></span>
+<span style="display: flex; flex-direction: column; line-height: 1.35"><span style="font-weight: 600">Replace the item in the day</span><span style="font-size: var(--fs-sm); color: var(--text-2)">DELTA SD · Main · Wed 18 Nov 21:00 · Painted Trail - 14 → Version 2</span></span>
+<sc-if value="{{c1Waiting}}" hint-placeholder-val="{{true}}"><span style="display: flex; flex-wrap: wrap; gap: 8px"><button class="ctl" onClick="{{approve1}}" style="height: 30px; padding: 0 14px; border-radius: 6px; font-weight: 500; cursor: pointer; background: var(--accent); color: #ffffff; border: 1px solid var(--accent)">Approve</button><a href="PlaylistAgent.dc.html" class="ctl hov" style="display: inline-flex; align-items: center; height: 30px; padding: 0 12px; border-radius: 6px; font-weight: 500; text-decoration: none; background: var(--surface); color: var(--text); border: 1px solid var(--border-strong)">Review on the page</a><button class="ctl hov" onClick="{{reject1}}" style="height: 30px; padding: 0 12px; border-radius: 6px; font-weight: 500; cursor: pointer; background: transparent; color: var(--text-2); border: 1px solid transparent">Reject</button></span></sc-if>
+</div>
+<sc-if value="{{c1Done}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: var(--fs-sm)"><span style="font-weight: 600">Media fixer</span> <span class="mono" style="font-size: 12px; color: var(--text-3)">18:03</span> — Done: the day is at version 9. <span style="color: var(--accent-text); font-weight: 500">@Playlist checker</span> please check DELTA SD again.</span>
+<span style="font-size: var(--fs-sm)"><span style="font-weight: 600">Playlist checker</span> <span class="mono" style="font-size: 12px; color: var(--text-3)">18:03</span> — Checked again: DELTA SD tomorrow is fine now. ✓</span>
+</div>
+</sc-if>
+</div></div>
+
+<div style="display: flex; gap: 12px; margin-left: 44px; padding-left: 14px; border-left: 2px solid var(--border)"><span style="width: 28px; height: 28px; flex: none; border-radius: 7px; background: var(--m4); color: #ffffff; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">AB</span>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px">
+<span style="display: flex; align-items: baseline; gap: 8px"><span style="font-weight: 600">Ads booker</span><span style="font-size: 11.5px; padding: 0 5px; border-radius: 4px; background: var(--surface-2); color: var(--text-3)">agent</span><span class="mono" style="font-size: 12px; color: var(--text-3)">18:02</span></span>
+<span>The Ad Pod at 21:30 is full, so the 3 Harborview spots did not fit. The deal allows prime time, so I can book them in the 22:30 Ad Pod instead, then place them in the day.</span>
+<div style="display: flex; flex-direction: column; gap: 10px; padding: 12px; border-radius: 10px; border: 1px solid {{c2Border}}; background: var(--surface); max-width: 520px">
+<span style="font-size: 12px; font-weight: 500; color: {{c2StateColor}}">{{c2State}}</span>
+<span style="display: flex; flex-direction: column; line-height: 1.35"><span style="font-weight: 600">Move 3 bookings, then place them</span><span style="font-size: var(--fs-sm); color: var(--text-2)">Harborview Films · MELODY HD · Wed 18 Nov · Ad Pod 21:30 → Ad Pod 22:30 · 2 changes</span></span>
+<sc-if value="{{c2Waiting}}" hint-placeholder-val="{{true}}"><span style="display: flex; flex-wrap: wrap; gap: 8px"><button class="ctl" onClick="{{approve2}}" style="height: 30px; padding: 0 14px; border-radius: 6px; font-weight: 500; cursor: pointer; background: var(--accent); color: #ffffff; border: 1px solid var(--accent)">Approve both</button><a href="the Orders mockup (private)" class="ctl hov" style="display: inline-flex; align-items: center; height: 30px; padding: 0 12px; border-radius: 6px; font-weight: 500; text-decoration: none; background: var(--surface); color: var(--text); border: 1px solid var(--border-strong)">Review on the page</a><button class="ctl hov" onClick="{{reject2}}" style="height: 30px; padding: 0 12px; border-radius: 6px; font-weight: 500; cursor: pointer; background: transparent; color: var(--text-2); border: 1px solid transparent">Reject</button></span></sc-if>
+</div>
+</div></div>
+
+<div style="display: flex; gap: 12px"><span style="width: 32px; height: 32px; flex: none; border-radius: 50%; background: var(--surface-3); display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">OH</span>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 4px"><span style="display: flex; align-items: baseline; gap: 8px"><span style="font-weight: 600">Omar Haddad</span><span class="mono" style="font-size: 12px; color: var(--text-3)">18:06</span></span><span><span style="color: var(--accent-text); font-weight: 500">@Ads booker</span> wait — Harborview asked for 21:00–22:00 only. Ask me before moving their spots out of that hour, every time.</span>
+<span style="display: flex; align-items: center; gap: 8px; font-size: var(--fs-sm)"><span style="width: 20px; height: 20px; border-radius: 5px; background: var(--m4); color: #ffffff; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600">AB</span><span>Understood. <span style="color: var(--text-3)">Saved to its memory: "Harborview Films: only 21:00–22:00; ask before moving."</span></span></span>
+</div></div>
+</div>
+
+<div style="padding: 12px 24px 18px; max-width: 920px">
+<div style="display: flex; gap: 8px; align-items: flex-end; padding: 8px; border-radius: 12px; border: 1px solid var(--border-strong); background: var(--surface)">
+<textarea aria-label="Message the room" placeholder="Message #playlist-checks — type @ to bring in an agent" style="flex: 1; min-height: 40px; padding: 6px 8px; border: 0; outline: none; background: transparent; color: var(--text); font-size: var(--fs-sm); resize: none"></textarea>
+<button class="ctl" aria-label="Send" style="width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; padding: 0; border-radius: 8px; cursor: pointer; background: var(--accent); color: #ffffff; border: 1px solid var(--accent)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+</div>
+<span style="display: block; margin-top: 6px; font-size: 11.5px; color: var(--text-3)">Agents hand work to each other here and everyone sees each step. Every change waits for a person.</span>
+</div>
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":1180}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { dark: null, c1: 'waiting', c2: 'waiting' };
+  }
+  renderVals() {
+    const st = this.state;
+    const dark = st.dark === null ? !!(this.props.dark ?? false) : st.dark;
+    const card = (s) => ({
+      border: s === 'waiting' ? 'var(--amber)' : s === 'approved' ? 'var(--green)' : 'var(--border)',
+      label: s === 'waiting' ? 'Waiting for you' : s === 'approved' ? 'Approved · applied' : 'Rejected',
+      color: s === 'waiting' ? 'var(--amber-text)' : s === 'approved' ? 'var(--green-text)' : 'var(--text-3)'
+    });
+    const k1 = card(st.c1), k2 = card(st.c2);
+    const waiting = (st.c1 === 'waiting' ? 1 : 0) + (st.c2 === 'waiting' ? 1 : 0) + 1;
+    const rooms = [['playlist-checks', true, false], ['ads-desk', false, true], ['media', false, false]].map(([name, on, unread]) => ({ name, unread, current: on ? 'page' : 'false', bg: on ? 'var(--accent-soft)' : 'transparent', fg: on ? 'var(--accent-text)' : 'var(--text)', weight: on ? '600' : '400' }));
+    const agents = [
+      ['PC', 'Playlist checker', 'var(--m1)', 'var(--green)', 'Idle · next at 18:00 tomorrow'],
+      ['MF', 'Media fixer', 'var(--m2)', st.c1 === 'waiting' ? 'var(--amber)' : 'var(--green)', st.c1 === 'waiting' ? 'Waiting for you' : 'Idle'],
+      ['AB', 'Ads booker', 'var(--m4)', st.c2 === 'waiting' ? 'var(--amber)' : 'var(--green)', st.c2 === 'waiting' ? 'Waiting for you' : 'Idle'],
+      ['GF', 'Gap filler', 'var(--m3)', 'var(--accent)', 'Working · AURORA TV SD 18 Nov'],
+      ['WB', 'Weeks builder', 'var(--m5)', 'var(--border-strong)', 'Off']
+    ].map(([mark, name, color, dot, status]) => ({ mark, name, color, dot, status }));
+    return {
+      rootClass: 'ds' + (dark ? ' dark' : ''), dark, toggleDark: () => this.setState({ dark: !dark }),
+      waiting: String(waiting), rooms, agents,
+      c1Border: k1.border, c1State: k1.label, c1StateColor: k1.color, c1Waiting: st.c1 === 'waiting', c1Done: st.c1 === 'approved',
+      c2Border: k2.border, c2State: k2.label, c2StateColor: k2.color, c2Waiting: st.c2 === 'waiting',
+      approve1: () => this.setState({ c1: 'approved' }), reject1: () => this.setState({ c1: 'rejected' }),
+      approve2: () => this.setState({ c2: 'approved' }), reject2: () => this.setState({ c2: 'rejected' })
+    };
+  }
+}
+</script>
+</body>
+</html>

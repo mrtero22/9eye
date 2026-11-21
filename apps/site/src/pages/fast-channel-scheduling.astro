@@ -1,0 +1,132 @@
+---
+// Landing page for "FAST channel scheduling software" (docs/design/site.md, Keywords).
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+import Icon from '../components/Icon.astro';
+import Shot from '../components/Shot.astro';
+import { BRAND } from '../site';
+import { faqPage, type Faq as FaqItem } from '../seo';
+
+const NEEDS = [
+  ['clock', 'Always on air', 'A FAST channel never signs off. Every hour of every day needs a playlist that is complete to the frame.'],
+  ['building', 'Many channels, one small team', 'Channel groups grow by genre, region and platform faster than teams do. Each channel has to run with little daily work.'],
+  ['repeat', 'Library content, used well', 'Series in order, films and documentaries rotated, repeats spaced out, so a channel feels programmed rather than shuffled.'],
+  ['globe', 'Guides on every platform', 'Each streaming platform wants its own programme guide data, on time and matching what actually plays.'],
+  ['tag', 'Ads in every hour', 'Revenue depends on ad breaks planned in the right places, hour after hour.'],
+  ['checkCircle', 'No one watching at 3 a.m.', 'Gaps, overlaps and missing media have to be caught before air, because nobody is there to fix them live.'],
+] as const;
+
+const STEPS = [
+  ['Catalog', 'Series, films and clips with their segments, so breaks fall at natural points.', '#64748b'],
+  ['Week template', 'The channel’s dayparts and blocks drawn once, with ad breaks at exact positions.', '#0d9488'],
+  ['Series orders', 'The next episode in the next slot, repeats days later, a whole season placed across weeks.', '#7c3aed'],
+  ['Fillers', 'Rotation lists close every gap with idents, bumpers and short fillers, to the frame.', '#db2777'],
+  ['Check', 'Validators flag gaps, overlaps, missing media and expired rights before export.', '#2563eb'],
+  ['Export', 'The playlist goes to playout and the programme guide to your platforms.', '#16a34a'],
+];
+
+const FAQ: FaqItem[] = [
+  { q: 'What is a FAST channel?', a: 'FAST stands for free ad-supported streaming television: linear channels that stream for free on smart TVs and streaming platforms, paid for by advertising. They run around the clock on a schedule, like broadcast channels.' },
+  { q: 'Can a small team run many FAST channels?', a: `That is what ${BRAND} is built for. A channel’s week is drawn once as a template, series orders place episodes and repeats on their own, rotation lists fill the gaps, and validators check every day before export. With the AI agents (preview), the schedule agent prepares the next week for a person to approve.` },
+  { q: 'Do you export programme guides for streaming platforms?', a: 'Yes. Programme guide data is exported alongside the playlist. Tell us which platforms you deliver to when you request a demo, and we confirm the formats before you start.' },
+  { q: 'Does it insert ad markers or do ad insertion?', a: `${BRAND} plans the ad breaks at exact positions in the playlist. Ad insertion itself happens in your playout or streaming stack. Tell us your setup when you request a demo, and we confirm how the breaks are passed on.` },
+  { q: 'Can the same content run on linear and FAST channels?', a: 'Yes. Linear, FAST and streaming channels share one catalog and one core. Each channel keeps its own frame rate, time zone, broadcast day start and rules.' },
+];
+---
+<Base
+  title={`FAST Channel Scheduling Software: Playlists and EPG | ${BRAND}`}
+  description="Schedule FAST channels like linear TV: week templates, series that place themselves, frame-accurate 24/7 playlists with ad breaks and EPG export."
+  current="solutions"
+  jsonLd={[faqPage(FAQ)]}
+>
+  <section class="container">
+    <div class="page-hero">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+        <span class="chip chip--accent"><span class="chip__dot"></span>FAST and streaming channels</span>
+        <span class="mono meta" aria-hidden="true">24/7 · 00:00:00:00 → 23:59:59:24</span>
+      </div>
+      <h1 class="h1 h1--page">FAST channel scheduling software, built on a broadcast core.</h1>
+      <p class="lead lead--lg" style="max-width: 760px">Run free ad-supported streaming channels the way broadcasters run linear TV: week templates, series that place themselves, frame-accurate playlists around the clock with ad breaks in the right places, and programme guides for every platform — one team, many channels.</p>
+      <div class="btn-row" style="padding-top: 8px">
+        <a class="btn btn--primary" href="/demo">Request a demo</a>
+        <a class="btn btn--secondary" href="/pricing">See pricing</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="container section">
+    <div class="section-head">
+      <h2 class="h2">What a FAST channel needs from its scheduling.</h2>
+      <p class="lead">A FAST channel is a linear channel without the large team behind it. The schedule has to be as solid as broadcast, with a fraction of the daily work.</p>
+    </div>
+    <div class="grid" style="margin-top: 48px; --min: 320px">
+      {NEEDS.map(([icon, title, text]) => (
+        <article class="card"><span class="icon-box"><Icon name={icon} /></span><h3 class="h3" style="font-size: 17px">{title}</h3><p>{text}</p></article>
+      ))}
+    </div>
+  </section>
+
+  <section class="container section">
+    <div class="section-head">
+      <h2 class="h2">How {BRAND} schedules a FAST channel.</h2>
+      <p class="lead">The same steps a broadcaster uses, set up once per channel and repeated week after week.</p>
+    </div>
+    <ol class="steps" style="--min: 300px">
+      {STEPS.map(([name, text, color], i) => (
+        <li style={`--c: ${color}`}><span class="num">{String(i + 1).padStart(2, '0')}</span><h3>{name}</h3><p>{text}</p></li>
+      ))}
+    </ol>
+    <figure class="shot" style="margin: 64px 0 0">
+      <Shot name="order" />
+    </figure>
+  </section>
+
+  <section class="container section">
+    <div class="split" style="align-items: stretch">
+      <div class="section-head">
+        <h2 class="h2">One core for FAST, streaming and linear.</h2>
+        <p class="lead">A FAST channel in {BRAND} is a channel like any other: the same catalog, the same templates and orders, the same checks. A broadcaster can run its linear channels and its FAST versions side by side, and a FAST-only company gets broadcast-grade scheduling from the first channel.</p>
+        <a class="link-arrow" href="/platform">See the platform <span aria-hidden="true">→</span></a>
+      </div>
+      <ul class="ticks" style="align-self: center">
+        {[
+          'A frame rate, time zone and broadcast day start per channel',
+          'Ad breaks at exact positions in every block',
+          'Series orders with automatic next episodes and repeats',
+          'Rotation lists for idents, bumpers and fillers',
+          'Validators before every export',
+          'Roles per channel, for teams and partners',
+        ].map((t) => <li><Icon name="check" size={20} stroke={2} style="color: var(--accent)" />{t}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="container section">
+    <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px">
+      <div class="section-head" style="flex: 1 1 560px">
+        <span class="chip chip--accent">AI agents · preview</span>
+        <h2 class="h2">AI agents for channels that never stop.</h2>
+        <p class="lead">With Platform + AI agents, the agents do the weekly work of a FAST channel. A person approves every change before it reaches playout.</p>
+      </div>
+      <a class="link-arrow" href="/ai-agents">All ten agents <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="grid" style="--min: 320px; margin-top: 48px">
+      {[
+        ['Schedule agent', 'Builds next week from the template and the running series orders, then shows you what changed.'],
+        ['Playlist check agent', 'Checks every item before export and hands each problem to the agent that can fix it.'],
+        ['Metadata agent', 'Reads new titles into the catalog and writes programme guide texts in several languages.'],
+      ].map(([name, text]) => (
+        <article class="card"><span class="icon-box icon-box--accent"><Icon name="agent" /></span><h3 class="h3" style="font-size: 17px">{name}</h3><p>{text}</p></article>
+      ))}
+    </div>
+  </section>
+
+  <section class="container section">
+    <div class="cta cta--light">
+      <div><h2>Bring one FAST channel. See it running on {BRAND}.</h2><p>Early access starts with a demo on a channel like yours, then a trial on your own catalog and templates.</p></div>
+      <a class="btn btn--primary" href="/demo">Request a demo</a>
+    </div>
+  </section>
+
+  <Faq title="FAST channel questions" items={FAQ} />
+</Base>

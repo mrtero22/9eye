@@ -1,0 +1,40 @@
+# 9eye
+
+> 9eye is broadcast scheduling and TV traffic software with AI agents built in, for linear, FAST and streaming channels anywhere in the world. 9eye Studio, the team behind it, builds workflow automation, validators and AI agents for other companies as fixed-price projects.
+
+Key facts:
+- Covers catalog, week templates, programme and series orders, ad and promo placement, frame-accurate playlists, checks before air, playout export (BXF) and as-run reconciliation.
+- Ten AI agents (in preview) plan the week, time playlists, place ads and promos, handle live changes and reconcile the as-run log; a person approves every change. Any MCP-capable AI can connect.
+- Pricing per channel per month: Platform $999, Platform + AI agents $2,390. Early access.
+- Contact: studio@9eye.org
+
+## Product
+
+- [Home](https://9eye.org/): AI broadcast scheduling and TV traffic software
+- [AI agents](https://9eye.org/ai-agents): the ten agents, what each does and when it asks a person
+- [Platform](https://9eye.org/platform): scheduling from catalog to as-run
+- [TV traffic software](https://9eye.org/tv-traffic-software): ads, promos and breaks
+- [FAST channel scheduling](https://9eye.org/fast-channel-scheduling): playlists and EPG for FAST and streaming channels
+- [Pricing](https://9eye.org/pricing)
+- [Request a demo](https://9eye.org/demo)
+
+## 9eye Studio
+
+- [Workflow automation services](https://9eye.org/studio): Chrome extensions, AI agents and MCP servers, validators and integrations
+- [Broadcast Playlist Checker](https://9eye.org/studio/playlist-checker): case study of playlist QC before playout
+
+## Guides and tools
+
+- [What is BXF?](https://9eye.org/guides/bxf-explained)
+- [As-run reconciliation](https://9eye.org/guides/as-run-reconciliation)
+- [Drop-frame timecode explained](https://9eye.org/guides/drop-frame-timecode)
+- [Timecode calculator](https://9eye.org/tools/timecode-calculator): frames, drop-frame, 23.976 to 60 fps
+- [SCTE-35 decoder](https://9eye.org/tools/scte35-decoder): base64, hex or HLS / DASH lines → splice command, times, segmentation descriptors, UPIDs, CRC check; runs in the browser
+- [TV schedule template](https://9eye.org/tools/tv-schedule-template): free Excel / Google Sheets template — frame-accurate day playlist, fixed-start check, ad minutes per hour, week grid
+- [Ad break calculator](https://9eye.org/tools/ad-break-calculator): ad inventory per day / week / year, programme length and break positions in a slot, which spots fit a break
+- [XMLTV EPG checker](https://9eye.org/tools/xmltv-epg-checker): XMLTV validator — XML errors, gaps, overlaps, missing titles, bad times and unknown channel ids per channel, with line numbers; .xml or .xml.gz, runs in the browser
+
+## Optional
+
+- [Contact](https://9eye.org/contact)
+- [Privacy policy](https://9eye.org/privacy)

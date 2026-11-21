@@ -1,0 +1,22 @@
+node_modules/
+dist/
+.astro/
+build/
+coverage/
+.env
+.env.*
+!.env.example
+*.har
+*.pem
+*.key
+*.p12
+*.log
+.DS_Store
+/var/
+/tmp/
+
+# local browser binaries for UI tests
+.cache/
+
+# maintainer notes for this machine only
+CLAUDE.local.md

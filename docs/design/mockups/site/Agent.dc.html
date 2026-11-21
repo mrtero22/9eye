@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Agent panel</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 100%; max-width: 460px; box-sizing: border-box; border-radius: 16px; background: #111113; border: 1px solid #26262a; color: #f4f4f5; font-family: Geist, ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 1.45; box-shadow: 0 32px 80px -24px rgba(0, 0, 0, 0.7); overflow: hidden">
+
+<div style="display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid #26262a">
+<span style="width: 28px; height: 28px; border-radius: 8px; background: #15203a; display: inline-flex; align-items: center; justify-content: center; flex: none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#93b4ff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2.5"></circle><circle cx="18" cy="12" r="2.5"></circle><circle cx="6" cy="18" r="2.5"></circle><path d="M8.3 7.1 15.7 10.9M8.3 16.9l7.4-3.8"></path></svg></span>
+<span style="font-weight: 600; font-size: 15px">Schedule agent</span>
+<span style="display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 999px; border: 1px solid #38383e; color: #93b4ff; font-size: 11px; font-weight: 500">Preview</span>
+<span style="flex: 1"></span>
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: #a8a8b0">Tessa One</span>
+</div>
+
+<div style="display: flex; gap: 10px; padding: 16px">
+<span style="width: 28px; height: 28px; border-radius: 50%; background: #232327; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex: none">AR</span>
+<p style="margin: 0; padding: 10px 12px; border-radius: 4px 12px 12px 12px; background: #1a1a1d; color: #f4f4f5">Plan week 46 on Tessa One. Keep the promos for the Sunday Drama premiere in prime time.</p>
+</div>
+
+<ol style="list-style: none; margin: 0; padding: 0 16px 4px; display: flex; flex-direction: column; gap: 12px">
+<sc-for list="{{steps}}" as="s" hint-placeholder-count="5">
+<li style="display: flex; gap: 10px; align-items: flex-start">
+<sc-if value="{{s.ok}}" hint-placeholder-val="{{true}}">
+<span style="width: 20px; height: 20px; border-radius: 50%; background: #102419; display: inline-flex; align-items: center; justify-content: center; flex: none; margin-top: 1px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"></path></svg></span>
+</sc-if>
+<sc-if value="{{s.warn}}" hint-placeholder-val="{{false}}">
+<span style="width: 20px; height: 20px; border-radius: 50%; background: #2a2011; display: inline-flex; align-items: center; justify-content: center; flex: none; margin-top: 1px; color: #fcd34d; font-weight: 700; font-size: 12px">!</span>
+</sc-if>
+<span style="color: {{s.color}}">{{s.text}}</span>
+</li>
+</sc-for>
+</ol>
+
+<div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 16px">
+<span style="display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: 6px; background: #1a1a1d; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: #86efac">+112 airings</span>
+<span style="display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: 6px; background: #1a1a1d; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: #f4f4f5">2 moved</span>
+<span style="display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: 6px; background: #1a1a1d; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: #fcd34d">1 to review</span>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 14px 16px; border-top: 1px solid #26262a; background: #0e0e10">
+<span style="flex: 1 1 180px; font-size: 13px; color: #a8a8b0">Nothing changes on air until you approve.</span>
+<button type="button" style="height: 36px; padding: 0 14px; border-radius: 8px; border: 1px solid #38383e; background: transparent; color: #f4f4f5; font: inherit; font-weight: 500; cursor: pointer">Review changes</button>
+<button type="button" style="height: 36px; padding: 0 14px; border-radius: 8px; border: 0; background: #2563eb; color: #ffffff; font: inherit; font-weight: 500; cursor: pointer">Approve</button>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":460,"height":600}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const ok = (text) => ({ ok: true, warn: false, text: text, color: '#f4f4f5' });
+    return {
+      steps: [
+        ok('Read the Autumn schedule template and 14 running orders'),
+        ok('Placed 112 airings in 96 blocks, next episodes in order'),
+        ok('Moved 2 promos so clash codes stay apart'),
+        ok('Booked 9 Sunday Drama promos between 19:00 and 22:00'),
+        { ok: false, warn: true, text: 'Saturday 22:30 runs 00:00:42:10 short. Filler proposed from the night rotation list.', color: '#fcd34d' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

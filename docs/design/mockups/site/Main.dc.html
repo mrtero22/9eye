@@ -1,0 +1,952 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Home</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.site{--bg:#fafafa;--surface:#ffffff;--surface-2:#f4f4f5;--surface-3:#e9e9ec;--hairline:#f0f0f2;--border:#e4e4e7;--border-strong:#d4d4d8;--text:#18181b;--text-2:#52525b;--text-3:#6b6b74;--accent:#2563eb;--accent-hover:#1d4ed8;--accent-soft:#eaf1ff;--accent-text:#1d4ed8;--night:#0a0a0b;--night-2:#111113;--night-border:#26262a;--night-text:#f4f4f5;--night-text-2:#a8a8b0;--night-accent:#93b4ff;font-family:Geist,ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}
+.site *{box-sizing:border-box}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-variant-numeric:tabular-nums}
+.site h1,.site h2,.site h3{text-wrap:balance}
+.site p{text-wrap:pretty}
+.btn-p:hover{background:var(--accent-hover)!important}
+.btn-s:hover{background:var(--surface-2)!important}
+.btn-n:hover{background:#1a1a1d!important}
+.nl:hover{color:var(--text)!important}
+.site a:focus-visible,.site button:focus-visible,.site summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.faq summary{list-style:none;cursor:pointer}
+.faq summary::-webkit-details-marker{display:none}
+.faq details[open] .chev{transform:rotate(45deg)}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.rise{animation:rise .4s ease both}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.blink{animation:blink 1.2s ease-in-out infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{animation:spin .9s linear infinite}
+.desk-row:hover{background:#f4f4f5!important}
+.try:hover{border-color:#a8a8b0!important}
+@media (prefers-reduced-motion:reduce){.rise,.blink,.spin{animation:none}}
+@media (max-width:820px){.nav-links,.nav-signin{display:none!important}}
+a{color:#1d4ed8}a:hover{color:#1e40af}
+</style>
+</helmet>
+<div class="site" style="background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.55">
+
+<header style="position: sticky; top: 0; z-index: 10; background: rgba(250, 250, 250, 0.88); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border)">
+<div style="max-width: 1200px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 32px); height: 64px; display: flex; align-items: center; gap: 28px">
+<a href="the Main mockup (private)" aria-label="{{brand}} home" style="display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); font-weight: 600; font-size: 19px; letter-spacing: -0.02em">
+<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="7" fill="currentColor"></rect><circle cx="12" cy="12" r="5.75" fill="none" stroke="#fafafa" stroke-width="2.25"></circle><circle cx="12" cy="12" r="2" fill="#fafafa"></circle></svg>
+<span>{{brand}}</span>
+</a>
+<nav aria-label="Main" class="nav-links" style="display: flex; gap: 4px">
+<a class="nl" href="#agents" style="padding: 8px 12px; color: var(--text-2); text-decoration: none; font-weight: 500; font-size: 15px">AI agents</a>
+<a class="nl" href="Platform.dc.html" style="padding: 8px 12px; color: var(--text-2); text-decoration: none; font-weight: 500; font-size: 15px">Platform</a>
+<a class="nl" href="Platform.dc.html#solutions" style="padding: 8px 12px; color: var(--text-2); text-decoration: none; font-weight: 500; font-size: 15px">Solutions</a>
+<a class="nl" href="Pricing.dc.html" style="padding: 8px 12px; color: var(--text-2); text-decoration: none; font-weight: 500; font-size: 15px">Pricing</a>
+</nav>
+<span style="flex: 1"></span>
+<a class="btn-p" href="Demo.dc.html" style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 8px; background: var(--accent); color: #ffffff; text-decoration: none; font-weight: 500; font-size: 15px; white-space: nowrap">Request a demo</a>
+</div>
+</header>
+
+<main>
+<section style="background: var(--night); color: var(--night-text)">
+<div style="max-width: 1200px; margin: 0 auto; padding: 88px clamp(16px, 4vw, 32px) 96px">
+<div style="max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center">
+<span style="display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--night-border); color: var(--night-accent); font-size: 13px; font-weight: 500"><span style="width: 6px; height: 6px; border-radius: 50%; background: #93b4ff"></span>Agentic AI · early access</span>
+<h1 style="margin: 0; font-size: clamp(40px, 5.6vw, 76px); line-height: 1.02; letter-spacing: -0.04em; font-weight: 600; color: var(--night-text)">AI agents for broadcast scheduling and TV traffic.</h1>
+<p style="margin: 0; font-size: clamp(17px, 1.6vw, 20px); color: var(--night-text-2); max-width: 760px">{{brand}} is broadcast scheduling and traffic software with AI agents built in. They plan the week, keep every block on time, place ads, promos and fillers, and handle live changes — inside your rules, with your approval.</p>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px; padding-top: 8px">
+<a class="btn-p" href="Demo.dc.html" style="display: inline-flex; align-items: center; justify-content: center; height: 48px; padding: 0 22px; border-radius: 10px; background: var(--accent); color: #ffffff; text-decoration: none; font-weight: 500; font-size: 16px">Request a demo</a>
+<a class="btn-n" href="#desk" style="display: inline-flex; align-items: center; justify-content: center; height: 48px; padding: 0 22px; border-radius: 10px; border: 1px solid #38383e; color: var(--night-text); text-decoration: none; font-weight: 500; font-size: 16px">Watch the agents work</a>
+</div>
+</div>
+
+<div id="desk" style="margin-top: 64px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+<span style="font-size: 14px; font-weight: 500; margin-right: 4px; color: var(--night-text)">Try a live event</span>
+<sc-for list="{{tries}}" as="x" hint-placeholder-count="3">
+<button type="button" class="try" aria-pressed="{{x.on}}" onClick="{{x.pick}}" style="display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px; border-radius: 999px; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; border: {{x.border}}; background: {{x.bg}}; color: {{x.fg}}"><span style="width: 7px; height: 7px; border-radius: 50%; background: {{x.dot}}"></span>{{x.label}}</button>
+</sc-for>
+<span style="flex: 1"></span>
+<span style="font-size: 13px; color: var(--night-text-2)">Sample data · agents in preview</span>
+</div>
+
+<div ref="{{setFrame}}" role="region" aria-label="Agent desk: a live demo of AI agents scheduling a TV channel, with sample data" style="margin-top: 20px; position: relative; width: 100%; aspect-ratio: 1200 / 720; overflow: hidden; border-radius: 14px; background: #fafafa; box-shadow: 0 0 0 1px #26262a, 0 40px 100px -30px rgba(0, 0, 0, 0.8); font-size: 13px; line-height: 1.4">
+<div style="position: absolute; left: 0; top: 0; width: 1200px; height: 720px; transform: scale({{scale}}); transform-origin: top left; display: flex; flex-direction: column; background: #fafafa; color: #18181b">
+
+<div style="height: 36px; flex: none; display: flex; align-items: center; gap: 8px; padding: 0 16px; background: #f4f4f5; border-bottom: 1px solid #e4e4e7">
+<span style="width: 11px; height: 11px; border-radius: 50%; background: #d4d4d8"></span>
+<span style="width: 11px; height: 11px; border-radius: 50%; background: #d4d4d8"></span>
+<span style="width: 11px; height: 11px; border-radius: 50%; background: #d4d4d8"></span>
+</div>
+
+<div style="height: 52px; flex: none; display: flex; align-items: center; gap: 8px; padding: 0 16px; background: #ffffff; border-bottom: 1px solid #e4e4e7">
+<span style="display: flex; align-items: center; gap: 8px; padding: 0 8px">
+<span style="width: 24px; height: 24px; border-radius: 6px; background: #18181b; color: #fafafa; display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px">T</span>
+<span style="font-weight: 600">Tessaline Media</span>
+</span>
+<span style="width: 1px; height: 20px; background: #e4e4e7; margin: 0 8px"></span>
+<span style="display: flex; align-self: stretch; gap: 4px; font-weight: 500">
+<span style="display: inline-flex; align-items: center; padding: 0 10px; color: #52525b">Home</span>
+<span style="display: inline-flex; align-items: center; padding: 0 10px; color: #52525b">Catalog</span>
+<span style="display: inline-flex; align-items: center; padding: 0 10px; color: #52525b">Templates</span>
+<span style="display: inline-flex; align-items: center; padding: 0 10px; color: #52525b">Scheduling</span>
+<span style="display: inline-flex; align-items: center; padding: 0 10px; color: #52525b">Playlist</span>
+<span style="display: inline-flex; align-items: center; padding: 0 10px; color: #18181b; border-bottom: 2px solid #18181b">Agents</span>
+</span>
+<span style="flex: 1"></span>
+<span style="width: 28px; height: 28px; border-radius: 50%; background: #e9e9ec; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600">AR</span>
+</div>
+
+<div style="flex: none; display: flex; align-items: flex-end; gap: 10px; padding: 16px 24px 14px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="display: flex; align-items: center; gap: 8px"><span style="font-size: 22px; font-weight: 600; letter-spacing: -0.02em">Agents</span><span style="display: inline-flex; align-items: center; height: 20px; padding: 0 7px; border-radius: 4px; background: #eaf1ff; color: #1d4ed8; font-size: 11px; font-weight: 500">Preview</span></span>
+<span style="display: flex; align-items: center; gap: 6px; color: #52525b"><span style="font-weight: 500; color: #18181b">Tessa One</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg><span style="color: #a1a1aa">·</span><span>{{deskSummary}}</span></span>
+</div>
+<span style="flex: 1"></span>
+<span style="display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border-radius: 6px; border: 1px solid #d4d4d8; background: #ffffff; font-weight: 500">Skills</span>
+<span style="display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border-radius: 6px; border: 1px solid #d4d4d8; background: #ffffff; font-weight: 500">Connect via MCP</span>
+<span style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 14px; border-radius: 6px; background: #2563eb; color: #ffffff; font-weight: 500"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>New agent</span>
+</div>
+
+<div style="flex: 1; min-height: 0; display: flex; gap: 16px; padding: 0 24px 20px">
+
+<div style="width: 264px; flex: none; display: flex; flex-direction: column; gap: 2px; padding: 6px 8px 8px; border: 1px solid #e4e4e7; border-radius: 10px; background: #ffffff; overflow: hidden">
+<sc-for list="{{deskGroups}}" as="g" hint-placeholder-count="4">
+<span style="display: flex; gap: 6px; font-size: 12px; color: #6b6b74; padding: 8px 8px 4px"><span>{{g.name}}</span><span style="font-family: 'Geist Mono', ui-monospace, monospace">{{g.count}}</span></span>
+<sc-for list="{{g.rows}}" as="r" hint-placeholder-count="2">
+<button type="button" class="desk-row" onClick="{{r.pick}}" style="display: flex; align-items: center; gap: 10px; width: 100%; height: 46px; padding: 0 8px; border: 0; border-radius: 8px; background: {{r.bg}}; text-align: left; font: inherit; color: inherit; cursor: {{r.cursor}}">
+<span style="position: relative; width: 30px; height: 30px; border-radius: 8px; background: {{r.soft}}; display: inline-flex; align-items: center; justify-content: center; flex: none">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{r.color}}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2.5"></circle><circle cx="18" cy="12" r="2.5"></circle><circle cx="6" cy="18" r="2.5"></circle><path d="M8.3 7.1 15.7 10.9M8.3 16.9l7.4-3.8"></path></svg>
+<span class="{{r.dotClass}}" style="position: absolute; right: -3px; bottom: -3px; width: 10px; height: 10px; border-radius: 50%; border: 2px solid #ffffff; background: {{r.dot}}"></span>
+</span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.3"><span style="font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.name}}</span><span style="font-size: 12px; color: {{r.subFg}}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.sub}}</span></span>
+</button>
+</sc-for>
+</sc-for>
+</div>
+
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; border: 1px solid #e4e4e7; border-radius: 10px; background: #ffffff; overflow: hidden">
+<div style="flex: none; display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid #f0f0f2">
+<span style="width: 32px; height: 32px; border-radius: 8px; background: {{run.soft}}; display: inline-flex; align-items: center; justify-content: center; flex: none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{run.color}}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2.5"></circle><circle cx="18" cy="12" r="2.5"></circle><circle cx="6" cy="18" r="2.5"></circle><path d="M8.3 7.1 15.7 10.9M8.3 16.9l7.4-3.8"></path></svg></span>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+<span style="display: flex; align-items: center; gap: 8px"><span style="font-weight: 600; font-size: 15px">{{run.agent}}</span><span style="display: inline-flex; align-items: center; height: 20px; padding: 0 7px; border-radius: 4px; font-size: 11px; font-weight: 500; background: {{run.badgeBg}}; color: {{run.badgeFg}}">{{run.badge}}</span></span>
+<span style="color: #52525b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{run.channel}} · {{run.trigger}}</span>
+</div>
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: #6b6b74">{{run.progress}}</span>
+</div>
+<ol style="list-style: none; margin: 0; padding: 8px 16px; display: flex; flex-direction: column">
+<sc-for list="{{run.steps}}" as="s" hint-placeholder-count="6">
+<li class="rise" style="display: flex; align-items: center; gap: 10px; height: 34px">
+<span style="width: 18px; height: 18px; border-radius: 50%; background: #e8f6ec; display: inline-flex; align-items: center; justify-content: center; flex: none"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"></path></svg></span>
+<span style="flex: none; width: 84px; display: inline-flex; justify-content: center; align-items: center; height: 20px; border-radius: 4px; background: #f4f4f5; color: #52525b; font-size: 11px; font-weight: 500">{{s.tag}}</span>
+<span style="flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{s.text}}</span>
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 11px; color: #6b6b74">{{s.at}}</span>
+</li>
+</sc-for>
+<sc-if value="{{run.working}}" hint-placeholder-val="{{false}}">
+<li style="display: flex; align-items: center; gap: 10px; height: 34px; color: #6b6b74"><span class="spin" style="width: 16px; height: 16px; margin: 0 1px; border-radius: 50%; border: 2px solid #d4d4d8; border-top-color: #2563eb; box-sizing: border-box; flex: none"></span>Working on the next step…</li>
+</sc-if>
+</ol>
+<span style="flex: 1"></span>
+<sc-if value="{{run.done}}" hint-placeholder-val="{{false}}">
+<div class="rise" style="flex: none; border-top: 1px solid #f0f0f2; padding: 12px 16px 14px; display: flex; flex-direction: column; gap: 10px">
+<span style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-weight: 600">Changes</span><span style="font-size: 12px; color: #6b6b74">{{run.changeCount}}</span></span>
+<div style="border: 1px solid #e4e4e7; border-radius: 8px; overflow: hidden">
+<sc-for list="{{run.changes}}" as="c" hint-placeholder-count="4">
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) 104px 16px 104px; align-items: center; gap: 8px; height: 32px; padding: 0 12px; border-bottom: 1px solid #f0f0f2">
+<span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{c.what}}</span>
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: #6b6b74">{{c.before}}</span>
+<span aria-hidden="true" style="color: #a1a1aa">→</span>
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; font-weight: 500">{{c.after}}</span>
+</div>
+</sc-for>
+</div>
+<sc-if value="{{run.waiting}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; align-items: center; gap: 8px">
+<button type="button" onClick="{{approve}}" style="height: 34px; padding: 0 16px; border: 0; border-radius: 6px; background: #2563eb; color: #ffffff; font: inherit; font-weight: 500; cursor: pointer">Approve</button>
+<button type="button" style="height: 34px; padding: 0 14px; border: 1px solid #d4d4d8; border-radius: 6px; background: #ffffff; color: #18181b; font: inherit; font-weight: 500; cursor: pointer">Review</button>
+<button type="button" onClick="{{reject}}" style="height: 34px; padding: 0 12px; border: 0; border-radius: 6px; background: transparent; color: #b91c1c; font: inherit; font-weight: 500; cursor: pointer">Reject</button>
+<span style="flex: 1"></span>
+<span style="font-size: 12px; color: #6b6b74">{{run.countdown}}</span>
+</div>
+</sc-if>
+<sc-if value="{{run.decided}}" hint-placeholder-val="{{false}}">
+<div class="rise" style="display: flex; align-items: center; gap: 8px; height: 34px; padding: 0 12px; border-radius: 6px; background: {{run.resultBg}}; color: {{run.resultFg}}; font-weight: 500">
+<span>{{run.resultText}}</span>
+<span style="flex: 1"></span>
+<sc-if value="{{run.canUndo}}" hint-placeholder-val="{{false}}"><span style="text-decoration: underline">Undo</span></sc-if>
+</div>
+</sc-if>
+</div>
+</sc-if>
+</div>
+
+<div style="width: 290px; flex: none; display: flex; flex-direction: column; gap: 12px; min-height: 0">
+<div style="flex: none; border: 1px solid #e4e4e7; border-radius: 10px; background: #ffffff; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px">
+<span style="display: flex; align-items: center; gap: 8px"><span class="blink" style="width: 8px; height: 8px; border-radius: 50%; background: #dc2626"></span><span style="font-weight: 600">On air</span><span style="color: #6b6b74">Tessa One</span><span style="flex: 1"></span><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; font-weight: 500">{{tc}}</span></span>
+<div style="position: relative; height: 30px; border-radius: 6px; background: #f4f4f5; overflow: hidden">
+<sc-for list="{{bar}}" as="b" hint-placeholder-count="3">
+<span style="position: absolute; top: 0; bottom: 0; left: {{b.left}}; width: {{b.width}}; box-sizing: border-box; background: {{b.bg}}; border-right: 1px solid #ffffff; display: flex; align-items: center; padding: 0 6px; font-size: 10.5px; font-weight: 500; color: {{b.fg}}; overflow: hidden; white-space: nowrap">{{b.name}}</span>
+</sc-for>
+<span style="position: absolute; top: 0; bottom: 0; left: {{playhead}}; width: 2px; background: #dc2626"></span>
+</div>
+<span style="display: flex; justify-content: space-between; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 10.5px; color: #6b6b74"><span>17:00</span><span>19:00</span><span>21:00</span></span>
+<span style="font-size: 12px; color: {{airFg}}">{{airNote}}</span>
+</div>
+<div style="flex: none; border: 1px solid #e4e4e7; border-radius: 10px; background: #ffffff; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 12px; color: #6b6b74">{{metric.label}}</span>
+<span style="display: flex; align-items: baseline; gap: 10px; font-family: 'Geist Mono', ui-monospace, monospace"><span style="font-size: 13px; color: #a1a1aa; text-decoration: line-through">{{metric.before}}</span><span aria-hidden="true" style="color: #a1a1aa">→</span><span style="font-size: 20px; font-weight: 500; color: {{metric.fg}}">{{metric.after}}</span></span>
+<span style="font-size: 12px; color: {{metric.noteFg}}">{{metric.note}}</span>
+</div>
+<div style="flex: 1; min-height: 0; border: 1px solid #e4e4e7; border-radius: 10px; background: #ffffff; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; overflow: hidden">
+<span style="font-weight: 600">Activity</span>
+<div style="flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; overflow: hidden">
+<sc-for list="{{log}}" as="l" hint-placeholder-count="3">
+<div class="rise" style="display: flex; gap: 10px; align-items: flex-start; flex: none">
+<span style="width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex: none; background: {{l.dot}}"></span>
+<span style="flex: 1; display: flex; flex-direction: column; line-height: 1.35"><span>{{l.text}}</span><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 11px; color: #6b6b74">{{l.at}}</span></span>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<ul class="mono" style="list-style: none; margin: 28px 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 28px; font-size: 13px; color: var(--night-text-2)">
+<li>Linear, FAST and streaming channels</li>
+<li>23.976 to 59.94 fps, drop-frame</li>
+<li>A time zone per channel</li>
+<li>BXF playout export</li>
+<li>Open to any AI through MCP</li>
+</ul>
+</div>
+</section>
+
+<section id="agents" style="max-width: 1200px; margin: 0 auto; padding: 128px clamp(16px, 4vw, 32px) 0">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 760px">
+<h2 style="margin: 0; font-size: clamp(30px, 3.4vw, 46px); line-height: 1.08; letter-spacing: -0.03em; font-weight: 600">Ten AI agents, one broadcast job each.</h2>
+<p style="margin: 0; font-size: 18px; color: var(--text-2)">From ad placement and promo scheduling to playlist timing and as-run reconciliation: each agent knows one part of a TV channel's day. Give it your skills once, then let it work when an operator asks, on a schedule, or by itself when something happens.</p>
+</div>
+<div style="margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr)); gap: 16px">
+<sc-for list="{{agents}}" as="a" hint-placeholder-count="10">
+<article style="padding: 24px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 10px">
+<span class="mono" style="font-size: 13px; color: var(--text-3)">{{a.n}}</span>
+<h3 style="margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.01em">{{a.name}}</h3>
+</div>
+<p style="margin: 0; font-size: 15px; color: var(--text-2); flex: 1">{{a.text}}</p>
+</article>
+</sc-for>
+<a href="#mcp" style="padding: 24px; border: 1.5px dashed var(--border-strong); border-radius: 14px; display: flex; flex-direction: column; gap: 12px; text-decoration: none; color: var(--text)">
+<div style="display: flex; align-items: center; gap: 10px">
+<span style="width: 28px; height: 28px; border-radius: 8px; background: var(--accent-soft); color: var(--accent-text); display: inline-flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></span>
+<h3 style="margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.01em">Your own agents</h3>
+</div>
+<p style="margin: 0; font-size: 15px; color: var(--text-2); flex: 1">Build agents for your own workflows, or connect one you already use — Claude, ChatGPT, Grok or your own — through MCP.</p>
+<span style="font-size: 15px; font-weight: 500; color: var(--accent-text)">How it connects <span aria-hidden="true">→</span></span>
+</a>
+</div>
+</section>
+
+<section id="loop" style="max-width: 1200px; margin: 0 auto; padding: 128px clamp(16px, 4vw, 32px) 0">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 800px">
+<h2 style="margin: 0; font-size: clamp(30px, 3.4vw, 46px); line-height: 1.08; letter-spacing: -0.03em; font-weight: 600">Agents that check each other until the day is clean.</h2>
+<p style="margin: 0; font-size: 18px; color: var(--text-2)">The agents work in a closed loop. The playlist check agent finds a problem and hands it to the agent that can fix it. Every fix is checked again, round after round, until every check passes. If a problem can't be fixed within your rules, the operator is notified — so no known mistake goes to air.</p>
+</div>
+<div style="margin-top: 48px; display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start">
+
+<div style="flex: 1 1 460px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: flex-start; gap: 14px; padding: 16px 18px; border-radius: 12px; border: {{loop.c0.border}}; background: {{loop.c0.bg}}; transition: background-color 0.3s ease, border-color 0.3s ease">
+<span class="mono" style="width: 28px; height: 28px; flex: none; border-radius: 8px; background: {{loop.c0.numBg}}; color: {{loop.c0.numFg}}; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500">1</span>
+<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0"><h3 style="margin: 0; font-size: 17px; font-weight: 600">The playlist check agent runs your validators</h3><p style="margin: 0; font-size: 15px; color: var(--text-2)">Every check you set for the channel: timing, gaps, overlaps, media, rights, clash codes and your own rules.</p></div>
+</div>
+<span aria-hidden="true" style="align-self: center; color: var(--text-3); line-height: 0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"></path></svg></span>
+<div style="border: 1.5px dashed var(--border-strong); border-radius: 18px; padding: 12px; display: flex; flex-direction: column; gap: 8px">
+<span style="display: flex; align-items: center; gap: 8px; padding: 2px 6px 4px; font-size: 13px; font-weight: 500; color: var(--accent-text)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"></path><path d="M3 4v5h5"></path></svg>Loop · repeats until every check passes</span>
+<div style="display: flex; align-items: flex-start; gap: 14px; padding: 16px 18px; border-radius: 12px; border: {{loop.c1.border}}; background: {{loop.c1.bg}}; transition: background-color 0.3s ease, border-color 0.3s ease">
+<span class="mono" style="width: 28px; height: 28px; flex: none; border-radius: 8px; background: {{loop.c1.numBg}}; color: {{loop.c1.numFg}}; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500">2</span>
+<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0"><h3 style="margin: 0; font-size: 17px; font-weight: 600">Each failure goes to the agent connected to that validator</h3><p style="margin: 0; font-size: 15px; color: var(--text-2)">A late start to the timing agent, an empty gap to the filler agent, a clash to the ad placement agent.</p></div>
+</div>
+<div style="display: flex; align-items: flex-start; gap: 14px; padding: 16px 18px; border-radius: 12px; border: {{loop.c2.border}}; background: {{loop.c2.bg}}; transition: background-color 0.3s ease, border-color 0.3s ease">
+<span class="mono" style="width: 28px; height: 28px; flex: none; border-radius: 8px; background: {{loop.c2.numBg}}; color: {{loop.c2.numFg}}; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500">3</span>
+<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0"><h3 style="margin: 0; font-size: 17px; font-weight: 600">That agent fixes it</h3><p style="margin: 0; font-size: 15px; color: var(--text-2)">Inside its skills and your rules, logged with the reason.</p></div>
+</div>
+<div style="display: flex; align-items: flex-start; gap: 14px; padding: 16px 18px; border-radius: 12px; border: {{loop.c3.border}}; background: {{loop.c3.bg}}; transition: background-color 0.3s ease, border-color 0.3s ease">
+<span class="mono" style="width: 28px; height: 28px; flex: none; border-radius: 8px; background: {{loop.c3.numBg}}; color: {{loop.c3.numFg}}; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500">4</span>
+<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0"><h3 style="margin: 0; font-size: 17px; font-weight: 600">The whole day is checked again</h3><p style="margin: 0; font-size: 15px; color: var(--text-2)">A fix must not cause a new problem. If anything is left, the loop runs again.</p></div>
+</div>
+</div>
+<span aria-hidden="true" style="align-self: center; color: var(--text-3); line-height: 0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"></path></svg></span>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 8px">
+<div style="display: flex; align-items: flex-start; gap: 14px; padding: 16px 18px; border-radius: 12px; border: {{loop.c4.border}}; background: {{loop.c4.bg}}; transition: background-color 0.3s ease, border-color 0.3s ease">
+<span style="width: 28px; height: 28px; flex: none; border-radius: 8px; background: {{loop.c4.numBg}}; color: {{loop.c4.numFg}}; display: inline-flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"></path></svg></span>
+<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0"><h3 style="margin: 0; font-size: 17px; font-weight: 600">Every check passes</h3><p style="margin: 0; font-size: 15px; color: var(--text-2)">The day is ready for your approval, then playout.</p></div>
+</div>
+<div style="display: flex; align-items: flex-start; gap: 14px; padding: 16px 18px; border-radius: 12px; border: {{loop.c5.border}}; background: {{loop.c5.bg}}; transition: background-color 0.3s ease, border-color 0.3s ease">
+<span style="width: 28px; height: 28px; flex: none; border-radius: 8px; background: {{loop.c5.numBg}}; color: {{loop.c5.numFg}}; display: inline-flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg></span>
+<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0"><h3 style="margin: 0; font-size: 17px; font-weight: 600">Still failing? The operator is told</h3><p style="margin: 0; font-size: 15px; color: var(--text-2)">What is wrong, why, and what the agents tried — long before air.</p></div>
+</div>
+</div>
+</div>
+
+<div style="flex: 1 1 420px; min-width: 0; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 20px 48px -24px rgba(24, 24, 27, 0.18); display: flex; flex-direction: column; overflow: hidden">
+<div style="display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-bottom: 1px solid var(--hairline)">
+<span style="width: 30px; height: 30px; flex: none; border-radius: 8px; background: #16a34a1f; display: inline-flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2.5"></circle><circle cx="18" cy="12" r="2.5"></circle><circle cx="6" cy="18" r="2.5"></circle><path d="M8.3 7.1 15.7 10.9M8.3 16.9l7.4-3.8"></path></svg></span>
+<span style="font-weight: 600">Playlist check</span>
+<span class="mono" style="display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 999px; background: var(--surface-2); font-size: 12px; color: var(--text-2)">{{loop.round}}</span>
+<span style="flex: 1"></span>
+<span style="font-size: 13px; color: var(--text-3)">Tessa One · Sun 15 Nov</span>
+</div>
+<ol aria-live="off" style="list-style: none; margin: 0; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; min-height: 580px">
+<sc-for list="{{loop.lines}}" as="l" hint-placeholder-count="9">
+<li class="rise" style="display: flex; gap: 12px; align-items: flex-start">
+<span style="width: 10px; height: 10px; border-radius: 50%; margin-top: 6px; flex: none; background: {{l.dot}}"></span>
+<span style="display: flex; flex-direction: column; gap: 1px; min-width: 0"><span style="font-weight: 500; font-size: 15px">{{l.who}}</span><span style="font-size: 14px; color: var(--text-2)">{{l.text}}</span></span>
+</li>
+</sc-for>
+</ol>
+<div style="padding: 12px 18px; border-top: 1px solid var(--hairline); background: var(--bg); font-size: 14px; font-weight: 500; color: {{loop.statusFg}}">{{loop.status}}</div>
+</div>
+
+</div>
+</section>
+
+<section id="validators" style="max-width: 1200px; margin: 0 auto; padding: 128px clamp(16px, 4vw, 32px) 0">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 800px">
+<h2 style="margin: 0; font-size: clamp(30px, 3.4vw, 46px); line-height: 1.08; letter-spacing: -0.03em; font-weight: 600">Your channel, your checks.</h2>
+<p style="margin: 0; font-size: 18px; color: var(--text-2)">Build the checking system each channel needs. Add validators from the built-in set or write your own rules in plain words, decide which ones block air, and connect each validator to the agent that fixes it. That is what drives the loop: validators find problems, their agents solve them, and the validators check again.</p>
+</div>
+
+<div style="margin-top: 48px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 20px 48px -24px rgba(24, 24, 27, 0.18); overflow: hidden">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--hairline)">
+<span style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em">Validators</span>
+<span style="display: inline-flex; align-items: center; gap: 6px; color: var(--text-2)"><span style="font-weight: 500; color: var(--text)">Tessa One</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg><span style="color: var(--text-3)">·</span><span>{{vSummary}}</span></span>
+<span style="flex: 1"></span>
+<span style="display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px; border-radius: 8px; background: var(--accent); color: #ffffff; font-size: 14px; font-weight: 500"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Add validator</span>
+</div>
+<div style="overflow-x: auto">
+<div role="table" aria-label="Validators on Tessa One" style="min-width: 760px">
+<div role="row" style="display: grid; grid-template-columns: minmax(0, 2.4fr) 112px minmax(0, 1.3fr) 56px; align-items: center; gap: 16px; padding: 10px 20px; border-bottom: 1px solid var(--hairline); font-size: 13px; font-weight: 500; color: var(--text-3)">
+<span role="columnheader">Validator and rule</span><span role="columnheader">When it fails</span><span role="columnheader">Fixed by</span><span role="columnheader">On</span>
+</div>
+<sc-for list="{{validators}}" as="v" hint-placeholder-count="9">
+<div role="row" style="display: grid; grid-template-columns: minmax(0, 2.4fr) 112px minmax(0, 1.3fr) 56px; align-items: center; gap: 16px; padding: 12px 20px; border-bottom: 1px solid var(--hairline); background: {{v.rowBg}}; opacity: {{v.opacity}}">
+<span role="cell" style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+<span style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap"><span style="font-weight: 500">{{v.name}}</span><sc-if value="{{v.custom}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; height: 20px; padding: 0 7px; border-radius: 4px; background: var(--accent-soft); color: var(--accent-text); font-size: 12px; font-weight: 500">Custom rule</span></sc-if></span>
+<span style="font-size: 14px; color: var(--text-2)">{{v.rule}}</span>
+</span>
+<span role="cell"><span style="display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 4px; font-size: 12px; font-weight: 500; background: {{v.sevBg}}; color: {{v.sevFg}}">{{v.sev}}</span></span>
+<span role="cell" style="display: flex; align-items: center; gap: 8px; min-width: 0"><span style="width: 8px; height: 8px; border-radius: 50%; flex: none; background: {{v.agentColor}}"></span><span style="font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{v.agent}}</span></span>
+<span role="cell"><button type="button" role="switch" aria-checked="{{v.on}}" aria-label="{{v.name}}" onClick="{{v.toggle}}" style="position: relative; width: 40px; height: 24px; padding: 0; border: 0; border-radius: 999px; cursor: pointer; background: {{v.track}}; transition: background-color 0.2s ease"><span style="position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #ffffff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); transform: {{v.knob}}; transition: transform 0.2s ease"></span></button></span>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+
+<ol style="list-style: none; margin: 32px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 32px 24px">
+<li style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 2px solid var(--text)">
+<span class="mono" style="font-size: 13px; color: var(--text-3)">1</span>
+<h3 style="margin: 0; font-size: 19px; font-weight: 600">Add validators</h3>
+<p style="margin: 0; font-size: 15px; color: var(--text-2)">Start from built-in checks, or write a rule in plain words. Each channel has its own set.</p>
+</li>
+<li style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 2px solid var(--text)">
+<span class="mono" style="font-size: 13px; color: var(--text-3)">2</span>
+<h3 style="margin: 0; font-size: 19px; font-weight: 600">Choose what blocks air</h3>
+<p style="margin: 0; font-size: 15px; color: var(--text-2)">Some checks must pass before playout export; others only warn the team.</p>
+</li>
+<li style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 2px solid var(--accent)">
+<span class="mono" style="font-size: 13px; color: var(--text-3)">3</span>
+<h3 style="margin: 0; font-size: 19px; font-weight: 600">Connect an agent to each</h3>
+<p style="margin: 0; font-size: 15px; color: var(--text-2)">Pick the agent that fixes a failure. Leave it to the operator, and the operator gets it.</p>
+</li>
+</ol>
+</section>
+
+<section id="skills" style="max-width: 1200px; margin: 0 auto; padding: 128px clamp(16px, 4vw, 32px) 0">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 760px">
+<h2 style="margin: 0; font-size: clamp(30px, 3.4vw, 46px); line-height: 1.08; letter-spacing: -0.03em; font-weight: 600">Teach an agent once. It does the job from then on.</h2>
+<p style="margin: 0; font-size: 18px; color: var(--text-2)">Write a skill — your channel's scheduling rules and way of working, in plain words — and give it to an agent. From then on it works that way every time, on every channel you choose. Change the skill, and every agent that uses it follows.</p>
+</div>
+<div style="margin-top: 48px; display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch">
+
+<article style="flex: 1 1 440px; min-width: 0; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 20px 48px -24px rgba(24, 24, 27, 0.18); display: flex; flex-direction: column; overflow: hidden">
+<div style="display: flex; align-items: center; gap: 12px; padding: 18px 20px; border-bottom: 1px solid var(--hairline)">
+<span style="width: 36px; height: 36px; flex: none; border-radius: 9px; background: var(--accent-soft); color: var(--accent-text); display: inline-flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5M9 13h6M9 17h4"></path></svg></span>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 12px; font-weight: 500; color: var(--text-3)">Skill</span>
+<h3 style="margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.01em">Evening breaks on Tessa One</h3>
+</div>
+<span style="font-size: 13px; color: var(--text-3); white-space: nowrap">Used by 3 agents</span>
+</div>
+<div style="padding: 20px; display: flex; flex-direction: column; gap: 18px; font-size: 15px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h4 style="margin: 0; font-size: 13px; font-weight: 500; color: var(--text-3)">The job</h4>
+<p style="margin: 0">Fill every break between 18:00 and 23:00 with the day's ads, promos and bumpers, so each break ends on the frame.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h4 style="margin: 0; font-size: 13px; font-weight: 500; color: var(--text-3)">Rules</h4>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px">
+<li style="display: flex; gap: 10px"><span style="width: 6px; height: 6px; margin-top: 9px; border-radius: 50%; background: var(--text-3); flex: none"></span>Alcohol only after 21:00.</li>
+<li style="display: flex; gap: 10px"><span style="width: 6px; height: 6px; margin-top: 9px; border-radius: 50%; background: var(--text-3); flex: none"></span>Never two spots with the same clash code in one break.</li>
+<li style="display: flex; gap: 10px"><span style="width: 6px; height: 6px; margin-top: 9px; border-radius: 50%; background: var(--text-3); flex: none"></span>A promo for tonight's premiere in every prime-time break.</li>
+<li style="display: flex; gap: 10px"><span style="width: 6px; height: 6px; margin-top: 9px; border-radius: 50%; background: var(--text-3); flex: none"></span>Close any gap with a bumper from the evening rotation list.</li>
+</ul>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h4 style="margin: 0; font-size: 13px; font-weight: 500; color: var(--text-3)">Ask a person before</h4>
+<p style="margin: 0">Moving a programme, or dropping a booked spot.</p>
+</div>
+</div>
+<div style="margin-top: auto; display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 20px; border-top: 1px solid var(--hairline); background: var(--bg)">
+<span style="display: inline-flex; align-items: center; height: 28px; padding: 0 10px; border-radius: 999px; background: #2563eb1a; color: #1d4ed8; font-size: 13px; font-weight: 500">Ad placement agent</span>
+<span style="display: inline-flex; align-items: center; height: 28px; padding: 0 10px; border-radius: 999px; background: #7c3aed1a; color: #6d28d9; font-size: 13px; font-weight: 500">Promo placement agent</span>
+<span style="display: inline-flex; align-items: center; height: 28px; padding: 0 10px; border-radius: 999px; background: #db27771a; color: #be185d; font-size: 13px; font-weight: 500">Filler and bumper agent</span>
+</div>
+</article>
+
+<div style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<h3 style="margin: 0; font-size: 19px; font-weight: 600; letter-spacing: -0.01em">Three ways an agent starts work</h3>
+<article style="padding: 20px 22px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); display: flex; gap: 16px">
+<span style="width: 40px; height: 40px; flex: none; border-radius: 10px; background: var(--surface-2); display: inline-flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg></span>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px">
+<h4 style="margin: 0; font-size: 17px; font-weight: 600">When an operator asks</h4>
+<p style="margin: 0; font-size: 15px; color: var(--text-2)">An operator asks in plain words, from any screen. The agent does the job with its skills and shows the result.</p>
+<span class="mono" style="align-self: flex-start; margin-top: 4px; padding: 3px 8px; border-radius: 6px; background: var(--surface-2); font-size: 12px; color: var(--text-2)">On request</span>
+</div>
+</article>
+<article style="padding: 20px 22px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); display: flex; gap: 16px">
+<span style="width: 40px; height: 40px; flex: none; border-radius: 10px; background: var(--surface-2); display: inline-flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px">
+<h4 style="margin: 0; font-size: 17px; font-weight: 600">On a schedule</h4>
+<p style="margin: 0; font-size: 15px; color: var(--text-2)">Every evening for tomorrow, every Thursday for next week. Set the time once and the work is ready before your team arrives.</p>
+<span class="mono" style="align-self: flex-start; margin-top: 4px; padding: 3px 8px; border-radius: 6px; background: var(--surface-2); font-size: 12px; color: var(--text-2)">Every day · 18:45</span>
+</div>
+</article>
+<article style="padding: 20px 22px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); display: flex; gap: 16px">
+<span style="width: 40px; height: 40px; flex: none; border-radius: 10px; background: var(--surface-2); display: inline-flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"></path></svg></span>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px">
+<h4 style="margin: 0; font-size: 17px; font-weight: 600">Automatically, when something happens</h4>
+<p style="margin: 0; font-size: 15px; color: var(--text-2)">A new order, an overrun reported by playout, a missing media file — the agent starts on its own, the moment it happens.</p>
+<span class="mono" style="align-self: flex-start; margin-top: 4px; padding: 3px 8px; border-radius: 6px; background: var(--surface-2); font-size: 12px; color: var(--text-2)">On an event</span>
+</div>
+</article>
+<p style="margin: 4px 0 0; font-size: 15px; color: var(--text-2)">However it starts, the agent follows its skills, works within the roles you grant, and waits for approval before anything goes to air.</p>
+</div>
+
+</div>
+</section>
+
+<section id="mcp" style="max-width: 1200px; margin: 0 auto; padding: 128px clamp(16px, 4vw, 32px) 0">
+<div style="border-radius: 20px; background: var(--night); color: var(--night-text); padding: clamp(28px, 5vw, 64px); display: flex; flex-direction: column; gap: 48px">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 720px">
+<span style="align-self: flex-start; display: inline-flex; align-items: center; height: 30px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--night-border); color: var(--night-accent); font-size: 13px; font-weight: 500">Open by design · MCP</span>
+<h2 style="margin: 0; font-size: clamp(30px, 3.4vw, 46px); line-height: 1.08; letter-spacing: -0.03em; font-weight: 600; color: var(--night-text)">Bring any AI agent. Build as many as you need.</h2>
+<p style="margin: 0; font-size: 18px; color: var(--night-text-2)">{{brand}} speaks MCP, the Model Context Protocol — the open standard for connecting AI to software. Connect Claude, ChatGPT, Grok or an agent you built yourself, and give each one a job on your channels.</p>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 20px">
+<div style="flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 13px; color: var(--night-text-2); padding-bottom: 4px">Your AI</span>
+<sc-for list="{{clients}}" as="c" hint-placeholder-count="4">
+<span style="display: flex; align-items: center; gap: 12px; height: 52px; padding: 0 16px; border-radius: 10px; border: {{c.border}}; background: #111113">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a8a8b0" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2.5"></circle><circle cx="18" cy="12" r="2.5"></circle><circle cx="6" cy="18" r="2.5"></circle><path d="M8.3 7.1 15.7 10.9M8.3 16.9l7.4-3.8"></path></svg>
+<span style="font-weight: 500">{{c.name}}</span>
+<span style="flex: 1"></span>
+<span style="font-size: 12px; color: var(--night-text-2)">{{c.note}}</span>
+</span>
+</sc-for>
+</div>
+
+<div style="flex: 0 1 180px; min-width: 140px; display: flex; flex-direction: column; align-items: center; gap: 10px">
+<span style="display: flex; align-items: center; width: 100%; gap: 8px">
+<span style="flex: 1; height: 1px; background: #38383e"></span>
+<span class="mono" style="display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid #93b4ff; color: #93b4ff; font-size: 14px; font-weight: 500">MCP</span>
+<span style="flex: 1; height: 1px; background: #38383e"></span>
+</span>
+<span style="font-size: 12px; color: var(--night-text-2); text-align: center">Open standard · your keys, your provider</span>
+</div>
+
+<div style="flex: 1 1 320px; min-width: 0; border-radius: 14px; border: 1px solid var(--night-border); background: #111113; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<span style="display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: 17px"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="7" fill="#f4f4f5"></rect><circle cx="12" cy="12" r="5.75" fill="none" stroke="#111113" stroke-width="2.25"></circle><circle cx="12" cy="12" r="2" fill="#111113"></circle></svg>{{brand}}</span>
+<span style="font-size: 13px; color: var(--night-text-2)">What a connected agent can do</span>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{tools}}" as="t" hint-placeholder-count="5">
+<li style="display: flex; gap: 10px; align-items: flex-start; font-size: 15px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#93b4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 3px"><path d="m5 12 5 5 9-10"></path></svg><span>{{t}}</span></li>
+</sc-for>
+</ul>
+<span style="padding-top: 12px; border-top: 1px solid var(--night-border); font-size: 13px; color: #fcd34d">Changes wait for a person's approval.</span>
+</div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 24px; padding-top: 32px; border-top: 1px solid var(--night-border)">
+<div style="display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 17px; font-weight: 600; color: var(--night-text)">Any model, your choice</h3><p style="margin: 0; font-size: 15px; color: var(--night-text-2)">Use the AI provider your company already trusts, or several side by side.</p></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 17px; font-weight: 600; color: var(--night-text)">As many agents as you need</h3><p style="margin: 0; font-size: 15px; color: var(--night-text-2)">One per channel, per daypart or per market — each with its own job and skills.</p></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 17px; font-weight: 600; color: var(--night-text)">The same guardrails</h3><p style="margin: 0; font-size: 15px; color: var(--night-text-2)">Connected agents get only the roles you grant them, and nothing they change goes on air without approval.</p></div>
+</div>
+</div>
+</section>
+
+<section id="guardrails" style="max-width: 1200px; margin: 0 auto; padding: 128px clamp(16px, 4vw, 32px) 0">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 720px">
+<h2 style="margin: 0; font-size: clamp(30px, 3.4vw, 46px); line-height: 1.08; letter-spacing: -0.03em; font-weight: 600">AI you can trust on air.</h2>
+<p style="margin: 0; font-size: 18px; color: var(--text-2)">A wrong spot costs money and a wrong programme costs viewers. The agents are designed around that.</p>
+</div>
+<div style="margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(480px, 100%), 1fr)); gap: 16px">
+<article style="padding: 28px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); display: flex; gap: 16px">
+<span style="width: 40px; height: 40px; flex: none; border-radius: 10px; background: var(--accent-soft); color: var(--accent-text); display: inline-flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6l-8-3z"></path><path d="m9 12 2 2 4-4"></path></svg></span>
+<div style="display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 17px; font-weight: 600">Approval before air</h3><p style="margin: 0; font-size: 15px; color: var(--text-2)">Nothing reaches playout until a person approves the change.</p></div>
+</article>
+<article style="padding: 28px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); display: flex; gap: 16px">
+<span style="width: 40px; height: 40px; flex: none; border-radius: 10px; background: var(--accent-soft); color: var(--accent-text); display: inline-flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg></span>
+<div style="display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 17px; font-weight: 600">Your permissions, never more</h3><p style="margin: 0; font-size: 15px; color: var(--text-2)">An agent acts with the roles of the person who runs it, on the channels they may touch.</p></div>
+</article>
+<article style="padding: 28px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); display: flex; gap: 16px">
+<span style="width: 40px; height: 40px; flex: none; border-radius: 10px; background: var(--accent-soft); color: var(--accent-text); display: inline-flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"></path></svg></span>
+<div style="display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 17px; font-weight: 600">A record of every step</h3><p style="margin: 0; font-size: 15px; color: var(--text-2)">Each step is logged with its reason, and every change can be undone.</p></div>
+</article>
+<article style="padding: 28px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); display: flex; gap: 16px">
+<span style="width: 40px; height: 40px; flex: none; border-radius: 10px; background: var(--accent-soft); color: var(--accent-text); display: inline-flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg></span>
+<div style="display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 17px; font-weight: 600">Your data stays yours</h3><p style="margin: 0; font-size: 15px; color: var(--text-2)">Schedule data stays in your company's space and is not used to train AI models.</p></div>
+</article>
+</div>
+</section>
+
+<section id="platform" style="max-width: 1200px; margin: 0 auto; padding: 128px clamp(16px, 4vw, 32px) 0">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px">
+<div style="flex: 1 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 16px; max-width: 760px">
+<h2 style="margin: 0; font-size: clamp(30px, 3.4vw, 46px); line-height: 1.08; letter-spacing: -0.03em; font-weight: 600">A complete broadcast scheduling platform underneath.</h2>
+<p style="margin: 0; font-size: 18px; color: var(--text-2)">The agents work on a full traffic and scheduling system that your team uses directly, every step connected from catalog to as-run.</p>
+</div>
+<a href="Platform.dc.html" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-weight: 500; text-decoration: none">See the platform <span aria-hidden="true">→</span></a>
+</div>
+<ol style="list-style: none; margin: 56px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(176px, 100%), 1fr)); gap: 32px 24px">
+<li style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 2px solid #64748b">
+<span class="mono" style="font-size: 13px; color: var(--text-3)">01</span>
+<h3 style="margin: 0; font-size: 19px; font-weight: 600; letter-spacing: -0.01em">Catalog</h3>
+<p style="margin: 0; font-size: 15px; color: var(--text-2)">Series, films, ads, promos, idents and fillers, with segments, air windows and clash codes.</p>
+</li>
+<li style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 2px solid #0d9488">
+<span class="mono" style="font-size: 13px; color: var(--text-3)">02</span>
+<h3 style="margin: 0; font-size: 19px; font-weight: 600; letter-spacing: -0.01em">Templates</h3>
+<p style="margin: 0; font-size: 15px; color: var(--text-2)">A channel's week of blocks and linked ad breaks, drawn once and repeated in a few clicks.</p>
+</li>
+<li style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 2px solid #7c3aed">
+<span class="mono" style="font-size: 13px; color: var(--text-3)">03</span>
+<h3 style="margin: 0; font-size: 19px; font-weight: 600; letter-spacing: -0.01em">Orders</h3>
+<p style="margin: 0; font-size: 15px; color: var(--text-2)">Series and programmes placed across weeks: first airings, repeats and rotations.</p>
+</li>
+<li style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 2px solid #2563eb">
+<span class="mono" style="font-size: 13px; color: var(--text-3)">04</span>
+<h3 style="margin: 0; font-size: 19px; font-weight: 600; letter-spacing: -0.01em">Playlist</h3>
+<p style="margin: 0; font-size: 15px; color: var(--text-2)">The broadcast day to the frame, programmes and breaks side by side, checked before air.</p>
+</li>
+<li style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 2px solid #ea580c">
+<span class="mono" style="font-size: 13px; color: var(--text-3)">05</span>
+<h3 style="margin: 0; font-size: 19px; font-weight: 600; letter-spacing: -0.01em">Playout</h3>
+<p style="margin: 0; font-size: 15px; color: var(--text-2)">Exported to your automation in BXF and common playout formats, with the EPG alongside.</p>
+</li>
+<li style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 2px solid #16a34a">
+<span class="mono" style="font-size: 13px; color: var(--text-3)">06</span>
+<h3 style="margin: 0; font-size: 19px; font-weight: 600; letter-spacing: -0.01em">As-run</h3>
+<p style="margin: 0; font-size: 15px; color: var(--text-2)">What actually aired, reconciled against the plan, with every difference explained.</p>
+</li>
+</ol>
+<div style="margin-top: 56px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+<span style="font-size: 15px; font-weight: 500; margin-right: 6px">For every kind of TV channel</span>
+<a href="Platform.dc.html#solutions" style="display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); text-decoration: none; font-size: 14px">Linear broadcast</a>
+<a href="Platform.dc.html#sol-fast" style="display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); text-decoration: none; font-size: 14px">FAST channels</a>
+<a href="Platform.dc.html#sol-fast" style="display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); text-decoration: none; font-size: 14px">Streaming</a>
+<a href="Platform.dc.html#sol-news" style="display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); text-decoration: none; font-size: 14px">News</a>
+<a href="Platform.dc.html#sol-live" style="display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); text-decoration: none; font-size: 14px">Sport and live</a>
+<a href="Platform.dc.html#sol-kids" style="display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); text-decoration: none; font-size: 14px">Kids</a>
+<a href="Platform.dc.html#sol-series" style="display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); text-decoration: none; font-size: 14px">Film and series</a>
+<a href="Platform.dc.html#sol-public" style="display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); text-decoration: none; font-size: 14px">Public media</a>
+</div>
+</section>
+
+<section style="max-width: 1200px; margin: 0 auto; padding: 128px clamp(16px, 4vw, 32px) 0">
+<div style="border-radius: 20px; background: var(--night); color: var(--night-text); padding: clamp(32px, 5vw, 64px); display: flex; flex-wrap: wrap; gap: 32px; align-items: center; justify-content: space-between">
+<div style="flex: 1 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: clamp(26px, 2.8vw, 36px); line-height: 1.12; letter-spacing: -0.025em; font-weight: 600; color: var(--night-text)">Bring one channel. Watch the agents run it.</h2>
+<p style="margin: 0; font-size: 17px; color: var(--night-text-2)">Early access starts with a demo on a channel like yours, then a trial on your own catalog and templates.</p>
+</div>
+<a class="btn-p" href="Demo.dc.html" style="display: inline-flex; align-items: center; justify-content: center; height: 48px; padding: 0 22px; border-radius: 10px; background: var(--accent); color: #ffffff; text-decoration: none; font-weight: 500; font-size: 16px; white-space: nowrap">Request a demo</a>
+</div>
+</section>
+
+<section class="faq" style="max-width: 860px; margin: 0 auto; padding: 128px clamp(16px, 4vw, 32px) 0">
+<h2 style="margin: 0; font-size: clamp(30px, 3.4vw, 46px); line-height: 1.08; letter-spacing: -0.03em; font-weight: 600">Questions about AI and broadcast traffic</h2>
+<div style="margin-top: 32px; border-top: 1px solid var(--border)">
+<sc-for list="{{faq}}" as="q" hint-placeholder-count="7">
+<details style="border-bottom: 1px solid var(--border)">
+<summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; padding: 16px 0; font-size: 17px; font-weight: 500">{{q.q}}<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true" style="flex: none; transition: transform 0.15s"><path d="M12 5v14M5 12h14"></path></svg></summary>
+<p style="margin: 0 0 20px; color: var(--text-2); max-width: 720px">{{q.a}}</p>
+</details>
+</sc-for>
+</div>
+</section>
+</main>
+
+<footer style="margin-top: 128px; border-top: 1px solid var(--border); background: var(--surface)">
+<div style="max-width: 1200px; margin: 0 auto; padding: 56px clamp(16px, 4vw, 32px) 40px; display: flex; flex-wrap: wrap; gap: 48px">
+<div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 12px">
+<span style="display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: 18px; letter-spacing: -0.02em"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="7" fill="currentColor"></rect><circle cx="12" cy="12" r="5.75" fill="none" stroke="#ffffff" stroke-width="2.25"></circle><circle cx="12" cy="12" r="2" fill="#ffffff"></circle></svg>{{brand}}</span>
+<p style="margin: 0; font-size: 15px; color: var(--text-2); max-width: 300px">AI-powered broadcast scheduling and TV traffic software for channels everywhere.</p>
+</div>
+<nav aria-label="Footer" style="flex: 2 1 480px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(140px, 100%), 1fr)); gap: 32px">
+<div style="display: flex; flex-direction: column; gap: 12px"><h3 style="margin: 0; font-size: 13px; font-weight: 500; color: var(--text-3)">Product</h3><a class="nl" href="#agents" style="color: var(--text-2); text-decoration: none; font-size: 15px">AI agents</a><a class="nl" href="Platform.dc.html" style="color: var(--text-2); text-decoration: none; font-size: 15px">Platform</a><a class="nl" href="Pricing.dc.html" style="color: var(--text-2); text-decoration: none; font-size: 15px">Pricing</a><a class="nl" href="Demo.dc.html" style="color: var(--text-2); text-decoration: none; font-size: 15px">Request a demo</a></div>
+<div style="display: flex; flex-direction: column; gap: 12px"><h3 style="margin: 0; font-size: 13px; font-weight: 500; color: var(--text-3)">Solutions</h3><a class="nl" href="Platform.dc.html#solutions" style="color: var(--text-2); text-decoration: none; font-size: 15px">Linear broadcast</a><a class="nl" href="Platform.dc.html#sol-fast" style="color: var(--text-2); text-decoration: none; font-size: 15px">FAST and streaming</a><a class="nl" href="Platform.dc.html#sol-live" style="color: var(--text-2); text-decoration: none; font-size: 15px">Sport and live</a><a class="nl" href="Platform.dc.html#sol-public" style="color: var(--text-2); text-decoration: none; font-size: 15px">Public media</a></div>
+<div style="display: flex; flex-direction: column; gap: 12px"><h3 style="margin: 0; font-size: 13px; font-weight: 500; color: var(--text-3)">Company</h3><a class="nl" href="Contact.dc.html" style="color: var(--text-2); text-decoration: none; font-size: 15px">Contact</a><a class="nl" href="Privacy.dc.html" style="color: var(--text-2); text-decoration: none; font-size: 15px">Privacy policy</a><a class="nl" href="Privacy.dc.html#cookies" style="color: var(--text-2); text-decoration: none; font-size: 15px">Cookies</a></div>
+</nav>
+</div>
+<div style="max-width: 1200px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 32px)">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding: 20px 0 32px; border-top: 1px solid var(--hairline); font-size: 13px; color: var(--text-3)"><span>© 2026 {{brand}}. All rights reserved.</span><span style="display: flex; gap: 20px"><a class="nl" href="Privacy.dc.html" style="color: var(--text-3); text-decoration: none">Privacy policy</a><a class="nl" href="Contact.dc.html" style="color: var(--text-3); text-decoration: none">Contact</a></span></div>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"brand":{"editor":"text","default":"9eye"},"$preview":{"width":1440,"height":9600}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const start = ((18 * 60 + 52) * 60 + 10) * 25;
+    this.start0 = start;
+    this.LOOP = [
+      { who: 'Playlist check agent', text: 'Round 1: checked 1,284 items on Sunday. 5 problems.', dot: '#d97706', st: [0], round: 'Round 1' },
+      { who: 'Timing agent', text: 'News at 19:00 would start 00:00:42:10 late. Fixed with a shorter segment.', dot: '#16a34a', st: [1, 2], round: 'Round 1' },
+      { who: 'Filler and bumper agent', text: 'A 00:00:18:00 gap after Matinee Movie. Filled with a bumper.', dot: '#16a34a', st: [1, 2], round: 'Round 1' },
+      { who: 'Ad placement agent', text: 'Two car brands in the 21:30 break. One spot moved to 21:58.', dot: '#16a34a', st: [1, 2], round: 'Round 1' },
+      { who: 'Promo placement agent', text: 'A Wildmere promo has no media file. Swapped for another cut.', dot: '#16a34a', st: [1, 2], round: 'Round 1' },
+      { who: 'Schedule agent', text: 'Kitchen Duel ep. 18: its rights end before Sunday. No fix within the rules.', dot: '#dc2626', st: [1, 2], round: 'Round 1' },
+      { who: 'Playlist check agent', text: 'Round 2: checked again. 1 problem left.', dot: '#d97706', st: [3], round: 'Round 2' },
+      { who: 'Operator notified', text: 'Ana R. got the problem, the reason and what was tried, and picked episode 17 instead.', dot: '#2563eb', st: [5], round: 'Round 2' },
+      { who: 'Playlist check agent', text: 'Round 3: checked again. Every check passes.', dot: '#16a34a', st: [3, 4], round: 'Round 3' }
+    ];
+    this.SC = [
+      {
+        id: 'live', agent: 'Live-change agent', color: '#ea580c', tryLabel: 'Sport runs 18 min over',
+        channel: 'Tessa One · Sat 14 Nov', trigger: 'Started by a rule: overrun reported by playout',
+        idleGroup: 'Idle', idleSub: 'Waits for live changes',
+        steps: [
+          ['Playout', 'Weekend Sport will end at 19:18:00:00, 18 min late'],
+          ['Playlist', 'Read Saturday from 19:00 to the end of the day'],
+          ['Playlist', 'News and Weather moves to 19:18:00:00'],
+          ['Orders', 'Kitchen Duel ep. 17 moves to Sun 13:00, a free block'],
+          ['Ads playlist', '6 spots move from the 19:30 break to 19:48'],
+          ['Timing', 'Saturday Movie keeps its fixed start at 20:00:00:00']
+        ],
+        changes: [
+          ['News and Weather', '19:00:00:00', '19:18:00:00'],
+          ['Kitchen Duel ep. 17', 'Sat 19:35', 'Sun 13:00'],
+          ['Break · 6 spots', '19:30:10:00', '19:48:10:00'],
+          ['Saturday Movie', '20:18:00:00', '20:00:00:00']
+        ],
+        metric: ['Saturday Movie starts', '20:18:00:00', '20:00:00:00']
+      },
+      {
+        id: 'timing', agent: 'Timing agent', color: '#0d9488', tryLabel: 'Check Sunday’s timing',
+        channel: 'Tessa One · Sun 15 Nov', trigger: 'Scheduled: every evening',
+        idleGroup: 'Scheduled', idleSub: 'Every evening',
+        steps: [
+          ['Playlist', 'Read Sunday, 06:00 to 06:00'],
+          ['Timing', 'Checked 12 fixed starts: one is late'],
+          ['Timing', 'News at 19:00 would start 00:01:12:08 late'],
+          ['Catalog', 'Sunday Magazine: shorter segmentation, −00:00:58:00'],
+          ['Rotation list', 'Dropped a 00:00:14:08 filler from the 18:56 break'],
+          ['Timing', 'All 12 fixed starts land on the frame']
+        ],
+        changes: [
+          ['Sunday Magazine', '01:58:00:00', '01:57:02:00'],
+          ['Filler · 18:56 break', '00:00:14:08', 'Removed'],
+          ['News and Weather', '19:01:12:08', '19:00:00:00']
+        ],
+        metric: ['Fixed starts on time', '11 of 12', '12 of 12']
+      },
+      {
+        id: 'ads', agent: 'Ad placement agent', color: '#2563eb', tryLabel: 'Place Sunday’s ads',
+        channel: 'Tessa One · Sun 15 Nov', trigger: 'Started by Ana R.',
+        idleGroup: 'Idle', idleSub: 'Last run 09:12',
+        steps: [
+          ['Orders', 'Read 214 booked spots for Sunday'],
+          ['Ads playlist', 'Placed 198 spots in 46 breaks'],
+          ['Rules', 'Alcohol spots kept after 21:00 (9 spots)'],
+          ['Rules', 'Clash codes apart in every break'],
+          ['Ads playlist', '16 spots do not fit: their breaks are full'],
+          ['Orders', 'Proposed Monday breaks for the 16 spots']
+        ],
+        changes: [
+          ['Spots placed', '0', '198'],
+          ['Spots proposed for Monday', '0', '16'],
+          ['Clash-code conflicts', '—', '0']
+        ],
+        metric: ['Spots placed', '0 of 214', '198 of 214']
+      }
+    ];
+    this.state = {
+      scale: 1, sc: 0, n: 0, frames: start, startFrames: start, result: null, doneAt: 0, decidedFrames: start, liveFixed: false, vOff: {},
+      log: [
+        { text: 'Schedule agent planned week 46', at: 'Fri 16:20', dot: '#16a34a' },
+        { text: 'Reconciliation agent matched Friday’s as-run', at: '06:10', dot: '#16a34a' }
+      ]
+    };
+    this.setFrame = (el) => {
+      if (this.observer) { this.observer.disconnect(); this.observer = null; }
+      if (!el || typeof ResizeObserver === 'undefined') return;
+      this.observer = new ResizeObserver(() => {
+        const scale = el.clientWidth / 1200;
+        if (scale > 0 && Math.abs(scale - this.state.scale) > 0.001) this.setState({ scale: scale });
+      });
+      this.observer.observe(el);
+    };
+    this.pick = (i) => {
+      this.setState({ sc: i, n: this.reduced ? 1000 : 0, result: null, doneAt: 0, startFrames: this.state.frames, liveFixed: i === 0 ? false : this.state.liveFixed });
+    };
+    this.decide = (r) => {
+      const s = this.state;
+      if (s.result === null) this.setState(this.decided(s, r, s.n, s.frames));
+    };
+    this.tick = () => {
+      const s = this.state, cur = this.SC[s.sc], n = s.n + 1, frames = s.frames + 5;
+      if (s.result === null && n >= cur.steps.length * 5 + 15) { this.setState(this.decided(s, 'approved', n, frames)); return; }
+      if (s.result !== null && n >= s.doneAt + 20) {
+        const sc = (s.sc + 1) % this.SC.length;
+        this.setState({ sc: sc, n: 0, frames: frames, startFrames: frames, result: null, doneAt: 0, liveFixed: sc === 0 ? false : s.liveFixed });
+        return;
+      }
+      this.setState({ n: n, frames: frames });
+    };
+  }
+  componentDidMount() {
+    this.reduced = typeof window !== 'undefined' && !!window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (this.reduced) { this.setState({ n: 1000 }); return; }
+    this.timer = setInterval(this.tick, 200);
+  }
+  componentWillUnmount() {
+    if (this.timer) clearInterval(this.timer);
+    if (this.observer) this.observer.disconnect();
+  }
+  decided(s, r, n, frames) {
+    const cur = this.SC[s.sc];
+    const entry = { text: cur.agent + (r === 'approved' ? ': changes applied' : ': changes rejected'), at: this.tc(frames, false), dot: r === 'approved' ? '#16a34a' : '#a1a1aa' };
+    return { n: n, frames: frames, result: r, doneAt: n, decidedFrames: frames, log: s.log.concat([entry]).slice(-30), liveFixed: s.liveFixed || (cur.id === 'live' && r === 'approved') };
+  }
+  tc(frames, withFrames) {
+    const p = (v) => String(v).padStart(2, '0');
+    const h = Math.floor(frames / 90000) % 24, m = Math.floor(frames / 1500) % 60, sec = Math.floor(frames / 25) % 60, f = frames % 25;
+    return p(h) + ':' + p(m) + ':' + p(sec) + (withFrames ? ':' + p(f) : '');
+  }
+  desk() {
+    const st = this.state, S = this.SC, cur = S[st.sc];
+    const shown = Math.min(cur.steps.length, Math.floor(st.n / 5));
+    const done = shown >= cur.steps.length;
+    const phase = !done ? 'running' : st.result === null ? 'waiting' : st.result;
+    const badges = { running: ['Running', '#eaf1ff', '#1d4ed8'], waiting: ['Needs you', '#fdf4e3', '#9a5200'], approved: ['Applied', '#e8f6ec', '#15803d'], rejected: ['Rejected', '#f4f4f5', '#52525b'] };
+    const b = badges[phase];
+    const ticksLeft = cur.steps.length * 5 + 15 - st.n;
+    const run = {
+      agent: cur.agent, color: cur.color, soft: cur.color + '1f', channel: cur.channel, trigger: cur.trigger,
+      badge: b[0], badgeBg: b[1], badgeFg: b[2],
+      progress: phase === 'running' ? 'Step ' + (shown + 1) + ' of ' + cur.steps.length : phase === 'waiting' ? cur.steps.length + ' of ' + cur.steps.length + ' done' : '',
+      steps: cur.steps.slice(0, shown).map((x, k) => ({ tag: x[0], text: x[1], at: this.tc(st.startFrames + (k + 1) * 25, false) })),
+      working: phase === 'running',
+      done: done,
+      waiting: phase === 'waiting',
+      decided: phase === 'approved' || phase === 'rejected',
+      canUndo: phase === 'approved',
+      changeCount: cur.changes.length + ' changes',
+      changes: cur.changes.map((c) => ({ what: c[0], before: c[1], after: c[2] })),
+      countdown: phase === 'waiting' && !this.reduced ? 'The demo approves in ' + Math.max(1, Math.ceil(ticksLeft / 5)) + ' s' : '',
+      resultText: phase === 'approved' ? 'Applied at ' + this.tc(st.decidedFrames, false) : 'Rejected. Nothing changed.',
+      resultBg: phase === 'approved' ? '#e8f6ec' : '#f4f4f5',
+      resultFg: phase === 'approved' ? '#15803d' : '#52525b'
+    };
+    const m = cur.metric;
+    const metric = {
+      label: m[0], before: m[1],
+      after: phase === 'running' ? '…' : phase === 'rejected' ? m[1] : m[2],
+      fg: phase === 'approved' ? '#15803d' : phase === 'waiting' ? '#18181b' : '#a1a1aa',
+      note: { running: 'Working', waiting: 'Proposed · waiting for you', approved: 'Applied', rejected: 'Nothing changed' }[phase],
+      noteFg: { running: '#6b6b74', waiting: '#9a5200', approved: '#15803d', rejected: '#6b6b74' }[phase]
+    };
+    const rows = [];
+    S.forEach((s, i) => {
+      const pick = () => this.pick(i);
+      if (i === st.sc) {
+        rows.push({
+          group: phase === 'running' ? 'Running' : phase === 'waiting' ? 'Needs you' : 'Idle',
+          name: s.agent, color: s.color,
+          sub: phase === 'running' ? 'Step ' + (shown + 1) + ' of ' + s.steps.length : phase === 'waiting' ? s.changes.length + ' changes to approve' : phase === 'approved' ? 'Applied just now' : 'Rejected just now',
+          subFg: phase === 'waiting' ? '#9a5200' : '#6b6b74',
+          dot: phase === 'running' ? '#2563eb' : phase === 'waiting' ? '#d97706' : '#16a34a',
+          dotClass: phase === 'running' ? 'blink' : '', bg: '#eaf1ff', cursor: 'pointer', pick: pick
+        });
+      } else {
+        rows.push({ group: s.idleGroup, name: s.agent, color: s.color, sub: s.idleSub, subFg: '#6b6b74', dot: s.idleGroup === 'Scheduled' ? '#a1a1aa' : '#d4d4d8', dotClass: '', bg: 'transparent', cursor: 'pointer', pick: pick });
+      }
+    });
+    [
+      ['Promo placement agent', '#7c3aed', 'Scheduled', 'Daily at 05:00'],
+      ['Filler and bumper agent', '#db2777', 'Scheduled', 'After every change'],
+      ['Playlist check agent', '#16a34a', 'Scheduled', 'Daily at 22:00'],
+      ['Schedule agent', '#0284c7', 'Idle', 'Planned week 46'],
+      ['Reconciliation agent', '#64748b', 'Idle', '3 notes on Friday']
+    ].forEach((o) => rows.push({ group: o[2], name: o[0], color: o[1], sub: o[3], subFg: '#6b6b74', dot: o[2] === 'Scheduled' ? '#a1a1aa' : '#d4d4d8', dotClass: '', bg: 'transparent', cursor: 'default', pick: () => {} }));
+    rows.forEach((r) => { r.soft = r.color + '1f'; });
+    const deskGroups = ['Needs you', 'Running', 'Scheduled', 'Idle']
+      .map((g) => ({ name: g, rows: rows.filter((r) => r.group === g) }))
+      .filter((g) => g.rows.length > 0)
+      .map((g) => Object.assign(g, { count: String(g.rows.length) }));
+    const from = 1020, span = 240;
+    const seg = (name, a, z, bg, fg) => ({ name: name, left: ((a - from) / span * 100).toFixed(2) + '%', width: ((z - a) / span * 100).toFixed(2) + '%', bg: bg, fg: fg });
+    const liveOpen = st.sc === 0 && (phase === 'running' || phase === 'waiting');
+    let bar;
+    if (st.liveFixed) {
+      bar = [seg('Weekend Sport', 1020, 1158, '#16a34a2e', '#15803d'), seg('News', 1158, 1200, '#2563eb2e', '#1d4ed8'), seg('Saturday Movie', 1200, 1260, '#d977062e', '#9a5200')];
+    } else if (liveOpen) {
+      bar = [seg('Weekend Sport', 1020, 1140, '#16a34a2e', '#15803d'), seg('+18:00', 1140, 1158, 'repeating-linear-gradient(135deg, #fecaca 0 4px, #fdeeee 4px 8px)', '#b91c1c'), seg('News', 1158, 1218, '#2563eb2e', '#1d4ed8'), seg('Movie', 1218, 1260, '#dc26262e', '#b91c1c')];
+    } else {
+      bar = [seg('Weekend Sport', 1020, 1140, '#16a34a2e', '#15803d'), seg('News', 1140, 1200, '#2563eb2e', '#1d4ed8'), seg('Saturday Movie', 1200, 1260, '#d977062e', '#9a5200')];
+    }
+    const now = st.frames / 1500;
+    return {
+      run: run, metric: metric, deskGroups: deskGroups, bar: bar,
+      playhead: Math.min(100, Math.max(0, (now - from) / span * 100)).toFixed(2) + '%',
+      airNote: liveOpen ? 'Weekend Sport runs 18 min over. Saturday Movie would start at 20:18.' : st.liveFixed ? 'Re-flowed. Saturday Movie starts on time at 20:00.' : 'Weekend Sport is live until 19:00.',
+      airFg: liveOpen ? '#9a5200' : st.liveFixed ? '#15803d' : '#52525b',
+      tc: this.tc(st.frames, true),
+      log: st.log,
+      deskSummary: phase === 'waiting' ? '8 agents · 1 needs you' : '8 agents',
+      tries: S.map((s, i) => ({
+        label: s.tryLabel, on: i === st.sc, pick: () => this.pick(i), dot: s.color,
+        border: i === st.sc ? '1px solid #f4f4f5' : '1px solid #38383e',
+        bg: i === st.sc ? '#f4f4f5' : 'transparent',
+        fg: i === st.sc ? '#0a0a0b' : '#f4f4f5'
+      })),
+      approve: () => this.decide('approved'),
+      reject: () => this.decide('rejected'),
+      setFrame: this.setFrame,
+      scale: this.state.scale
+    };
+  }
+  loopView() {
+    const L = this.LOOP;
+    const t = Math.max(0, Math.floor((this.state.frames - this.start0) / 5));
+    const cycle = L.length * 6 + 25;
+    const shown = this.reduced ? L.length : Math.min(L.length, Math.floor((t % cycle) / 6) + 1);
+    const last = shown - 1;
+    const active = this.reduced ? [] : L[last].st;
+    const off = { border: '1px solid #e4e4e7', bg: '#ffffff', numBg: '#f4f4f5', numFg: '#52525b' };
+    const card = (i) => {
+      const on = active.indexOf(i) >= 0;
+      if (i === 4) return on ? { border: '1px solid #16a34a', bg: '#e8f6ec', numBg: '#16a34a', numFg: '#ffffff' } : Object.assign({}, off, { numBg: '#e8f6ec', numFg: '#15803d' });
+      if (i === 5) return on ? { border: '1px solid #d97706', bg: '#fdf4e3', numBg: '#d97706', numFg: '#ffffff' } : Object.assign({}, off, { numBg: '#fdf4e3', numFg: '#9a5200' });
+      return on ? { border: '1px solid #2563eb', bg: '#eaf1ff', numBg: '#2563eb', numFg: '#ffffff' } : off;
+    };
+    let status = 'Working · ' + L[last].round, statusFg = '#52525b';
+    if (last === L.length - 1) { status = 'Ready for approval. Nothing goes to air with a known problem.'; statusFg = '#15803d'; }
+    else if (L[last].who === 'Operator notified') { status = 'The operator has it. The loop goes on after the change.'; statusFg = '#9a5200'; }
+    else if (L[last].dot === '#dc2626') { status = 'No fix within the rules. Telling the operator.'; statusFg = '#b91c1c'; }
+    return {
+      c0: card(0), c1: card(1), c2: card(2), c3: card(3), c4: card(4), c5: card(5),
+      round: L[last].round,
+      lines: L.slice(0, shown),
+      status: status,
+      statusFg: statusFg
+    };
+  }
+  validatorView() {
+    const A = {
+      timing: ['Timing agent', '#0d9488'], filler: ['Filler and bumper agent', '#db2777'], ads: ['Ad placement agent', '#2563eb'],
+      promo: ['Promo placement agent', '#7c3aed'], schedule: ['Schedule agent', '#0284c7'], operator: ['Operator', '#a1a1aa']
+    };
+    const V = [
+      ['Fixed starts on time', 'Blocks marked fixed start on the exact frame.', true, 'timing'],
+      ['No gaps or overlaps', 'Every frame from 06:00 to 06:00 is filled, and nothing overlaps.', true, 'filler'],
+      ['Clash codes apart', 'No two spots with the same clash code in one break.', true, 'ads'],
+      ['Ad minutes per hour', 'At most 12 minutes of advertising in any clock hour.', true, 'ads'],
+      ['Alcohol after 21:00', 'Alcohol spots only between 21:00 and 05:00.', true, 'ads'],
+      ['Premiere promos', 'A premiere gets at least 6 promos in the 3 days before it.', false, 'promo'],
+      ['Promo media ready', 'Every promo has its media file 24 hours before air.', true, 'promo'],
+      ['Rights cover the air date', 'A programme airs only while its rights are valid.', true, 'schedule'],
+      ['Subtitles delivered', 'Programmes in prime time have their subtitle file 48 hours before air.', false, 'operator'],
+      ['Wildmere promos out of kids hours', 'No Wildmere promo between 15:00 and 18:00: the series is rated 12+.', true, 'promo', true]
+    ];
+    const off = this.state.vOff;
+    const list = V.map((v, i) => {
+      const on = !off[i];
+      const a = A[v[3]];
+      return {
+        name: v[0], rule: v[1], custom: !!v[4],
+        sev: v[2] ? 'Blocks air' : 'Warning',
+        sevBg: v[2] ? '#fdeeee' : '#fdf4e3', sevFg: v[2] ? '#b91c1c' : '#9a5200',
+        agent: a[0], agentColor: a[1],
+        on: on,
+        track: on ? '#2563eb' : '#d4d4d8',
+        knob: on ? 'translateX(16px)' : 'translateX(0)',
+        opacity: on ? '1' : '0.55',
+        rowBg: v[4] ? '#f7faff' : '#ffffff',
+        toggle: () => { const next = Object.assign({}, this.state.vOff); next[i] = !next[i]; this.setState({ vOff: next }); }
+      };
+    });
+    const count = list.filter((v) => v.on).length;
+    return { validators: list, vSummary: count + ' of ' + list.length + ' validators on' };
+  }
+  renderVals() {
+    const brand = this.props.brand ?? '9eye';
+    return Object.assign(this.desk(), this.validatorView(), {
+      brand: brand,
+      loop: this.loopView(),
+      agents: [
+        { n: '01', name: 'Schedule agent', text: 'Builds the next week from the template and the running orders: next episodes, repeats and rotations, then shows you what changed.' },
+        { n: '02', name: 'Timing agent', text: 'Automatic playlist timing. Balances programme segments, break lengths and fillers so fixed starts — the news at 19:00 — land on the exact frame.' },
+        { n: '03', name: 'Ad placement agent', text: 'AI commercial scheduling: places the day’s spots in the right breaks, keeps clash codes apart, respects break lengths and minutes per hour, and explains each spot.' },
+        { n: '04', name: 'Promo placement agent', text: 'Promo scheduling that works: promos run ahead of the programme they promote, never inside it, with the passes each campaign needs.' },
+        { n: '05', name: 'Filler and bumper agent', text: 'Fills what is left between programmes and in each break with fillers, bumpers and idents from your rotation lists, to the frame.' },
+        { n: '06', name: 'Live-change agent', text: 'When sport overruns or news breaks in, it re-flows the rest of the day and moves the spots that no longer fit.' },
+        { n: '07', name: 'Playlist check agent', text: 'Before playout export, checks every item — timing, gaps, overlaps, missing media, expired rights — hands each problem to the agent that can fix it, and checks again.' },
+        { n: '08', name: 'Reconciliation agent', text: 'As-run reconciliation: matches the as-run log to the plan, explains each difference and lists the spots that need a make-good.' },
+        { n: '09', name: 'Metadata agent', text: 'Reads new titles from spreadsheets, e-mails or your MAM into the catalog, and writes EPG texts in several languages.' },
+        { n: '10', name: 'Ask your schedule', text: 'Plain-language answers about anything in the system, with links to the airings, orders and items behind them.' }
+      ],
+      clients: [
+        { name: 'Claude', note: 'Anthropic', border: '1px solid #26262a' },
+        { name: 'ChatGPT', note: 'OpenAI', border: '1px solid #26262a' },
+        { name: 'Grok', note: 'xAI', border: '1px solid #26262a' },
+        { name: 'Your own agent', note: 'any MCP client', border: '1px dashed #38383e' }
+      ],
+      tools: [
+        'Read the catalog, templates, orders and playlists',
+        'Propose changes to a day, a week or an order',
+        'Run playlist checks and timing',
+        'Explain differences in the as-run log',
+        'Draft programme guide texts'
+      ],
+      faq: [
+        { q: 'What is broadcast traffic and scheduling software?', a: 'It plans what a TV channel airs: the catalog of programmes and commercials, the weekly templates, the orders that place series and spots, the frame-accurate playlist sent to playout, and the as-run log that confirms what went on air.' },
+        { q: 'What can AI agents do for a TV channel?', a: 'They take on the repeated work of a traffic and scheduling team: planning the next week, placing ads and promos, keeping fixed starts on time, filling gaps, re-flowing the day after a live overrun, checking playlists before export and reconciling the as-run log.' },
+        { q: 'How does AI place commercials and promos?', a: 'The ad and promo placement agents read your booked spots and campaigns, then place them in breaks by your rules — clash codes, break lengths, minutes per hour, time windows — and give a reason for every placement. Spots that do not fit are proposed for other breaks.' },
+        { q: 'Do the agents change our schedule without asking?', a: 'No. Agents can start on request, on a schedule or on an event, but every change waits for a person to approve it before it reaches playout. Each step is logged and can be undone.' },
+        { q: 'How do the agents keep mistakes off air?', a: 'They work in a closed loop. The playlist check agent checks every item and hands each problem to the agent that can fix it; every fix is checked again until all checks pass. A problem that cannot be fixed within your rules goes to an operator with the reason, and nothing reaches playout without approval.' },
+        { q: 'Can we define our own checks and validation rules?', a: 'Yes. Each channel has its own set of validators: built-in checks such as fixed starts, gaps, clash codes and ad minutes per hour, and custom rules you write in plain words. You choose which ones block air and which agent fixes each one when it fails.' },
+        { q: 'Can we connect our own AI, such as Claude, ChatGPT or Grok?', a: brand + ' speaks MCP, the open standard for connecting AI to software, so any MCP-capable agent can work with your channels, and you can build as many agents as you need. Connected agents get only the roles you grant.' },
+        { q: 'Does it work for FAST channels and streaming?', a: 'Yes. Linear broadcast, FAST and streaming channels share the same core, with programme guide export for streaming platforms. What differs between channels is settings and rules.' },
+        { q: 'Is our schedule data used to train AI models?', a: 'No. Your schedule data stays in your company’s space and is not used to train AI models.' }
+      ]
+    });
+  }
+}
+</script>
+</body>
+</html>

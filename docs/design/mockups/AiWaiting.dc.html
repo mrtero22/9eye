@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Agents · Waiting for you · from an AI app</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.ds{--bg:#fafafa;--surface:#ffffff;--surface-2:#f4f4f5;--surface-3:#e9e9ec;--hairline:#f0f0f2;--border:#e4e4e7;--border-strong:#d4d4d8;--text:#18181b;--text-2:#52525b;--text-3:#6b6b74;--accent:#2563eb;--accent-soft:#eaf1ff;--accent-text:#1d4ed8;--amber:#d97706;--amber-soft:#fdf4e3;--amber-text:#9a5200;--green:#16a34a;--green-soft:#e8f6ec;--green-text:#15803d;--overlay:rgba(24,24,27,.28);--shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.08);--m1:#2563eb;--fs:14px;--fs-sm:13px;--ctl:32px;color-scheme:light;font-family:'Geist',ui-sans-serif,system-ui,sans-serif;font-size:var(--fs);line-height:1.5;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
+.ds.dark{--bg:#0a0a0b;--surface:#111113;--surface-2:#1a1a1d;--surface-3:#232327;--hairline:#19191c;--border:#26262a;--border-strong:#38383e;--text:#f4f4f5;--text-2:#a8a8b0;--text-3:#8b8b94;--accent-soft:#15203a;--accent-text:#93b4ff;--amber-soft:#2a2011;--amber-text:#fcd34d;--green-soft:#102419;--green-text:#86efac;--m1:#3b6fd8;color-scheme:dark}
+.ds *{box-sizing:border-box}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,monospace;font-variant-numeric:tabular-nums}
+.ds button{font:inherit;color:inherit}
+.ds button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.hov:hover{background:var(--surface-2)!important}
+@media (max-width:720px){.tn-hide{display:none!important}}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="min-height: 100vh; background: var(--bg); color: var(--text); display: flex; flex-direction: column">
+<header style="display: flex; align-items: center; gap: 8px; height: 52px; padding: 0 16px; border-bottom: 1px solid var(--border); background: var(--surface)">
+<span style="display: flex; align-items: center; gap: 8px; padding: 0 8px"><span style="width: 24px; height: 24px; border-radius: 6px; background: var(--text); color: var(--bg); display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px">A</span><span class="tn-hide" style="font-weight: 600">Aurora Media</span></span>
+<span class="tn-hide" style="display: inline-flex; align-items: center; gap: 6px; padding: 0 10px; font-weight: 500">Agents<span class="mono" style="padding: 0 6px; border-radius: 9px; background: var(--amber-soft); color: var(--amber-text); font-size: 11px; font-weight: 600">{{count}}</span></span>
+<span style="flex: 1"></span>
+<button class="hov" onClick="{{toggleDark}}" style="height: 32px; padding: 0 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text-2); cursor: pointer; font-weight: 500">Theme</button>
+<span style="width: 28px; height: 28px; border-radius: 50%; background: var(--surface-3); display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600">DE</span>
+</header>
+<main style="flex: 1; display: flex; flex-direction: column">
+<header style="padding: 28px 32px 0; display: flex; flex-direction: column; gap: 6px"><h1 style="margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.02em">Agents</h1><span style="color: var(--text-2)">Your team of agents — and what AI apps asked to do. Every change here waits for a person.</span></header>
+<div style="display: flex; flex-wrap: wrap; gap: 24px; padding: 24px 32px 32px; align-items: flex-start">
+<nav style="flex: 1 1 220px; max-width: 260px; display: flex; flex-direction: column; gap: 4px">
+<span style="display: flex; align-items: center; gap: 10px; min-height: 32px; padding: 0 10px; border-radius: 8px; background: var(--accent-soft); color: var(--accent-text); font-weight: 600">Waiting for you<span style="flex: 1"></span><span class="mono" style="padding: 0 6px; border-radius: 9px; background: var(--amber-soft); color: var(--amber-text); font-size: 11px">{{count}}</span></span>
+<span style="padding: 10px 10px 2px; font-size: 13px; color: var(--text-3)">From</span>
+<span style="padding: 4px 10px; font-size: var(--fs-sm)">Agents</span>
+<span style="padding: 4px 10px; font-size: var(--fs-sm)">AI apps (tokens)</span>
+</nav>
+<div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 18px; max-width: 880px">
+<span style="display: flex; flex-direction: column; line-height: 1.3"><span style="font-size: 17px; font-weight: 600">Waiting for you</span><span style="font-size: var(--fs-sm); color: var(--text-3)">What agents and AI apps prepared, where AI access says "Ask first". Oldest first.</span></span>
+
+<sc-for list="{{cards}}" as="c" hint-placeholder-count="2">
+<div style="display: flex; gap: 12px">
+<span style="width: 32px; height: 32px; flex: none; border-radius: {{c.radius}}; background: {{c.markBg}}; color: {{c.markFg}}; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">{{c.mark}}</span>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px">
+<span style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; line-height: 1.3"><span style="font-weight: 600">{{c.who}}</span><span style="padding: 0 6px; border-radius: 4px; background: var(--surface-2); font-size: 11px; color: var(--text-3)">{{c.kind}}</span><span class="mono" style="font-size: 12px; color: var(--text-3)">{{c.time}}</span><span style="font-size: 12px; color: var(--text-3)">· {{c.via}}</span></span>
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border); border-left: 3px solid {{c.line}}; background: var(--surface)">
+<span style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px"><span style="font-size: 12px; font-weight: 600; color: {{c.stateFg}}">{{c.state}}</span><span style="font-size: 12px; color: var(--text-3)">{{c.rule}}</span></span>
+<span style="display: flex; flex-direction: column; line-height: 1.35"><span style="font-weight: 500">{{c.title}}</span><span style="font-size: 12.5px; color: var(--text-2)">{{c.detail}}</span></span>
+<sc-if value="{{c.toAir}}" hint-placeholder-val="{{false}}"><span style="font-size: 12.5px; font-weight: 500; color: var(--amber-text)">Puts the day on air: you approve it twice.</span></sc-if>
+<sc-if value="{{c.waiting}}" hint-placeholder-val="{{true}}"><span style="display: flex; gap: 8px"><button onClick="{{c.approve}}" style="height: 28px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--accent); background: var(--accent); color: #fff; font-size: 13px; font-weight: 500; cursor: pointer">Approve</button><button class="hov" onClick="{{c.reject}}" style="height: 28px; padding: 0 10px; border-radius: 6px; border: 1px solid transparent; background: transparent; color: var(--text-2); font-size: 13px; font-weight: 500; cursor: pointer">Reject</button></span></sc-if>
+</div>
+<sc-if value="{{c.hasApp}}" hint-placeholder-val="{{false}}"><div style="display: flex; flex-direction: column; gap: 4px; padding: 9px 12px; border-radius: 8px; background: var(--surface-2); font-size: 12.5px; color: var(--text-2)"><span style="font-size: 11.5px; color: var(--text-3)">What Claude told Dana</span><span>{{c.app}}</span></div></sc-if>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</main>
+
+<sc-if value="{{asking}}" hint-placeholder-val="{{false}}">
+<div style="position: fixed; inset: 0; background: var(--overlay); display: flex; align-items: center; justify-content: center; z-index: 40">
+<div role="dialog" aria-label="Approve this day for air?" style="width: 420px; max-width: calc(100vw - 32px); background: var(--surface); border: 1px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<span style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 16px; font-weight: 600">Approve this day for air?</span><span style="font-size: var(--fs-sm); color: var(--text-2)">Playlist checker prepared it: AURORA TV SD · Main playlist · Wednesday 18 Nov 2026. Once approved the day is read-only and ready to export. This is your second approval.</span></span>
+<span style="display: flex; justify-content: flex-end; gap: 8px"><button class="hov" onClick="{{cancel}}" style="height: 32px; padding: 0 12px; border-radius: 6px; border: 1px solid transparent; background: transparent; color: var(--text-2); font-weight: 500; cursor: pointer">Cancel</button><button onClick="{{confirmAir}}" style="height: 32px; padding: 0 14px; border-radius: 6px; border: 1px solid var(--accent); background: var(--accent); color: #fff; font-weight: 500; cursor: pointer">Approve for air</button></span>
+</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { dark: null, done: {}, asking: false };
+  }
+  renderVals() {
+    const st = this.state;
+    const dark = st.dark === null ? !!(this.props.dark ?? false) : st.dark;
+    const STATE = { waiting: ['Waiting for you', 'var(--amber-text)', 'var(--amber)'], approved: ['Approved · applied', 'var(--green-text)', 'var(--green)'], rejected: ['Rejected', 'var(--text-3)', 'var(--border-strong)'] };
+    const C = [
+      ['layout', 'DE', 'Dana Ellis', 'AI app', '14:52', 'via Claude on my laptop', 'Layouts › Create and delete: Ask first',
+        'Create a layout', 'DELTA SD · main · “Winter 2027” · 26 Dec 2026 → 31 Mar 2027 · a copy of “Autumn 2026”, every day', false,
+        'It waits for you in 9eye › Agents › Waiting for you. Once it is approved I make its weeks from 26 Dec.'],
+      ['air', 'PC', 'Playlist checker', 'agent', '14:40', 'routine “Check tomorrow”', 'Playlist › Approve: agents always ask',
+        'Approve a day for air', 'AURORA TV SD · Main playlist · Wednesday 18 Nov 2026 · no issues left', true, '']
+    ];
+    const cards = C.map(([id, mark, who, kind, time, via, rule, title, detail, toAir, app]) => {
+      const s = st.done[id] || 'waiting';
+      const [state, stateFg, line] = STATE[s];
+      const isApp = kind === 'AI app';
+      return {
+        mark, who, kind, time, via, rule, title, detail, toAir, app, hasApp: !!app, state, stateFg, line, waiting: s === 'waiting',
+        radius: isApp ? '50%' : '8px', markBg: isApp ? 'var(--surface-3)' : 'var(--m1)', markFg: isApp ? 'var(--text)' : '#fff',
+        approve: () => (toAir ? this.setState({ asking: true }) : this.setState({ done: { ...st.done, [id]: 'approved' } })),
+        reject: () => this.setState({ done: { ...st.done, [id]: 'rejected' } })
+      };
+    });
+    return {
+      rootClass: 'ds' + (dark ? ' dark' : ''), toggleDark: () => this.setState({ dark: !dark }), cards,
+      count: String(cards.filter((c) => c.waiting).length), asking: st.asking,
+      cancel: () => this.setState({ asking: false }), confirmAir: () => this.setState({ asking: false, done: { ...st.done, air: 'approved' } })
+    };
+  }
+}
+</script>
+</body>
+</html>

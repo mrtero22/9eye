@@ -1,0 +1,66 @@
+---
+// Draft for legal review (decision 0022): the bracketed parts are filled before the site goes live.
+import Base from '../layouts/Base.astro';
+import { BRAND, EMAIL } from '../site';
+---
+<Base title={`Privacy Policy | ${BRAND}`} description={`What personal data the ${BRAND} website collects, why, and what you can do about it.`}>
+  <div class="container">
+    <div class="prose">
+      <div class="stack" style="--gap: 16px">
+        <h1 class="h1 h1--page" style="font-size: clamp(36px, 4.4vw, 54px)">Privacy policy</h1>
+        <p class="meta" style="font-size: 15px">Last updated: [DATE]</p>
+        <p class="notice notice--amber" role="note">Draft for legal review. Everything in square brackets must be filled in, and the text checked by a lawyer, before the site goes live.</p>
+        <p>This policy explains what personal data the {BRAND} website collects, why, and what you can do about it. It covers this website only. Data that customers keep in the {BRAND} platform is covered by the customer agreement.</p>
+      </div>
+
+      <section>
+        <h2>Who we are</h2>
+        <p>The website is run by {BRAND}. For anything about your data, write to <a href={`mailto:${EMAIL}`}>{EMAIL}</a>.</p>
+      </section>
+
+      <section>
+        <h2>What we collect</h2>
+        <ul>
+          <li><strong>When you request a demo:</strong> your name, work e-mail, company, country, role, how many channels you run, what kind they are, your current scheduling system and your message.</li>
+          <li><strong>When you contact us:</strong> your name, e-mail, company, the topic and your message.</li>
+          <li><strong>When you visit:</strong> technical data such as your IP address, browser and the pages you open, kept in server logs for security. We also use Cloudflare Web Analytics to count visits and see how fast pages load: it records the page, the site you came from, your browser, device type and country, without cookies and without building a profile of you.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Why we use it</h2>
+        <ul>
+          <li>To answer your request or message, and to set up a demo.</li>
+          <li>To keep the website secure and working.</li>
+          <li>To understand which pages are useful and how fast they load (Cloudflare Web Analytics).</li>
+        </ul>
+        <p>We do this because you asked us to (your consent in the form), or because we have a legitimate interest in running a secure website. [Legal bases to be confirmed for each country we serve.]</p>
+      </section>
+
+      <section>
+        <h2>How long we keep it</h2>
+        <p>Demo requests and messages are kept for [RETENTION PERIOD], then deleted. Server logs are kept for [LOG RETENTION PERIOD].</p>
+      </section>
+
+      <section>
+        <h2>Who we share it with</h2>
+        <p>Only with the services that run the website for us: Cloudflare (hosting and web analytics), Web3Forms (delivers the demo and contact forms to our e-mail) and Google (Gmail, where we receive and answer them). We never sell your data. [If data leaves the country or region where it was collected: where it goes and how it is protected.]</p>
+      </section>
+
+      <section>
+        <h2>Your rights</h2>
+        <p>You can ask to see the data we hold about you, correct it, delete it, or stop us using it. Write to <a href={`mailto:${EMAIL}`}>{EMAIL}</a>. You can also complain to your data protection authority.</p>
+      </section>
+
+      <section id="cookies">
+        <h2>Cookies</h2>
+        <p>The website uses only the cookies it needs to work. Our analytics (Cloudflare Web Analytics) uses no cookies. You can block or delete cookies in your browser settings.</p>
+      </section>
+
+      <section>
+        <h2>Changes to this policy</h2>
+        <p>When this policy changes, we update the date at the top of this page.</p>
+      </section>
+    </div>
+  </div>
+</Base>

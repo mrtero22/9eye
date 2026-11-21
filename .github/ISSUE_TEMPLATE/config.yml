@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security problem
+    url: https://github.com/mrtero22/9eye/security/policy
+    about: Please follow SECURITY.md — use private vulnerability reporting or e-mail studio@9eye.org.
+  - name: Hosting, rollout or custom work
+    url: https://9eye.org/studio
+    about: 9eye Studio helps with a hosted 9eye and automation around it.

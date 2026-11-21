@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Settings · AI access · what AI may do</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.ds{--bg:#fafafa;--surface:#ffffff;--surface-2:#f4f4f5;--surface-3:#e9e9ec;--hairline:#f0f0f2;--border:#e4e4e7;--border-strong:#d4d4d8;--text:#18181b;--text-2:#52525b;--text-3:#6b6b74;--accent:#2563eb;--accent-hover:#1d4ed8;--accent-soft:#eaf1ff;--accent-text:#1d4ed8;--red:#dc2626;--red-soft:#fdeeee;--red-text:#b91c1c;--amber:#d97706;--amber-soft:#fdf4e3;--amber-text:#9a5200;--green:#16a34a;--green-soft:#e8f6ec;--green-text:#15803d;--shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.08);--fs:14px;--fs-sm:13px;--row:32px;--ctl:32px;color-scheme:light;font-family:'Geist',ui-sans-serif,system-ui,sans-serif;font-size:var(--fs);line-height:1.5;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
+.ds.dark{--bg:#0a0a0b;--surface:#111113;--surface-2:#1a1a1d;--surface-3:#232327;--hairline:#19191c;--border:#26262a;--border-strong:#38383e;--text:#f4f4f5;--text-2:#a8a8b0;--text-3:#8b8b94;--accent:#2563eb;--accent-hover:#3b74f0;--accent-soft:#15203a;--accent-text:#93b4ff;--red:#ef4444;--red-soft:#2a1313;--red-text:#fca5a5;--amber:#f59e0b;--amber-soft:#2a2011;--amber-text:#fcd34d;--green:#22c55e;--green-soft:#102419;--green-text:#86efac;--shadow:0 1px 2px rgba(0,0,0,.5),0 8px 24px rgba(0,0,0,.45);color-scheme:dark}
+.ds.compact{--fs:13px;--fs-sm:12px;--row:28px;--ctl:28px}
+.ds *{box-sizing:border-box}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,monospace;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.ds button,.ds input,.ds select{font:inherit;color:inherit}
+.ds button:focus-visible,.ds a:focus-visible,.ds input:focus-visible,.ds select:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.ds button:disabled{cursor:default!important;opacity:.45}
+@media (pointer:coarse){.ctl{min-height:44px}}
+.hov:hover{background:var(--surface-2)!important}
+.tnl:hover{color:var(--text)!important}
+@media (max-width:720px){.tn-links,.tn-hide{display:none!important}}
+a{color:#1d4ed8}a:hover{color:#1e40af}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="min-height: 100vh; background: var(--bg); color: var(--text); display: flex; flex-direction: column">
+
+<header style="display: flex; align-items: center; gap: 8px; height: 52px; padding: 0 16px; border-bottom: 1px solid var(--border); background: var(--surface)">
+<span style="display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 8px; flex: none"><span style="width: 24px; height: 24px; border-radius: 6px; background: var(--text); color: var(--bg); display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px">A</span><span class="tn-hide" style="font-weight: 600">Aurora Media</span></span>
+<span aria-hidden="true" class="tn-hide" style="width: 1px; height: 20px; background: var(--border); margin: 0 8px; flex: none"></span>
+<nav aria-label="Main" class="tn-links" style="display: flex; align-self: stretch; gap: 4px; min-width: 0; overflow-x: auto">
+<a class="tnl" href="the Home mockup (private)" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; color: var(--text-2)">Home</a>
+<a class="tnl" href="the Catalog mockup (private)" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; color: var(--text-2)">Media</a>
+<a class="tnl" href="the Week mockup (private)" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; color: var(--text-2)">Layouts</a>
+<a class="tnl" href="the Scheduling mockup (private)" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; color: var(--text-2)">Scheduling</a>
+<a class="tnl" href="the Playlist mockup (private)" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; color: var(--text-2)">Playlist</a>
+<a class="tnl" href="the Orders mockup (private)" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; color: var(--text-2)">Ads</a>
+<a class="tnl" href="AiWaiting.dc.html" style="display: inline-flex; align-items: center; gap: 6px; padding: 0 10px; text-decoration: none; font-weight: 500; color: var(--text-2)">Agents<span class="mono" style="padding: 0 6px; border-radius: 9px; background: var(--amber-soft); color: var(--amber-text); font-size: 11px; font-weight: 600">2</span></a>
+</nav>
+<span style="flex: 1"></span>
+<button class="ctl hov" aria-pressed="{{dark}}" onClick="{{toggleDark}}" style="height: 32px; padding: 0 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text-2); cursor: pointer; font-weight: 500">Theme</button>
+<span style="width: 28px; height: 28px; border-radius: 50%; background: var(--surface-3); display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600">DE</span>
+</header>
+
+<main style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+<header style="padding: 28px 32px 0; display: flex; flex-direction: column; gap: 6px">
+<h1 style="margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.02em">Settings</h1>
+<span style="color: var(--text-2)">Settings for Aurora Media: channels, people, rules and connections. Changes apply to this company only.</span>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; padding: 20px 32px 32px; align-items: flex-start">
+
+<nav aria-label="Settings sections" style="flex: 1 1 210px; max-width: 232px; min-width: 200px; display: flex; flex-direction: column; gap: 14px">
+<sc-for list="{{navGroups}}" as="g" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 1px">
+<span style="padding: 0 10px 4px; font-size: 12px; font-weight: 500; color: var(--text-3)">{{g.label}}</span>
+<sc-for list="{{g.items}}" as="it" hint-placeholder-count="4">
+<span aria-current="{{it.current}}" style="display: flex; align-items: center; min-height: 32px; padding: 0 10px; border-radius: 7px; background: {{it.bg}}; color: {{it.fg}}; font-size: var(--fs-sm); font-weight: {{it.weight}}">{{it.label}}</span>
+</sc-for>
+</div>
+</sc-for>
+</nav>
+
+<div style="flex: 999 1 720px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+<span style="display: flex; flex-direction: column; line-height: 1.3; min-width: 0"><span style="font-size: 17px; font-weight: 600">AI access</span><span style="font-size: var(--fs-sm); color: var(--text-3)">What Claude, ChatGPT, your own apps and 9eye's agents may do in Aurora Media. A person's role still decides every step.</span></span>
+<span style="flex: 1"></span>
+<sc-if value="{{dirty}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; height: 24px; padding: 0 9px; border-radius: 12px; font-size: 12px; font-weight: 500; background: var(--amber-soft); color: var(--amber-text)">{{changeCount}}</span></sc-if>
+<button class="ctl hov" disabled="{{notDirty}}" onClick="{{discard}}" style="height: var(--ctl); padding: 0 12px; border-radius: 6px; font-weight: 500; cursor: pointer; background: transparent; color: var(--text-2); border: 1px solid transparent">Discard</button>
+<button class="ctl" disabled="{{notDirty}}" onClick="{{save}}" style="height: var(--ctl); padding: 0 16px; border-radius: 6px; font-weight: 500; cursor: pointer; background: var(--accent); color: #ffffff; border: 1px solid var(--accent)">Save</button>
+</div>
+
+<section aria-label="What AI may do" style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px">
+<span style="display: flex; flex-direction: column; gap: 2px; flex: 1 1 260px"><span style="font-weight: 600">What AI may do in Aurora Media</span><span style="font-size: 12.5px; color: var(--text-3)">For every AI app's token and every agent of this company. A token or an agent can be narrower, never wider.</span></span>
+<label style="display: inline-flex; align-items: center; gap: 8px; font-size: var(--fs-sm); color: var(--text-2); cursor: pointer">AI on<button role="switch" aria-checked="{{on}}" aria-label="AI on in Aurora Media" onClick="{{toggleOn}}" style="width: 36px; height: 20px; border-radius: 10px; border: 0; padding: 2px; cursor: pointer; display: flex; justify-content: {{onJ}}; background: {{onT}}"><span style="width: 16px; height: 16px; border-radius: 50%; background: #ffffff; box-shadow: 0 1px 2px rgba(0,0,0,.3)"></span></button></label>
+</div>
+
+<sc-if value="{{isOff}}" hint-placeholder-val="{{false}}"><div role="status" style="padding: 10px 12px; border-radius: 8px; background: var(--amber-soft); color: var(--amber-text); font-size: 12.5px">AI is off in Aurora Media: no token works and no agent runs. The table below is kept for when it is on again.</div></sc-if>
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+<span style="font-size: var(--fs-sm); color: var(--text-2)">Start from</span>
+<div role="group" aria-label="Preset" style="display: flex; padding: 2px; gap: 2px; border-radius: 7px; background: var(--surface-2)">
+<sc-for list="{{presets}}" as="p" hint-placeholder-count="4"><button aria-pressed="{{p.pressed}}" onClick="{{p.pick}}" title="{{p.hint}}" style="height: 28px; padding: 0 12px; border: 0; border-radius: 5px; cursor: pointer; font-weight: 500; font-size: 13px; background: {{p.bg}}; color: {{p.fg}}; box-shadow: {{p.shadow}}">{{p.label}}</button></sc-for>
+</div>
+<span style="font-size: 12.5px; color: var(--text-3)">{{presetText}}</span>
+</div>
+
+<div style="border: 1px solid var(--border); border-radius: 10px; overflow-x: auto; opacity: {{tableOpacity}}">
+<div style="min-width: 900px">
+<div style="display: grid; grid-template-columns: minmax(200px, 1.4fr) repeat(5, minmax(128px, 1fr)); column-gap: 10px; align-items: end; padding: 10px 14px 8px; border-bottom: 1px solid var(--border); background: var(--surface-2)">
+<span style="font-size: 12.5px; color: var(--text-3)">Part</span>
+<sc-for list="{{cols}}" as="c" hint-placeholder-count="5"><span style="display: flex; flex-direction: column; line-height: 1.3"><span style="font-size: 12.5px; font-weight: 600">{{c.label}}</span><span style="font-size: 11.5px; color: var(--text-3)">{{c.hint}}</span></span></sc-for>
+</div>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="6">
+<div style="display: grid; grid-template-columns: minmax(200px, 1.4fr) repeat(5, minmax(128px, 1fr)); column-gap: 10px; align-items: center; min-height: 56px; padding: 8px 14px; border-top: 1px solid var(--hairline)">
+<span style="display: flex; flex-direction: column; line-height: 1.3"><span style="font-weight: 500">{{r.label}}</span><span style="font-size: 12px; color: var(--text-3)">{{r.desc}}</span></span>
+<sc-for list="{{r.cells}}" as="cell" hint-placeholder-count="5">
+<span style="display: flex; flex-direction: column; gap: 3px">
+<sc-if value="{{cell.na}}" hint-placeholder-val="{{false}}"><span style="color: var(--text-3); padding-left: 10px">—</span></sc-if>
+<sc-if value="{{cell.has}}" hint-placeholder-val="{{true}}">
+<span role="radiogroup" aria-label="{{cell.aria}}" style="display: inline-flex; align-self: flex-start; padding: 2px; gap: 2px; border-radius: 7px; background: var(--surface-2)">
+<sc-for list="{{cell.opts}}" as="o" hint-placeholder-count="3"><button role="radio" aria-checked="{{o.on}}" onClick="{{o.pick}}" title="{{o.title}}" style="height: 24px; padding: 0 8px; border: 0; border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: 500; background: {{o.bg}}; color: {{o.fg}}; box-shadow: {{o.shadow}}">{{o.label}}</button></sc-for>
+</span>
+<span style="font-size: 11.5px; color: var(--text-3)">{{cell.note}}</span>
+</sc-if>
+</span>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px 16px; font-size: 12.5px; color: var(--text-2)">
+<span><span style="display: inline-block; padding: 0 6px; border-radius: 4px; background: var(--green-soft); color: var(--green-text); font-weight: 500">Allowed</span> the AI does it after its preview; its app asks its person first, as always.</span>
+<span><span style="display: inline-block; padding: 0 6px; border-radius: 4px; background: var(--amber-soft); color: var(--amber-text); font-weight: 500">Ask first</span> it waits in Agents › Waiting for you until someone who may do it approves it. A day for air: twice.</span>
+<span><span style="display: inline-block; padding: 0 6px; border-radius: 4px; background: var(--surface-3); color: var(--text-2); font-weight: 500">Off</span> the AI does not get that action at all.</span>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 10px 12px; border-radius: 8px; background: var(--surface-2); font-size: 12.5px; color: var(--text-2)">
+<span style="display: flex; align-items: center; gap: 8px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Locked" style="flex: none; color: var(--text-3)"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Never open to AI: people and roles, companies, AI access and tokens, connections and sign-in.</span>
+<span style="display: flex; align-items: center; gap: 8px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; color: var(--text-3)"><rect x="4" y="8" width="16" height="12" rx="2"></rect><path d="M12 8V4H8"></path></svg>9eye's agents always ask first: for them this table decides only what is Off.</span>
+</div>
+</section>
+
+<section aria-label="Tokens" style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px">
+<span style="display: flex; flex-direction: column; gap: 2px; flex: 1 1 260px"><span style="font-weight: 600">Tokens in this company <span class="mono" style="font-weight: 400; color: var(--text-3)">3</span></span><span style="font-size: 12.5px; color: var(--text-3)">Each person makes their own, and may narrow it. "Same as the company" follows this table when it changes.</span></span>
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--text-2)">Longest token life<select style="width: 140px; height: 32px; padding: 0 6px; border-radius: 6px; border: 1px solid var(--border-strong); background: var(--surface); font-size: var(--fs-sm)"><option>30 days</option><option selected>90 days</option><option>180 days</option><option>365 days</option></select></label>
+</div>
+<div style="border: 1px solid var(--border); border-radius: 10px; overflow-x: auto">
+<div style="min-width: 720px">
+<div style="display: grid; grid-template-columns: minmax(180px, 1.2fr) minmax(150px, 1fr) minmax(200px, 1.3fr) 104px 84px; column-gap: 14px; align-items: center; height: 38px; padding: 0 14px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--text-3)"><span>Person</span><span>Token</span><span>Can</span><span>Last used</span><span></span></div>
+<sc-for list="{{tokens}}" as="t" hint-placeholder-count="3">
+<div style="display: grid; grid-template-columns: minmax(180px, 1.2fr) minmax(150px, 1fr) minmax(200px, 1.3fr) 104px 84px; column-gap: 14px; align-items: center; min-height: 50px; padding: 6px 14px; border-top: 1px solid var(--hairline); font-size: var(--fs-sm)">
+<span style="display: flex; flex-direction: column; line-height: 1.3"><span style="font-weight: 500">{{t.person}}</span><span style="font-size: 12px; color: var(--text-3)">{{t.role}}</span></span>
+<span>{{t.name}}</span>
+<span style="display: flex; flex-direction: column; gap: 2px; align-items: flex-start"><span style="display: inline-flex; align-items: center; height: 20px; padding: 0 7px; border-radius: 4px; font-size: 11.5px; font-weight: 500; background: {{t.bg}}; color: {{t.fg}}">{{t.can}}</span><span style="font-size: 11.5px; color: var(--text-3)">{{t.detail}}</span></span>
+<span style="color: var(--text-2)">{{t.used}}</span>
+<span style="display: flex; justify-content: flex-end"><button class="hov" style="height: 28px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--red-text); cursor: pointer; font-size: 12.5px; font-weight: 500">Revoke</button></span>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":1240}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const drafts = this.preset('drafts');
+    this.state = { dark: null, on: true, savedOn: true, table: drafts, saved: drafts };
+  }
+  // part, label, what it holds, and which actions it has (null = not applicable)
+  parts() {
+    return [
+      ['media', 'Media', 'Categories, titles, items, rotation lists', { read: 1, change: 1, create: 1, approve: null, export: null }],
+      ['layouts', 'Layouts', 'Layouts, block types, break lists', { read: 1, change: 1, create: 1, approve: null, export: null }],
+      ['scheduling', 'Scheduling', 'Plans and their airings', { read: 1, change: 1, create: 1, approve: 'Confirm a plan', export: null }],
+      ['playlist', 'Playlist', 'Weeks and day playlists', { read: 1, change: 1, create: 1, approve: 'Approve or reopen a day for air', export: 'A day’s playout file' }],
+      ['ads', 'Ads', 'Clients, deals, campaigns, bookings', { read: 1, change: 1, create: 1, approve: 'Confirm a campaign', export: null }],
+      ['channels', 'Channels', 'New channels, channel settings, break positions', { read: 1, change: 1, create: 1, approve: null, export: null }]
+    ];
+  }
+  preset(id) {
+    const t = {};
+    for (const [key, , , has] of this.parts()) {
+      const row = {};
+      for (const col of ['read', 'change', 'create', 'approve', 'export']) {
+        if (has[col] === null) continue;
+        if (id === 'read') row[col] = col === 'read' ? 'on' : 'off';
+        else if (id === 'full') row[col] = 'on';
+        else row[col] = col === 'read' ? 'on' : ((key === 'playlist' || key === 'ads') && (col === 'change' || col === 'create') ? 'on' : 'off');
+      }
+      t[key] = row;
+    }
+    return t;
+  }
+  presetOf(table) {
+    const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+    for (const id of ['read', 'drafts', 'full']) if (same(table, this.preset(id))) return id;
+    return 'custom';
+  }
+  renderVals() {
+    const st = this.state;
+    const dark = st.dark === null ? !!(this.props.dark ?? false) : st.dark;
+    const seg = (on) => ({ bg: on ? 'var(--surface)' : 'transparent', fg: on ? 'var(--text)' : 'var(--text-2)', shadow: on ? '0 1px 2px rgba(0,0,0,.12)' : 'none' });
+    const NAV = [
+      ['Organisation', [['Overview'], ['Companies'], ['Users'], ['Roles'], ['AI access', true], ['Activity']]],
+      ['Channels', [['Channels'], ['Related channels']]],
+      ['Scheduling rules', [['Break positions'], ['Time windows']]]
+    ];
+    const navGroups = NAV.map(([label, items]) => ({ label, items: items.map(([l, on]) => ({ label: l, current: on ? 'page' : 'false', bg: on ? 'var(--accent-soft)' : 'transparent', fg: on ? 'var(--accent-text)' : 'var(--text)', weight: on ? '600' : '400' })) }));
+
+    const COLS = [['read', 'Read', 'Look things up'], ['change', 'Change', 'What exists'], ['create', 'Create and delete', 'New things, or take away'], ['approve', 'Approve', 'Confirm, or put on air'], ['export', 'Export', 'Files out of 9eye']];
+    const LOOK = {
+      on: ['Allowed', 'var(--green-soft)', 'var(--green-text)'],
+      ask: ['Ask first', 'var(--amber-soft)', 'var(--amber-text)'],
+      off: ['Off', 'var(--surface)', 'var(--text-2)']
+    };
+    const set = (part, col, v) => this.setState({ table: { ...st.table, [part]: { ...st.table[part], [col]: v } } });
+    const rows = this.parts().map(([key, label, desc, has]) => ({
+      label, desc,
+      cells: COLS.map(([col, colLabel]) => {
+        if (has[col] === null) return { na: true, has: false, opts: [], note: '', aria: '' };
+        const value = st.table[key][col];
+        const choices = col === 'read' ? ['on', 'off'] : ['on', 'ask', 'off'];
+        return {
+          na: false, has: true, aria: label + ', ' + colLabel,
+          note: typeof has[col] === 'string' ? has[col] : (value === 'ask' && col === 'approve' && key === 'playlist' ? 'asked twice' : ''),
+          opts: choices.map((v) => {
+            const on = value === v;
+            const [l, bg, fg] = LOOK[v];
+            return { label: v === 'on' ? 'On' : v === 'ask' ? 'Ask' : 'Off', title: l, on, bg: on ? bg : 'transparent', fg: on ? fg : 'var(--text-3)', shadow: on ? '0 1px 2px rgba(0,0,0,.12)' : 'none', pick: () => set(key, col, v) };
+          })
+        };
+      })
+    }));
+    const current = this.presetOf(st.table);
+    const PRESETS = [
+      ['read', 'Read only', 'Look things up everywhere; change nothing.'],
+      ['drafts', 'Drafts', 'Read everything; change drafts of Playlist and Ads (weeks, days, bookings). As “Read and change drafts” today.'],
+      ['full', 'Full', 'Everything Allowed: all that a person with the same role can do.'],
+      ['custom', 'Custom', 'Your own choice, cell by cell.']
+    ];
+    const presets = PRESETS.map(([id, label, hint]) => ({ label, hint, pressed: current === id, ...seg(current === id), pick: () => { if (id !== 'custom') this.setState({ table: this.preset(id) }); } }));
+    const presetText = PRESETS.find((p) => p[0] === current)[2];
+    let changes = st.on !== st.savedOn ? 1 : 0;
+    for (const k of Object.keys(st.table)) for (const c of Object.keys(st.table[k])) if (st.table[k][c] !== st.saved[k][c]) changes++;
+    const savedPreset = this.presetOf(st.saved);
+    const presetName = { read: 'Read only', drafts: 'Drafts', full: 'Full', custom: 'Custom' }[savedPreset];
+    const tokens = [
+      ['Dana Ellis', 'Company admin', 'Claude on my laptop', 'Same as the company', presetName + ' · follows this table', '2 minutes ago', 'var(--accent-soft)', 'var(--accent-text)'],
+      ['Lena Park', 'Traffic operator', 'Scheduling helper', 'Custom', 'Scheduling and Playlist: change; the rest read', '5 hours ago', 'var(--amber-soft)', 'var(--amber-text)'],
+      ['Omar Haddad', 'Sales', 'ChatGPT', 'Read only', 'narrower than the company', 'Yesterday', 'var(--surface-2)', 'var(--text-2)']
+    ].map(([person, role, name, can, detail, used, bg, fg]) => ({ person, role, name, can, detail, used, bg, fg }));
+    return {
+      rootClass: 'ds' + (dark ? ' dark' : ''), dark, toggleDark: () => this.setState({ dark: !dark }),
+      navGroups, cols: COLS.map(([, label, hint]) => ({ label, hint })), rows, presets, presetText,
+      on: st.on, isOff: !st.on, toggleOn: () => this.setState({ on: !st.on }), onJ: st.on ? 'flex-end' : 'flex-start', onT: st.on ? 'var(--accent)' : 'var(--border-strong)',
+      tableOpacity: st.on ? '1' : '0.5',
+      dirty: changes > 0, notDirty: changes === 0, changeCount: changes === 1 ? '1 change' : changes + ' changes',
+      discard: () => this.setState({ table: st.saved, on: st.savedOn }), save: () => this.setState({ saved: st.table, savedOn: st.on }),
+      tokens
+    };
+  }
+}
+</script>
+</body>
+</html>

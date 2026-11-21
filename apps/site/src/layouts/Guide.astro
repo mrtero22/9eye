@@ -1,0 +1,48 @@
+---
+// A long-form guide (/guides/<slug>): breadcrumbs, headline, date, the text, the other guides and a demo CTA.
+// Title, summary and date come from GUIDES in site.ts; the page passes its own <title> and description.
+import Base from './Base.astro';
+import { BRAND, GUIDES } from '../site';
+import { article, breadcrumbs } from '../seo';
+
+interface Props { slug: (typeof GUIDES)[number]['slug']; title: string; description: string }
+const { slug, title, description } = Astro.props;
+const guide = GUIDES.find((g) => g.slug === slug)!;
+const path = `/guides/${slug}`;
+const others = GUIDES.filter((g) => g.slug !== slug);
+const date = new Date(`${guide.published}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'Guides', path: '/guides' }, { name: guide.short, path }];
+---
+<Base
+  title={title}
+  description={description}
+  jsonLd={[article(Astro.site, { headline: guide.title, description, path, published: guide.published }), breadcrumbs(Astro.site, crumbs)]}
+>
+  <div class="container">
+    <article class="prose">
+      <div class="stack" style="--gap: 16px">
+        <nav aria-label="Breadcrumbs">
+          <ol class="crumbs">
+            {crumbs.map((c, i) => <li>{i < crumbs.length - 1 ? <a href={c.path}>{c.name}</a> : <span aria-current="page">{c.name}</span>}</li>)}
+          </ol>
+        </nav>
+        <h1 class="h1 h1--page" style="font-size: clamp(34px, 4.2vw, 50px)">{guide.title}</h1>
+        <p class="meta" style="font-size: 15px">{BRAND} guides · <time datetime={guide.published}>{date}</time></p>
+      </div>
+      <slot />
+      <section>
+        <h2>More guides</h2>
+        <ul>
+          {others.map((g) => <li><a href={`/guides/${g.slug}`}>{g.title}</a> — {g.summary}</li>)}
+        </ul>
+      </section>
+    </article>
+  </div>
+
+  <section class="container section">
+    <div class="cta cta--light">
+      <div><h2>See it on a channel like yours.</h2><p>{BRAND} is broadcast scheduling and traffic software with AI agents built in. Early access starts with a demo.</p></div>
+      <a class="btn btn--primary" href="/demo">Request a demo</a>
+    </div>
+  </section>
+</Base>

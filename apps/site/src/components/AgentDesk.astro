@@ -1,0 +1,68 @@
+---
+// The live agent desk (home page hero). First paint shows the first scenario waiting for approval;
+// desk.ts takes over in the browser. Sample data on a fictional channel.
+import '../styles/desk.css';
+import { SCENARIOS, initialState, view } from '../scripts/desk-model';
+
+const v = view(initialState(true), true);
+---
+<div data-desk>
+  <div class="tries">
+    <span style="font-size: 14px; font-weight: 500; margin-right: 4px">Try a live event</span>
+    {SCENARIOS.map((s, i) => (
+      <button type="button" class="try" data-try={i} aria-pressed={String(i === v.pressed)}>
+        <i style={`background:${s.color}`}></i>{s.tryLabel}
+      </button>
+    ))}
+    <span class="spacer"></span>
+    <span class="meta" style="color: var(--night-text-2)">Sample data · agents in preview</span>
+  </div>
+
+  <div class="desk-frame" role="region" aria-label="Agent desk: a live demo of AI agents scheduling a TV channel, with sample data">
+    <div class="desk">
+      <div class="dk-browser" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="dk-appbar">
+        <span class="dk-org"><i>T</i>Tessaline Media</span>
+        <span class="dk-sep"></span>
+        <span class="dk-tabs"><span>Home</span><span>Catalog</span><span>Templates</span><span>Scheduling</span><span>Playlist</span><span class="on">Agents</span></span>
+        <span class="spacer"></span>
+        <span class="dk-avatar">AR</span>
+      </div>
+      <div class="dk-head">
+        <div class="dk-head__title">
+          <span class="dk-title">Agents<span class="dk-badge" style="background:#eaf1ff;color:#1d4ed8">Preview</span></span>
+          <span class="dk-ctx"><b>Tessa One</b><span style="color:#a1a1aa">·</span><span data-part="summary">{v.summary}</span></span>
+        </div>
+        <span class="spacer"></span>
+        <span class="dk-btn">Skills</span>
+        <span class="dk-btn">Connect via MCP</span>
+        <span class="dk-btn dk-btn--primary">New agent</span>
+      </div>
+      <div class="dk-body">
+        <div class="dk-card dk-list" data-part="list" set:html={v.list} />
+        <div class="dk-card dk-run">
+          <div class="dk-run__head" data-part="run-head" set:html={v.runHead} />
+          <ol class="dk-steps" data-part="steps" set:html={v.steps.join('')} />
+          <div class="dk-changes" data-part="changes" set:html={v.changes} />
+        </div>
+        <div class="dk-side">
+          <div class="dk-card dk-pad">
+            <span class="dk-air"><i class="blink"></i><b>On air</b><span>Tessa One</span><span class="mono" data-part="air-tc">{v.airTc}</span></span>
+            <div class="dk-bar"><span data-part="air-bar" set:html={v.airBar} /><span class="dk-playhead" data-part="playhead" style={`left:${v.playhead}`}></span></div>
+            <span class="dk-axis"><span>17:00</span><span>19:00</span><span>21:00</span></span>
+            <span class="dk-note" data-part="air-note" set:html={v.airNote} />
+          </div>
+          <div class="dk-card dk-pad" data-part="metric" set:html={v.metric} />
+          <div class="dk-card dk-pad dk-activity">
+            <b>Activity</b>
+            <div class="dk-log" data-part="log" set:html={v.log.join('')} />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import '../scripts/desk.ts';
+</script>

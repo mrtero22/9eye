@@ -1,0 +1,262 @@
+/*
+ * 9eye design tokens — the single source of every colour, size and density (decisions 0003, 0009).
+ * Theme and density are classes on <html>: .ds (always), .dark, .compact.
+ * Pages never use colours or sizes outside these tokens (see .claude/skills/9eye-ui).
+ */
+
+@import 'tailwindcss';
+
+.ds {
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --surface-2: #f4f4f5;
+  --surface-3: #e9e9ec;
+  --hairline: #f0f0f2;
+  --border: #e4e4e7;
+  --border-strong: #d4d4d8;
+  --text: #18181b;
+  --text-2: #52525b;
+  --text-3: #6b6b74;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-soft: #eaf1ff;
+  --accent-text: #1d4ed8;
+  --red: #dc2626;
+  --red-soft: #fdeeee;
+  --red-text: #b91c1c;
+  --amber: #d97706;
+  --amber-soft: #fdf4e3;
+  --amber-text: #9a5200;
+  --green: #16a34a;
+  --green-soft: #e8f6ec;
+  --green-text: #15803d;
+  --ct-program: #64748b;
+  --ct-program-soft: #eef1f5;
+  --ct-commercial: #ea580c;
+  --ct-commercial-soft: #fdefe6;
+  --ct-promo: #0d9488;
+  --ct-promo-soft: #e3f3f1;
+  --ct-filler: #a1a1aa;
+  --ct-filler-soft: #f1f1f3;
+  --ct-ident: #7c3aed;
+  --ct-ident-soft: #f1ecfd;
+  --ct-jingle: #db2777;
+  --ct-jingle-soft: #fcecf3;
+  /* agent marks (decision 0024): white letters on these */
+  --agent-1: #2563eb;
+  --agent-2: #7c3aed;
+  --agent-3: #0891b2;
+  --agent-4: #c2410c;
+  --agent-5: #15803d;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.08);
+  --on-accent: #ffffff;
+  --overlay: rgba(24, 24, 27, 0.28);
+  --fs: 14px;
+  --fs-sm: 13px;
+  --row: 32px;
+  --ctl: 32px;
+  color-scheme: light;
+}
+
+.ds.dark {
+  --bg: #0a0a0b;
+  --surface: #111113;
+  --surface-2: #1a1a1d;
+  --surface-3: #232327;
+  --hairline: #19191c;
+  --border: #26262a;
+  --border-strong: #38383e;
+  --text: #f4f4f5;
+  --text-2: #a8a8b0;
+  --text-3: #8b8b94;
+  --accent: #2563eb;
+  --accent-hover: #3b74f0;
+  --accent-soft: #15203a;
+  --accent-text: #93b4ff;
+  --red: #ef4444;
+  --red-soft: #2a1313;
+  --red-text: #fca5a5;
+  --amber: #f59e0b;
+  --amber-soft: #2a2011;
+  --amber-text: #fcd34d;
+  --green: #22c55e;
+  --green-soft: #102419;
+  --green-text: #86efac;
+  --ct-program: #94a3b8;
+  --ct-program-soft: #1a1f28;
+  --ct-commercial: #f97316;
+  --ct-commercial-soft: #2c1b10;
+  --ct-promo: #14b8a6;
+  --ct-promo-soft: #0e2523;
+  --ct-filler: #71717a;
+  --ct-filler-soft: #1b1b1e;
+  --ct-ident: #a78bfa;
+  --ct-ident-soft: #211a34;
+  --ct-jingle: #f472b6;
+  --ct-jingle-soft: #2b1521;
+  --agent-1: #3b6fd8;
+  --agent-2: #7c5bd6;
+  --agent-3: #0e8fa6;
+  --agent-4: #c2551c;
+  --agent-5: #1f8a47;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 8px 24px rgba(0, 0, 0, 0.45);
+  --overlay: rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+}
+
+.ds.compact {
+  --fs: 13px;
+  --fs-sm: 12px;
+  --row: 28px;
+  --ctl: 28px;
+}
+
+/* Only token colours exist as utilities; the default palette and type scale are switched off. */
+@theme {
+  --color-*: initial;
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-hairline: var(--hairline);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text: var(--text);
+  --color-text-2: var(--text-2);
+  --color-text-3: var(--text-3);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-text: var(--accent-text);
+  --color-on-accent: var(--on-accent);
+  --color-overlay: var(--overlay);
+  --color-red: var(--red);
+  --color-red-soft: var(--red-soft);
+  --color-red-text: var(--red-text);
+  --color-amber: var(--amber);
+  --color-amber-soft: var(--amber-soft);
+  --color-amber-text: var(--amber-text);
+  --color-green: var(--green);
+  --color-green-soft: var(--green-soft);
+  --color-green-text: var(--green-text);
+  --color-agent-1: var(--agent-1);
+  --color-agent-2: var(--agent-2);
+  --color-agent-3: var(--agent-3);
+  --color-agent-4: var(--agent-4);
+  --color-agent-5: var(--agent-5);
+  --color-transparent: transparent;
+  --color-white: #ffffff;
+
+  --text-*: initial;
+  --text-title: 22px;
+  --text-title--line-height: 1.3;
+  --text-section: 16px;
+  --text-section--line-height: 1.4;
+  --text-body: var(--fs);
+  --text-small: var(--fs-sm);
+  --text-meta: 12px;
+  --text-tiny: 11px;
+
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, SFMono-Regular, monospace;
+
+  --spacing-ctl: var(--ctl);
+  --spacing-row: var(--row);
+
+  --radius-badge: 4px;
+  --radius-ctl: 6px;
+  --radius-item: 8px;
+  --radius-card: 10px;
+  --radius-panel: 12px;
+
+  --shadow-pop: var(--shadow);
+  --shadow-knob: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-seg: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+/* The agent of a page (ui/agents.tsx SideSheet): on wide screens the page makes room for it. */
+@media (min-width: 1100px) {
+  body.with-sheet main {
+    padding-right: 400px;
+  }
+}
+
+@layer base {
+  html,
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: var(--fs);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+    color: inherit;
+  }
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  [role='menuitem']:focus-visible,
+  [role='menuitemcheckbox']:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+  button:disabled {
+    cursor: default !important;
+    opacity: 0.45;
+  }
+  a {
+    color: var(--accent-text);
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--text-3);
+  }
+}
+
+@utility mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* Hover fill shared by every quiet control. */
+@utility hov {
+  &:hover:not(:disabled) {
+    background: var(--surface-2);
+  }
+}
+
+/* Touch screens: controls grow to 44 px (0003). */
+@media (pointer: coarse) {
+  .ctl {
+    min-height: 44px;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  .print-full {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  html,
+  body {
+    background: #ffffff;
+  }
+}

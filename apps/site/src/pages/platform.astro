@@ -1,0 +1,148 @@
+---
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+import Icon from '../components/Icon.astro';
+import Shot from '../components/Shot.astro';
+import { BRAND } from '../site';
+import { faqPage, type Faq as FaqItem } from '../seo';
+
+const TABS = [
+  { id: 'orders', name: 'Orders', text: 'Every programme and promo order on a channel at a glance: what airs this week, how far each series has run, and what needs attention.' },
+  { id: 'order', name: 'Series placement', text: 'One series, one week: first airings, their repeats and the free blocks, with the episodes beside it.' },
+  { id: 'templates', name: 'Week templates', text: 'Draw a channel’s week once — blocks, linked ad breaks and time ranges — and repeat it in a click.' },
+] as const;
+
+const FEATURES = [
+  ['clock', 'Frame-accurate time', 'Every time is kept in frames at the channel’s own rate, from 23.976 to 59.94, drop-frame timecode included.'],
+  ['globe', 'Any region, any week', 'Broadcast day start, first weekday and time zone are set per channel, so each feed runs on local time.'],
+  ['lists', 'Programmes and breaks together', 'A main playlist and an ads playlist, linked at exact break positions, so changes in one show up in the other.'],
+  ['repeat', 'Series that run themselves', 'The next episode in the next slot, repeats days later, and every airing shifted at once when plans change.'],
+  ['tag', 'Ads, promos and fillers', 'Commercials and promos placed with clash codes kept apart; rotation lists keep idents and fillers fresh.'],
+  ['checkCircle', 'Checked before air', 'Gaps, overlaps, missing media and expired rights are flagged before the playlist is exported.'],
+  ['plug', 'Your MAM, your playout', 'Adapters connect the media asset management and playout automation you already run, without locking you in.'],
+  ['building', 'Many channels, many teams', 'Each company’s data kept apart, with roles set by module, action and channel.'],
+] as const;
+
+const SOLUTIONS = [
+  ['sol-series', 'Series and entertainment', 'Episodes split at break points, repeats and sister channels.'],
+  ['sol-film', 'Film', 'Long blocks, with break points taken from each title’s segments.'],
+  ['sol-music', 'Music and clips', 'Rotation lists that keep artists and categories apart.'],
+  ['sol-news', 'News', 'Fixed bulletins and last-minute changes without losing the day.'],
+  ['sol-live', 'Sport and live', 'Live events and overruns, with the rest of the schedule kept in step.'],
+  ['sol-kids', 'Kids', 'Air windows keep every item in the hours it may be shown.'],
+  ['sol-fast', 'FAST and streaming', 'Always-on channels with programme guides for streaming platforms.', '/fast-channel-scheduling'],
+  ['sol-public', 'Public media', 'Schedules with little or no advertising, on the same core.'],
+];
+
+const FAQ: FaqItem[] = [
+  { q: 'What is the difference between traffic and scheduling?', a: `Scheduling plans the programmes: templates, series, films and their repeats. Traffic handles what fills the breaks: commercials, promos and fillers, and their reconciliation after air. ${BRAND} does both in one system.` },
+  { q: 'Does it work with my playout automation and MAM?', a: `${BRAND} connects through adapters. Playlists export as BXF and in common automation formats. Tell us which systems you run when you request a demo, and we confirm the fit before you start.` },
+  { q: 'Which frame rates and regions are supported?', a: '23.976, 24, 25, 29.97 drop-frame, 30, 50 and 59.94 drop-frame. Each channel has its own frame rate, time zone, broadcast day start and first weekday.' },
+  { q: 'Can we bring our existing catalog and schedules?', a: 'Yes. During early access we import your catalog and templates with you, from spreadsheets or exports of your current system.' },
+  { q: 'Is it cloud software or on-premise?', a: 'It runs in the cloud. If you need a dedicated cloud or your own data centre, tell us when you request a demo.' },
+];
+---
+<Base
+  title={`Broadcast Scheduling Software, Catalog to As-Run | ${BRAND}`}
+  description="Broadcast scheduling software: week templates, orders, ad and promo placement, frame-accurate playlists, BXF export and as-run for linear and FAST channels."
+  current="platform"
+  jsonLd={[faqPage(FAQ)]}
+>
+  <section class="container">
+    <div class="page-hero">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+        <span class="chip chip--accent"><span class="chip__dot"></span>Broadcast scheduling software</span>
+        <span class="mono meta" aria-hidden="true">06:00:00:00 → 05:59:59:24</span>
+      </div>
+      <h1 class="h1 h1--page">Broadcast scheduling and traffic software for every TV channel.</h1>
+      <p class="lead lead--lg" style="max-width: 760px">Catalog, week templates, programme orders, ad and promo placement, frame-accurate playlists, playout export and as-run reconciliation — one platform for linear broadcast, FAST and streaming channels, with AI agents built in.</p>
+      <div class="btn-row" style="padding-top: 8px">
+        <a class="btn btn--primary" href="/demo">Request a demo</a>
+        <a class="btn btn--secondary" href="/#agents">Meet the AI agents</a>
+      </div>
+    </div>
+    <figure class="shot" style="margin: 64px 0 0">
+      <Shot name="templates" priority />
+    </figure>
+  </section>
+
+  <section id="tour" class="container section" data-tabs>
+    <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px">
+      <div class="section-head" style="flex: 1 1 520px; max-width: 680px">
+        <h2 class="h2">See the scheduling software at work.</h2>
+        <p class="lead" style="min-height: 56px" data-part="caption">{TABS[0].text}</p>
+      </div>
+      <div class="seg" role="tablist" aria-label="Product screens">
+        {TABS.map((t, i) => (
+          <button type="button" role="tab" id={`tab-${t.id}`} aria-controls={`panel-${t.id}`} aria-selected={String(i === 0)} tabindex={i === 0 ? 0 : -1} data-caption={t.text}>{t.name}</button>
+        ))}
+      </div>
+    </div>
+    {TABS.map((t, i) => (
+      <figure class="shot" role="tabpanel" id={`panel-${t.id}`} aria-labelledby={`tab-${t.id}`} hidden={i !== 0} style="margin: 40px 0 0">
+        <Shot name={t.id} />
+      </figure>
+    ))}
+  </section>
+
+  <section id="features" class="container section">
+    <div class="section-head">
+      <h2 class="h2">Traffic and scheduling tools for the people who run the channel.</h2>
+      <p class="lead">Schedulers, traffic managers and playout operators work on one plan, each with the tools for their part of it.</p>
+    </div>
+    <div class="grid" style="margin-top: 48px">
+      {FEATURES.map(([icon, title, text]) => (
+        <article class="card"><span class="icon-box"><Icon name={icon} /></span><h3 class="h3" style="font-size: 17px">{title}</h3><p>{text}</p></article>
+      ))}
+    </div>
+    <a class="link-arrow" href="/tv-traffic-software" style="margin-top: 24px">How traffic works in {BRAND}: ads, promos and breaks <span aria-hidden="true">→</span></a>
+  </section>
+
+  <section id="solutions" class="container section">
+    <div class="section-head">
+      <h2 class="h2">Scheduling software for every kind of TV channel.</h2>
+      <p class="lead">Linear broadcast, FAST and streaming channels share one core. Series, film, music, news, sport, kids and public channels differ only in settings and rules — never a separate product.</p>
+    </div>
+    <ul class="tiles">
+      {SOLUTIONS.map(([id, title, text, href]) => <li id={id}><h3>{href ? <a href={href}>{title}</a> : title}</h3><p>{text}</p></li>)}
+    </ul>
+  </section>
+
+  <section class="container section">
+    <div class="cta cta--light">
+      <div><h2>Bring one channel. See it running on {BRAND}.</h2><p>Early access starts with a demo on a channel like yours, then a trial on your own catalog and templates.</p></div>
+      <a class="btn btn--primary" href="/demo">Request a demo</a>
+    </div>
+  </section>
+
+  <Faq title="Platform questions" items={FAQ} />
+</Base>
+
+<script>
+  // Tabs: click or arrow keys switch the screenshot and its caption.
+  const root = document.querySelector<HTMLElement>('[data-tabs]');
+  if (root) {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const caption = root.querySelector<HTMLElement>('[data-part="caption"]')!;
+    const select = (tab: HTMLButtonElement) => {
+      for (const t of tabs) {
+        const on = t === tab;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')!)!.hidden = !on;
+      }
+      caption.textContent = tab.dataset.caption ?? '';
+    };
+    root.addEventListener('click', (e) => {
+      const tab = (e.target as HTMLElement).closest<HTMLButtonElement>('[role="tab"]');
+      if (tab) select(tab);
+    });
+    root.addEventListener('keydown', (e) => {
+      const i = tabs.indexOf(document.activeElement as HTMLButtonElement);
+      if (i < 0 || (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft')) return;
+      const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+      next.focus();
+      select(next);
+    });
+  }
+</script>

@@ -1,0 +1,89 @@
+---
+import Guide from '../../layouts/Guide.astro';
+import { BRAND } from '../../site';
+---
+<Guide
+  slug="as-run-reconciliation"
+  title={`As-Run Reconciliation: Checking What Aired | ${BRAND}`}
+  description="How TV channels match the as-run log against the planned schedule, which differences matter, how make-goods work and how to reconcile faster."
+>
+  <section>
+    <p>No broadcast day airs exactly as planned. A match runs into extra time, news breaks in, a commercial arrives too late, an operator swaps a promo. The plan that traffic sent to playout and what viewers actually saw drift apart, a little or a lot.</p>
+    <p><strong>As-run reconciliation</strong> is how a channel closes that gap: it compares the <strong>as-run log</strong> — playout automation’s record of what actually aired — with the planned schedule, explains every difference, and decides what to do about it before advertisers are invoiced and reports go out.</p>
+  </section>
+
+  <section>
+    <h2>What is in an as-run log</h2>
+    <p>The automation writes one line per event that played, usually including:</p>
+    <ul>
+      <li>the event or house ID, and the title of the material;</li>
+      <li>the planned start and the <strong>actual</strong> start, to the frame;</li>
+      <li>the planned and actual duration;</li>
+      <li>a status: played, skipped, cut short, or failed;</li>
+      <li>often the secondary events too, such as logos and graphics.</li>
+    </ul>
+    <p>It arrives as a file once a day, or continuously when traffic and automation are connected through a standard such as <a href="/guides/bxf-explained">BXF</a>.</p>
+  </section>
+
+  <section>
+    <h2>Why reconciliation matters</h2>
+    <ul>
+      <li><strong>Advertising revenue.</strong> Advertisers pay for spots that aired as booked. A spot that missed air, or aired outside its booked time, cannot be invoiced as if it had run.</li>
+      <li><strong>Proof of performance.</strong> Agencies ask for confirmation of what aired and when.</li>
+      <li><strong>Rights and licensing.</strong> Films and series are often licensed for a number of runs; the as-run is the count that counts.</li>
+      <li><strong>Rules on air.</strong> Advertising minutes per hour, protected hours for children’s programmes, and time windows for certain products are checked against what actually aired, not against the plan.</li>
+      <li><strong>An accurate guide.</strong> Programme guides and catch-up services are corrected from the as-run.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Reconciliation, step by step</h2>
+    <ol>
+      <li><strong>Collect the as-run.</strong> Import the day’s log from automation, or receive it event by event.</li>
+      <li><strong>Match each aired event to a planned one.</strong> First by event ID; where IDs are missing or changed, by material ID and a time window around the planned start.</li>
+      <li><strong>Classify the differences.</strong> Aired as planned; aired early or late beyond the tolerance; cut short; not aired; aired but never planned; replaced by other material.</li>
+      <li><strong>Decide what each difference means.</strong> Accept it, schedule a make-good, or pass a credit to sales and billing. Programme differences may need a note for rights or the guide.</li>
+      <li><strong>Close the day.</strong> Sign it off, so billing, sales and reporting work from the confirmed version.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Tolerance: which differences matter</h2>
+    <p>A spot that starts two seconds after its planned time has still aired in its break. Each channel sets a <strong>tolerance</strong>: differences within it are matched automatically, and only those outside it go to a person. Without a sensible tolerance, a team spends its morning confirming hundreds of lines that were fine.</p>
+    <p>Durations are worth a separate check: a commercial that aired for 20 seconds of its 30 has not aired as booked, even if it started on time.</p>
+  </section>
+
+  <section>
+    <h2>Make-goods and credits</h2>
+    <p>When a booked spot misses air or airs outside the time it was sold for, the channel usually offers a <strong>make-good</strong>: a replacement airing of equal value, agreed with the advertiser. The make-good is a new booking like any other, so the usual traffic rules still apply — clash codes, break lengths, the product’s time windows. Where no suitable slot is left, the advertiser gets a credit instead.</p>
+  </section>
+
+  <section>
+    <h2>Why plan and as-run disagree, and how to prevent it</h2>
+    <div class="scroll-x"><table>
+      <thead><tr><th scope="col">Cause</th><th scope="col">What it looks like</th><th scope="col">Prevention</th></tr></thead>
+      <tbody>
+        <tr><td>Live overrun</td><td>Everything after the event airs late; spots dropped at the end of the day</td><td>Re-flow the day while it is on air, and re-place spots that no longer fit</td></tr>
+        <tr><td>Missing or late media</td><td>An item skipped, or replaced by a filler</td><td>Check media availability before the playlist is exported</td></tr>
+        <tr><td>Manual changes in playout</td><td>Unplanned events in the as-run</td><td>Make late changes in traffic, so plan and playout stay one</td></tr>
+        <tr><td>Timing mismatch</td><td>Every event a few seconds off, growing through the day</td><td>Agree frame rate, <a href="/guides/drop-frame-timecode">drop-frame</a> and time zone on both sides</td></tr>
+        <tr><td>ID mismatch</td><td>Events that aired but cannot be matched</td><td>Use the same house IDs in traffic, playout and the media library</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Making reconciliation faster</h2>
+    <ul>
+      <li>Match automatically, and show people only the exceptions.</li>
+      <li>Give every difference a reason — “overrun of the live match”, “media missing” — so the decision is quick and the history is useful.</li>
+      <li>Propose make-goods in breaks that still respect the booking’s rules.</li>
+      <li>Reconcile every day, not at the end of the month, while people still remember what happened.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>As-run reconciliation in {BRAND}</h2>
+    <p>{BRAND} reconciles the as-run log from playout against the plan, with a tolerance set per channel and every difference explained. Because programmes and breaks are planned in the same system, a live overrun is visible both in the programme schedule and in the spots it pushed out. With the AI agents, a reconciliation agent (in preview) matches the day, explains each difference and lists the spots that need a make-good — for a person to approve. Read more about <a href="/tv-traffic-software">{BRAND} TV traffic software</a> and the <a href="/ai-agents">AI agents</a>.</p>
+  </section>
+</Guide>

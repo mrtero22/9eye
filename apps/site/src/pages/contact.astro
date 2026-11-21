@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+import FormResult from '../components/FormResult.astro';
+import { BRAND, EMAIL, WHATSAPP, WHATSAPP_URL } from '../site';
+---
+<Base title={`Contact | ${BRAND}`} description={`Questions about ${BRAND}, partnerships or press: write by e-mail or WhatsApp, or use the contact form.`}>
+  <div class="container split" style="padding-top: clamp(56px, 7vw, 72px); gap: 56px">
+    <div class="stack" style="--gap: 24px; flex-basis: 380px">
+      <h1 class="h1 h1--page">Contact us</h1>
+      <p class="lead">Questions about {BRAND}, partnerships or press — write to us by e-mail or WhatsApp, or use the form.</p>
+      <div class="contact-list">
+        <div><h2>Sales and demos</h2><p>See {BRAND} on a channel like yours. <a href="/demo">Request a demo</a></p></div>
+        <div><h2>E-mail</h2><p><a href={`mailto:${EMAIL}`}>{EMAIL}</a></p></div>
+        <div><h2>WhatsApp</h2><p><a href={WHATSAPP_URL}>{WHATSAPP}</a></p></div>
+      </div>
+      <p class="meta" style="margin: 0; font-size: 14px">We use these details only to answer your message. See the <a href="/privacy">privacy policy</a>.</p>
+    </div>
+
+    <div class="form-box" data-form-box style="flex-basis: 520px">
+      <form class="form" data-subject={`Contact – ${BRAND}`}>
+        <div class="fields">
+          <div class="field"><label for="c-name">Full name</label><input class="input" id="c-name" name="name" type="text" autocomplete="name" required maxlength="200" /></div>
+          <div class="field"><label for="c-email">E-mail</label><input class="input" id="c-email" name="email" type="email" autocomplete="email" required maxlength="200" /></div>
+          <div class="field"><label for="c-company">Company <span class="optional">Optional</span></label><input class="input" id="c-company" name="Company" type="text" autocomplete="organization" maxlength="200" /></div>
+          <div class="field">
+            <label for="c-topic">Topic</label>
+            <select class="input" id="c-topic" name="Topic">
+              <option>Sales</option>
+              <option>Partnership</option>
+              <option>Press</option>
+              <option>Something else</option>
+            </select>
+          </div>
+        </div>
+        <div class="field"><label for="c-message">Message</label><textarea class="input" id="c-message" name="Message" rows="6" required maxlength="4000"></textarea></div>
+        <div class="hp" aria-hidden="true"><label for="c-botcheck">Leave empty</label><input id="c-botcheck" name="botcheck" type="text" tabindex="-1" autocomplete="off" /></div>
+        <label class="consent"><input type="checkbox" name="Consent" value="yes" required />I agree that {BRAND} may use these details to answer my message.</label>
+        <button class="btn btn--primary btn--block" type="submit">Send message</button>
+      </form>
+      <FormResult title="Thank you. Your message is in." text="We reply to your e-mail address." again="Send another message" />
+    </div>
+  </div>
+</Base>
+
+<script>
+  import '../scripts/forms.ts';
+</script>

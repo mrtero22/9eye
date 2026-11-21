@@ -1,0 +1,238 @@
+---
+import Base from '../layouts/Base.astro';
+import AgentDesk from '../components/AgentDesk.astro';
+import LoopDemo from '../components/LoopDemo.astro';
+import Validators from '../components/Validators.astro';
+import Faq from '../components/Faq.astro';
+import Icon from '../components/Icon.astro';
+import Mark from '../components/Mark.astro';
+import { BRAND } from '../site';
+import { faqPage, softwareApplication, website, type Faq as FaqItem } from '../seo';
+
+const AGENTS = [
+  ['Schedule agent', 'Builds the next week from the template and the running orders: next episodes, repeats and rotations, then shows you what changed.'],
+  ['Timing agent', 'Automatic playlist timing. Balances programme segments, break lengths and fillers so fixed starts — the news at 19:00 — land on the exact frame.'],
+  ['Ad placement agent', 'AI commercial scheduling: places the day’s spots in the right breaks, keeps clash codes apart, respects break lengths and minutes per hour, and explains each spot.'],
+  ['Promo placement agent', 'Promo scheduling that works: promos run ahead of the programme they promote, never inside it, with the passes each campaign needs.'],
+  ['Filler and bumper agent', 'Fills what is left between programmes and in each break with fillers, bumpers and idents from your rotation lists, to the frame.'],
+  ['Live-change agent', 'When sport overruns or news breaks in, it re-flows the rest of the day and moves the spots that no longer fit.'],
+  ['Playlist check agent', 'Before playout export, checks every item — timing, gaps, overlaps, missing media, expired rights — hands each problem to the agent that can fix it, and checks again.'],
+  ['Reconciliation agent', 'As-run reconciliation: matches the as-run log to the plan, explains each difference and lists the spots that need a make-good.'],
+  ['Metadata agent', 'Reads new titles from spreadsheets, e-mails or your MAM into the catalog, and writes EPG texts in several languages.'],
+  ['Ask your schedule', 'Plain-language answers about anything in the system, with links to the airings, orders and items behind them.'],
+];
+
+const PIPELINE = [
+  ['Catalog', 'Series, films, ads, promos, idents and fillers, with segments, air windows and clash codes.', '#64748b'],
+  ['Templates', 'A channel’s week of blocks and linked ad breaks, drawn once and repeated in a few clicks.', '#0d9488'],
+  ['Orders', 'Series and programmes placed across weeks: first airings, repeats and rotations.', '#7c3aed'],
+  ['Playlist', 'The broadcast day to the frame, programmes and breaks side by side, checked before air.', '#2563eb'],
+  ['Playout', 'Exported to your automation in BXF and common playout formats, with the EPG alongside.', '#ea580c'],
+  ['As-run', 'What actually aired, reconciled against the plan, with every difference explained.', '#16a34a'],
+];
+
+const CHANNELS = [
+  ['Linear broadcast', '/platform#solutions'], ['FAST channels', '/fast-channel-scheduling'], ['Streaming', '/fast-channel-scheduling'], ['News', '/platform#sol-news'],
+  ['Sport and live', '/platform#sol-live'], ['Kids', '/platform#sol-kids'], ['Film and series', '/platform#sol-series'], ['Public media', '/platform#sol-public'],
+];
+
+const FAQ: FaqItem[] = [
+  { q: 'What is broadcast traffic and scheduling software?', a: 'It plans what a TV channel airs: the catalog of programmes and commercials, the weekly templates, the orders that place series and spots, the frame-accurate playlist sent to playout, and the as-run log that confirms what went on air.' },
+  { q: 'What can AI agents do for a TV channel?', a: 'They take on the repeated work of a traffic and scheduling team: planning the next week, placing ads and promos, keeping fixed starts on time, filling gaps, re-flowing the day after a live overrun, checking playlists before export and reconciling the as-run log.' },
+  { q: 'How does AI place commercials and promos?', a: 'The ad and promo placement agents read your booked spots and campaigns, then place them in breaks by your rules — clash codes, break lengths, minutes per hour, time windows — and give a reason for every placement. Spots that do not fit are proposed for other breaks.' },
+  { q: 'Do the agents change our schedule without asking?', a: 'No. Agents can start on request, on a schedule or on an event, but every change waits for a person to approve it before it reaches playout. Each step is logged and can be undone.' },
+  { q: 'How do the agents keep mistakes off air?', a: 'They work in a closed loop. The playlist check agent checks every item and hands each problem to the agent that can fix it; every fix is checked again until all checks pass. A problem that cannot be fixed within your rules goes to an operator with the reason, and nothing reaches playout without approval.' },
+  { q: 'Can we define our own checks and validation rules?', a: 'Yes. Each channel has its own set of validators: built-in checks such as fixed starts, gaps, clash codes and ad minutes per hour, and custom rules you write in plain words. You choose which ones block air and which agent fixes each one when it fails.' },
+  { q: 'Can we connect our own AI, such as Claude, ChatGPT or Grok?', a: `${BRAND} speaks MCP, the open standard for connecting AI to software, so any MCP-capable agent can work with your channels, and you can build as many agents as you need. Connected agents get only the roles you grant.` },
+  { q: 'Does it work for FAST channels and streaming?', a: 'Yes. Linear broadcast, FAST and streaming channels share the same core, with programme guide export for streaming platforms. What differs between channels is settings and rules.' },
+  { q: 'Is our schedule data used to train AI models?', a: 'No. Your schedule data stays in your company’s space and is not used to train AI models.' },
+];
+---
+<Base
+  title={`AI Broadcast Scheduling & TV Traffic Software | ${BRAND}`}
+  description="Broadcast scheduling and TV traffic software with AI agents that plan the week, place ads and promos and keep every block on time, with your approval."
+  jsonLd={[website(Astro.site), softwareApplication(Astro.site), faqPage(FAQ)]}
+>
+  <section class="night">
+    <div class="container hero">
+      <div class="hero__text">
+        <span class="chip chip--night"><span class="chip__dot"></span>Agentic AI · early access</span>
+        <h1 class="h1">AI agents for broadcast scheduling and TV traffic.</h1>
+        <p class="lead lead--lg" style="max-width: 760px">{BRAND} is broadcast scheduling and traffic software with AI agents built in. They plan the week, keep every block on time, place ads, promos and fillers, and handle live changes — inside your rules, with your approval.</p>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="/demo">Request a demo</a>
+          <a class="btn btn--night" href="#desk">Watch the agents work</a>
+        </div>
+      </div>
+      <div id="desk"><AgentDesk /></div>
+      <ul class="facts mono">
+        <li>Linear, FAST and streaming channels</li>
+        <li>23.976 to 59.94 fps, drop-frame</li>
+        <li>A time zone per channel</li>
+        <li>BXF playout export</li>
+        <li>Open to any AI through MCP</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="agents" class="container section">
+    <div class="section-head">
+      <h2 class="h2">Ten AI agents, one broadcast job each.</h2>
+      <p class="lead">From ad placement and promo scheduling to playlist timing and as-run reconciliation: each agent knows one part of a TV channel’s day. Give it your skills once, then let it work when an operator asks, on a schedule, or by itself when something happens.</p>
+    </div>
+    <div class="grid" style="--min: 340px; margin-top: 48px">
+      {AGENTS.map(([name, text], i) => (
+        <article class="card">
+          <div style="display: flex; align-items: center; gap: 10px"><span class="num">{String(i + 1).padStart(2, '0')}</span><h3 class="h3">{name}</h3></div>
+          <p style="flex: 1">{text}</p>
+        </article>
+      ))}
+      <a class="card card--dashed" href="#mcp">
+        <div style="display: flex; align-items: center; gap: 10px"><span class="icon-box icon-box--sm icon-box--accent"><Icon name="plus" size={16} stroke={2} /></span><h3 class="h3">Your own agents</h3></div>
+        <p style="flex: 1">Build agents for your own workflows, or connect one you already use — Claude, ChatGPT, Grok or your own — through MCP.</p>
+        <span style="font-weight: 500; color: var(--accent-text)">How it connects <span aria-hidden="true">→</span></span>
+      </a>
+    </div>
+    <a class="link-arrow" href="/ai-agents" style="margin-top: 24px">What each agent does, in detail <span aria-hidden="true">→</span></a>
+  </section>
+
+  <section id="loop" class="container section">
+    <div class="section-head">
+      <h2 class="h2">Agents that check each other until the day is clean.</h2>
+      <p class="lead">The agents work in a closed loop. The playlist check agent finds a problem and hands it to the agent that can fix it. Every fix is checked again, round after round, until every check passes. If a problem can’t be fixed within your rules, the operator is notified — so no known mistake goes to air.</p>
+    </div>
+    <LoopDemo />
+  </section>
+
+  <section id="validators" class="container section">
+    <div class="section-head">
+      <h2 class="h2">Your channel, your checks.</h2>
+      <p class="lead">Build the checking system each channel needs. Add validators from the built-in set or write your own rules in plain words, decide which ones block air, and connect each validator to the agent that fixes it. That is what drives the loop: validators find problems, their agents solve them, and the validators check again.</p>
+    </div>
+    <Validators />
+    <ol class="steps" style="--min: 300px; margin-top: 32px">
+      <li><span class="num">1</span><h3>Add validators</h3><p>Start from built-in checks, or write a rule in plain words. Each channel has its own set.</p></li>
+      <li><span class="num">2</span><h3>Choose what blocks air</h3><p>Some checks must pass before playout export; others only warn the team.</p></li>
+      <li style="--c: var(--accent)"><span class="num">3</span><h3>Connect an agent to each</h3><p>Pick the agent that fixes a failure. Leave it to the operator, and the operator gets it.</p></li>
+    </ol>
+  </section>
+
+  <section id="skills" class="container section">
+    <div class="section-head">
+      <h2 class="h2">Teach an agent once. It does the job from then on.</h2>
+      <p class="lead">Write a skill — your channel’s scheduling rules and way of working, in plain words — and give it to an agent. From then on it works that way every time, on every channel you choose. Change the skill, and every agent that uses it follows.</p>
+    </div>
+    <div class="split" style="margin-top: 48px; align-items: stretch">
+      <article class="panel skill">
+        <div class="skill__head">
+          <span class="icon-box icon-box--accent" style="width: 36px; height: 36px"><Icon name="file" size={18} /></span>
+          <div style="flex: 1; min-width: 0"><span class="meta" style="font-weight: 500">Skill</span><h3 class="h3">Evening breaks on Tessa One</h3></div>
+          <span class="meta" style="white-space: nowrap">Used by 3 agents</span>
+        </div>
+        <div class="skill__body">
+          <div><h4>The job</h4><p>Fill every break between 18:00 and 23:00 with the day’s ads, promos and bumpers, so each break ends on the frame.</p></div>
+          <div><h4>Rules</h4><ul><li>Alcohol only after 21:00.</li><li>Never two spots with the same clash code in one break.</li><li>A promo for tonight’s premiere in every prime-time break.</li><li>Close any gap with a bumper from the evening rotation list.</li></ul></div>
+          <div><h4>Ask a person before</h4><p>Moving a programme, or dropping a booked spot.</p></div>
+        </div>
+        <div class="skill__foot">
+          <span class="agent-chip" style="background: #2563eb1a; color: #1d4ed8">Ad placement agent</span>
+          <span class="agent-chip" style="background: #7c3aed1a; color: #6d28d9">Promo placement agent</span>
+          <span class="agent-chip" style="background: #db27771a; color: #be185d">Filler and bumper agent</span>
+        </div>
+      </article>
+      <div class="stack" style="--gap: 16px">
+        <h3 class="h3" style="font-size: 19px">Three ways an agent starts work</h3>
+        <article class="mode"><span class="icon-box"><Icon name="person" /></span><div class="stack" style="--gap: 6px"><h4>When an operator asks</h4><p>An operator asks in plain words, from any screen. The agent does the job with its skills and shows the result.</p><span class="mono">On request</span></div></article>
+        <article class="mode"><span class="icon-box"><Icon name="clock" /></span><div class="stack" style="--gap: 6px"><h4>On a schedule</h4><p>Every evening for tomorrow, every Thursday for next week. Set the time once and the work is ready before your team arrives.</p><span class="mono">Every day · 18:45</span></div></article>
+        <article class="mode"><span class="icon-box"><Icon name="bolt" /></span><div class="stack" style="--gap: 6px"><h4>Automatically, when something happens</h4><p>A new order, an overrun reported by playout, a missing media file — the agent starts on its own, the moment it happens.</p><span class="mono">On an event</span></div></article>
+        <p class="muted" style="margin: 4px 0 0; font-size: 15px">However it starts, the agent follows its skills, works within the roles you grant, and waits for approval before anything goes to air.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="mcp" class="container section">
+    <div class="mcp">
+      <div class="section-head">
+        <span class="chip chip--night">Open by design · MCP</span>
+        <h2 class="h2">Bring any AI agent. Build as many as you need.</h2>
+        <p class="lead" style="color: var(--night-text-2)">{BRAND} speaks MCP, the Model Context Protocol — the open standard for connecting AI to software. Connect Claude, ChatGPT, Grok or an agent you built yourself, and give each one a job on your channels.</p>
+      </div>
+      <div class="mcp__flow">
+        <div class="mcp__clients">
+          <span class="meta" style="color: var(--night-text-2); padding-bottom: 4px">Your AI</span>
+          {[['Claude', 'Anthropic'], ['ChatGPT', 'OpenAI'], ['Grok', 'xAI']].map(([name, maker]) => (
+            <span class="mcp__client"><Icon name="agent" size={18} style="color: var(--night-text-2)" /><b style="font-weight: 500">{name}</b><span class="spacer"></span><span class="meta" style="color: var(--night-text-2)">{maker}</span></span>
+          ))}
+          <span class="mcp__client mcp__client--own"><Icon name="agent" size={18} style="color: var(--night-text-2)" /><b style="font-weight: 500">Your own agent</b><span class="spacer"></span><span class="meta" style="color: var(--night-text-2)">any MCP client</span></span>
+        </div>
+        <div class="mcp__link">
+          <span class="mcp__line"><i></i><span class="mcp__pill">MCP</span><i></i></span>
+          <span class="meta" style="color: var(--night-text-2); text-align: center">Open standard · your keys, your provider</span>
+        </div>
+        <div class="mcp__app">
+          <span style="display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: 17px; color: var(--night-text)"><Mark size={22} hole="var(--night-2)" />{BRAND}</span>
+          <span class="meta" style="color: var(--night-text-2)">What a connected agent can do</span>
+          <ul class="ticks" style="gap: 10px">
+            {['Read the catalog, templates, orders and playlists', 'Propose changes to a day, a week or an order', 'Run playlist checks and timing', 'Explain differences in the as-run log', 'Draft programme guide texts'].map((t) => (
+              <li style="font-size: 15px"><Icon name="check" size={18} stroke={2} style="color: var(--night-accent); margin-top: 3px" />{t}</li>
+            ))}
+          </ul>
+          <span style="padding-top: 12px; border-top: 1px solid var(--night-border); font-size: 13px; color: #fcd34d">Changes wait for a person’s approval.</span>
+        </div>
+      </div>
+      <div class="mcp__points">
+        <div><h3>Any model, your choice</h3><p>Use the AI provider your company already trusts, or several side by side.</p></div>
+        <div><h3>As many agents as you need</h3><p>One per channel, per daypart or per market — each with its own job and skills.</p></div>
+        <div><h3>The same guardrails</h3><p>Connected agents get only the roles you grant them, and nothing they change goes on air without approval.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="guardrails" class="container section">
+    <div class="section-head">
+      <h2 class="h2">AI you can trust on air.</h2>
+      <p class="lead">A wrong spot costs money and a wrong programme costs viewers. The agents are designed around that.</p>
+    </div>
+    <div class="grid" style="--min: 480px; margin-top: 48px">
+      {[
+        ['shield', 'Approval before air', 'Nothing reaches playout until a person approves the change.'],
+        ['person', 'Your permissions, never more', 'An agent acts with the roles of the person who runs it, on the channels they may touch.'],
+        ['log', 'A record of every step', 'Each step is logged with its reason, and every change can be undone.'],
+        ['lock', 'Your data stays yours', 'Schedule data stays in your company’s space and is not used to train AI models.'],
+      ].map(([icon, title, text]) => (
+        <article class="card card--row">
+          <span class="icon-box icon-box--accent"><Icon name={icon as 'shield'} /></span>
+          <div class="stack" style="--gap: 6px"><h3 class="h3" style="font-size: 17px">{title}</h3><p>{text}</p></div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section id="platform" class="container section">
+    <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px">
+      <div class="section-head" style="flex: 1 1 560px">
+        <h2 class="h2">A complete broadcast scheduling platform underneath.</h2>
+        <p class="lead">The agents work on a full traffic and scheduling system that your team uses directly, every step connected from catalog to as-run.</p>
+      </div>
+      <a class="link-arrow" href="/platform">See the platform <span aria-hidden="true">→</span></a>
+    </div>
+    <ol class="steps">
+      {PIPELINE.map(([name, text, color], i) => (
+        <li style={`--c: ${color}`}><span class="num">{String(i + 1).padStart(2, '0')}</span><h3>{name}</h3><p>{text}</p></li>
+      ))}
+    </ol>
+    <div class="pills">
+      <span style="font-size: 15px; font-weight: 500; margin-right: 6px">For every kind of TV channel</span>
+      {CHANNELS.map(([label, href]) => <a class="pill" href={href}>{label}</a>)}
+    </div>
+  </section>
+
+  <section class="container section">
+    <div class="cta cta--night">
+      <div><h2>Bring one channel. Watch the agents run it.</h2><p>Early access starts with a demo on a channel like yours, then a trial on your own catalog and templates.</p></div>
+      <a class="btn btn--primary" href="/demo">Request a demo</a>
+    </div>
+  </section>
+
+  <Faq title="Questions about AI and broadcast traffic" items={FAQ} />
+</Base>

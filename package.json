@@ -1,0 +1,33 @@
+{
+  "name": "9eye",
+  "private": true,
+  "description": "9eye — broadcast scheduling and traffic platform",
+  "license": "AGPL-3.0-only",
+  "author": "9eye Studio <studio@9eye.org> (https://9eye.org/studio)",
+  "homepage": "https://9eye.org",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mrtero22/9eye.git"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "db:up": "docker compose up -d 9eye-db",
+    "db:stop": "docker compose stop 9eye-db",
+    "db:migrate": "npm -w @9eye/api run db:migrate",
+    "db:seed": "npm -w @9eye/api run db:seed --",
+    "dev:api": "npm -w @9eye/api run dev",
+    "dev:web": "npm -w @9eye/web run dev",
+    "dev:site": "npm -w @9eye/site run dev",
+    "build:site": "npm -w @9eye/site run build",
+    "deploy:site": "npm -w @9eye/site run deploy",
+    "test": "node scripts/check-names.mjs && npm -w @9eye/core test && npm -w @9eye/api test && npm -w @9eye/web test",
+    "typecheck": "npm -w @9eye/core run typecheck && npm -w @9eye/api run typecheck && npm -w @9eye/web run typecheck",
+    "check:names": "node scripts/check-names.mjs"
+  }
+}

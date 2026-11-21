@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Social image</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="position: relative; width: 1200px; height: 630px; overflow: hidden; box-sizing: border-box; padding: 64px; background: #fafafa; color: #18181b; font-family: Geist, ui-sans-serif, system-ui, sans-serif">
+<div style="position: relative; z-index: 1; width: 540px; height: 100%; display: flex; flex-direction: column; gap: 28px">
+<span style="display: inline-flex; align-items: center; gap: 12px; font-weight: 600; font-size: 30px; letter-spacing: -0.02em"><svg width="36" height="36" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="7" fill="#18181b"></rect><circle cx="12" cy="12" r="5.75" fill="none" stroke="#fafafa" stroke-width="2.25"></circle><circle cx="12" cy="12" r="2" fill="#fafafa"></circle></svg>{{brand}}</span>
+<span style="flex: 1"></span>
+<h1 style="margin: 0; font-size: 56px; line-height: 1.03; letter-spacing: -0.04em; font-weight: 600">AI agents for broadcast scheduling and TV traffic.</h1>
+<div style="display: flex; align-items: center; gap: 16px">
+<span style="display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 14px; border-radius: 999px; background: #eaf1ff; color: #1d4ed8; font-size: 15px; font-weight: 500"><span style="width: 7px; height: 7px; border-radius: 50%; background: #2563eb"></span>Early access</span>
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 15px; color: #6b6b74">Linear · FAST · Streaming</span>
+</div>
+</div>
+<div style="position: absolute; left: 640px; top: 96px; width: 1200px; transform: scale(0.68); transform-origin: top left">
+<dc-import name="Shot" hint-size="1200px,760px"></dc-import>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"brand":{"editor":"text","default":"9eye"},"$preview":{"width":1200,"height":630}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { brand: this.props.brand ?? '9eye' };
+  }
+}
+</script>
+</body>
+</html>

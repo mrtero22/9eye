@@ -1,0 +1,79 @@
+---
+import Guide from '../../layouts/Guide.astro';
+import { BRAND } from '../../site';
+---
+<Guide
+  slug="bxf-explained"
+  title={`What Is BXF? Broadcast Exchange Format Explained | ${BRAND}`}
+  description="BXF is the SMPTE standard that traffic, scheduling and playout systems use to exchange schedules, as-run logs and content data: what it carries and how."
+>
+  <section>
+    <p>A TV channel runs on two kinds of system that have to agree all day long. The <strong>traffic and scheduling system</strong> plans what airs: programmes, commercials, promos and fillers, to the frame. The <strong>playout automation</strong> plays it. A schedule travels from one to the other, and a record of what actually played — the as-run log — travels back.</p>
+    <p>For decades every pair of systems agreed on its own file format for that exchange: fixed-width text logs, spreadsheets, vendor-specific XML. <strong>BXF, the Broadcast eXchange Format</strong>, is the industry standard that replaces those one-off formats with one shared language.</p>
+  </section>
+
+  <section>
+    <h2>BXF in short</h2>
+    <ul>
+      <li><strong>What it is:</strong> an XML-based format and protocol published by SMPTE as the ST 2021 family of documents.</li>
+      <li><strong>Who uses it:</strong> traffic, scheduling, programme management, playout automation and content delivery systems.</li>
+      <li><strong>What it carries:</strong> schedules, as-run logs, content metadata and instructions to move or prepare content.</li>
+      <li><strong>Why it exists:</strong> to give traffic and automation a consistent, flexible way to exchange schedule, as-run and content data without a custom integration for every pair of products.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>What a BXF message carries</h2>
+    <h3>Schedules</h3>
+    <p>The playlist for a channel and a period: every event with its start time, duration, the material it plays (by house number or another content ID), its segments, and the secondary events that ride on it, such as logos, graphics or subtitles. Breaks and the spots inside them are events too.</p>
+    <h3>As-run logs</h3>
+    <p>What actually played, with the real start times and durations. The as-run log is what traffic needs for <a href="/guides/as-run-reconciliation">as-run reconciliation</a>: checking the day against the plan before advertisers are invoiced.</p>
+    <h3>Content metadata</h3>
+    <p>Titles, IDs, durations and segment points of the material in the schedule, so both sides describe the same clip the same way.</p>
+    <h3>Content movement</h3>
+    <p>Instructions around the media itself — record, dub, transfer or purge orders — and notifications such as “this material has arrived” or “this material is missing”, so a missing commercial is found before air, not during it.</p>
+  </section>
+
+  <section>
+    <h2>How BXF travels: files or messages</h2>
+    <p>The standard describes two ways of moving BXF between systems:</p>
+    <ul>
+      <li><strong>File-based:</strong> one system writes a BXF file to a shared folder or server and the other picks it up. This is how most channels start: the day’s schedule is exported, the as-run comes back the next morning.</li>
+      <li><strong>Message-based:</strong> the systems stay connected and send messages as things change — a single event updated, a query answered, a heartbeat to show the link is alive. This is what makes near-real-time changes possible: traffic can update one break in the on-air day without reloading the whole log.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Why it matters for a channel</h2>
+    <ul>
+      <li><strong>Fewer custom integrations.</strong> A traffic system and an automation system that both speak BXF need configuration, not a new interface.</li>
+      <li><strong>Changes closer to air.</strong> With message-based exchange, late changes reach playout as updates instead of a re-exported day.</li>
+      <li><strong>Faster reconciliation.</strong> The as-run log comes back in the same structure the schedule went out in, so matching it to the plan can be automated.</li>
+      <li><strong>Missing media found early.</strong> Content notifications tell traffic which items are not ready while there is still time to replace them.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>BXF in practice: what to check before go-live</h2>
+    <p>“Supports BXF” does not mean two products work together on day one. The standard is broad and has been revised several times; vendors implement the parts they need, sometimes with extensions of their own. Before you switch a channel over, agree on these points with both sides:</p>
+    <ol>
+      <li><strong>Version and message types.</strong> Which edition of the schema, and which messages — schedule only, or as-run and content notifications too?</li>
+      <li><strong>Transport.</strong> Files (where, how often, how they are named) or a live connection.</li>
+      <li><strong>Identifiers.</strong> How house numbers, event IDs and segment IDs map between the systems. Most reconciliation problems start here.</li>
+      <li><strong>Time.</strong> Local time or UTC, the broadcast day start, and the frame rate. At 29.97 fps, check whether both sides count in <a href="/guides/drop-frame-timecode">drop-frame timecode</a>.</li>
+      <li><strong>Secondary events.</strong> How logos, graphics and subtitles are expressed, and which ones the automation actually executes.</li>
+      <li><strong>Breaks.</strong> How breaks and spots inside them are marked, so the automation and the as-run log keep them apart from programmes.</li>
+    </ol>
+    <p>Then run real days through both systems — a busy weekday, a live event, a day with late changes — and compare the as-run with the plan before going live.</p>
+  </section>
+
+  <section>
+    <h2>BXF and other playlist formats</h2>
+    <p>Many channels still exchange schedules as CSV or fixed-width text, or in the native format of their automation. Those formats work, but each one is a separate integration with its own rules. BXF is the vendor-neutral option: the one to ask for when you choose new systems, and the one that makes changing one of them later less painful.</p>
+  </section>
+
+  <section>
+    <h2>How {BRAND} uses BXF</h2>
+    <p>{BRAND} exports each channel’s playlist as BXF, alongside common automation formats. Every time inside {BRAND} is an exact frame count at the channel’s own frame rate, so a BXF schedule leaves with the timing it was planned with, and each channel chooses whether its BXF times are local or UTC. The as-run log from playout is reconciled against the plan, with every difference explained. See how it fits together in <a href="/tv-traffic-software">{BRAND} TV traffic software</a>, or <a href="/demo">ask for a demo</a> with your own automation in mind.</p>
+  </section>
+</Guide>

@@ -1,0 +1,34 @@
+name: Feature request
+description: Something a channel needs that 9eye does not do yet.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: The need
+      description: What the scheduler, traffic operator or sales team has to do, and why it is hard today.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: How 9eye could help
+  - type: dropdown
+    id: channel
+    attributes:
+      label: Channel type
+      multiple: true
+      options:
+        - Series / film
+        - News
+        - Sport / live
+        - Music
+        - Kids
+        - FAST / streaming
+        - Public (no ads)
+        - Several channels / time-shifted feeds
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else
+      description: Examples with made-up names, other systems' approach, file formats.

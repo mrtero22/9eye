@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en" class="ds">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>9eye</title>
+  </head>
+  <body>
+    <div id="root"><p id="boot" style="margin: 0; padding: 32px; font-family: system-ui, sans-serif">Loading 9eye…</p></div>
+    <script>
+      // If the app cannot start, say why on the page instead of leaving it white.
+      (function () {
+        function show(msg) {
+          var el = document.getElementById('boot');
+          if (el) el.textContent = 'The app could not start: ' + msg + '. Reload with Ctrl+Shift+R; if this stays, send this message.';
+        }
+        window.addEventListener('error', function (e) {
+          var t = e.target;
+          show(e.message || (t && (t.src || t.href) ? 'could not load ' + (t.src || t.href) : 'a file did not load'));
+        }, true);
+        window.addEventListener('unhandledrejection', function (e) {
+          show(String((e.reason && e.reason.message) || e.reason));
+        });
+      })();
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

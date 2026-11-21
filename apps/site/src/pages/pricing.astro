@@ -1,0 +1,100 @@
+---
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+import Icon from '../components/Icon.astro';
+import { BRAND, PRICES, money, yearlyMonthly } from '../site';
+import { faqPage, softwareApplication, type Faq as FaqItem } from '../seo';
+
+const PLANS = [
+  {
+    name: 'Platform', featured: false, for: 'The complete scheduling and traffic system, run by your team.', monthly: PRICES.platform, lead: 'Includes',
+    items: [
+      'Catalog with segments, air windows and rotation lists',
+      'Week templates with linked ad breaks',
+      'Series, programme and promo orders',
+      'Ad and promo placement with clash codes',
+      'Frame-accurate day playlists',
+      'Validators and playlist checks before air',
+      'Playout export (BXF and automation formats) and EPG',
+      'As-run reconciliation and reports',
+      'Roles, users and multiple channels',
+      'Updates and support by e-mail',
+    ],
+  },
+  {
+    name: 'Platform + AI agents', featured: true, for: 'The same system, with AI agents that do the repeated work.', monthly: PRICES.agents, lead: 'Everything in Platform, plus',
+    items: [
+      'Ten AI agents (preview): schedule, timing, ads, promos, fillers and more',
+      'The agent desk: every agent and what waits for you',
+      'Skills: teach an agent once',
+      'Runs on request, on a schedule or on an event',
+      'Validators connected to agents: the check-and-fix loop',
+      'Connect Claude, ChatGPT, Grok or your own agent through MCP',
+      'Priority support',
+    ],
+  },
+];
+
+const FAQ: FaqItem[] = [
+  { q: 'What counts as a channel?', a: 'One output with its own playlist. For time-shifted (+1) and regional feeds of a channel, ask us when you request a demo.' },
+  { q: 'Can we start without the agents and add them later?', a: 'Yes. You can move to Platform + AI agents at any time. Your catalog, templates, orders and validators stay as they are, and the agents start working on them.' },
+  { q: 'How do we start?', a: 'Request a demo. We look at your channels together, then set up a trial on your own catalog and templates.' },
+];
+---
+<Base
+  title={`Pricing: Broadcast Scheduling Software | ${BRAND}`}
+  description={`Two plans priced per channel: the complete scheduling and traffic platform for ${money(PRICES.platform)} a month, or with AI agents for ${money(PRICES.agents)} a month.`}
+  current="pricing"
+  jsonLd={[softwareApplication(Astro.site), faqPage(FAQ)]}
+>
+  <section class="container" data-pricing>
+    <div class="page-hero" style="align-items: center; text-align: center; margin-inline: auto">
+      <h1 class="h1 h1--page">Two plans. Everything included.</h1>
+      <p class="lead lead--lg" style="max-width: 640px">The complete broadcast scheduling and traffic platform, with or without AI agents. Priced per channel, with updates and support included.</p>
+      <div class="seg" role="group" aria-label="Billing period" style="margin-top: 8px">
+        <button type="button" aria-pressed="true" data-period="monthly">Monthly</button>
+        <button type="button" aria-pressed="false" data-period="yearly">Yearly <span class="badge badge--green" style="height: 20px; padding: 0 6px">2 months free</span></button>
+      </div>
+    </div>
+
+    <div class="plans">
+      {PLANS.map((p) => (
+        <article class:list={['plan', { 'plan--featured': p.featured }]}>
+          <div class="stack" style="--gap: 6px">
+            <div class="plan__name"><h2>{p.name}</h2>{p.featured && <span class="badge badge--accent" style="border-radius: 999px; height: 24px; padding: 0 10px">With AI agents</span>}</div>
+            <p class="muted" style="margin: 0; font-size: 15px">{p.for}</p>
+          </div>
+          <div class="stack" style="--gap: 2px">
+            <span class="plan__price"><span class="plan__amount" data-monthly={money(p.monthly)} data-yearly={money(yearlyMonthly(p.monthly))}>{money(p.monthly)}</span><span class="muted" style="font-size: 15px">per channel / month</span></span>
+            <span class="meta" data-part="billing">Billed monthly</span>
+          </div>
+          <a class:list={['btn', p.featured ? 'btn--primary' : 'btn--secondary']} href="/demo">Request a demo</a>
+          <div class="stack" style="--gap: 0">
+            <span class="meta" style="font-weight: 500; padding-bottom: 12px">{p.lead}</span>
+            <ul class="plan__list">
+              {p.items.map((item) => <li><Icon name="check" size={18} stroke={2} />{item}</li>)}
+            </ul>
+          </div>
+        </article>
+      ))}
+    </div>
+    <p class="meta" style="margin: 24px 0 0; text-align: center; font-size: 14px">Prices in US dollars per channel, excluding tax.</p>
+  </section>
+
+  <Faq title="Pricing questions" items={FAQ} />
+</Base>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-pricing]');
+  if (root) {
+    const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-period]')];
+    root.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-period]');
+      if (!btn) return;
+      const yearly = btn.dataset.period === 'yearly';
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      root.querySelectorAll<HTMLElement>('[data-monthly]').forEach((el) => { el.textContent = (yearly ? el.dataset.yearly : el.dataset.monthly) ?? ''; });
+      root.querySelectorAll<HTMLElement>('[data-part="billing"]').forEach((el) => { el.textContent = yearly ? 'Billed yearly' : 'Billed monthly'; });
+    });
+  }
+</script>

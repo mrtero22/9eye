@@ -1,0 +1,260 @@
+---
+// The studio page: custom automation, validators and AI agents as fixed-price projects (user, 2026-11-03).
+// Client work is described without client or vendor names, and with details changed (user).
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+import FormResult from '../components/FormResult.astro';
+import Icon from '../components/Icon.astro';
+import { BRAND, EMAIL, STUDIO, WHATSAPP, WHATSAPP_URL } from '../site';
+import { faqPage, service, type Faq as FaqItem } from '../seo';
+
+// Search terms (docs/design/site.md, Keywords): workflow automation services, AI agent development,
+// custom Chrome extension development, MCP server development, automate a web app without an API.
+const SERVICES = [
+  ['bolt', 'Chrome extensions that automate web apps', 'Custom Chrome extensions and browser automation that click, fill, select and export inside the web apps your team already uses, even when the vendor offers no API.'],
+  ['checkCircle', 'Validators and data quality checks', 'Every file, export, playlist or record is checked against your rules before it goes out, with a report that shows what is wrong and where.'],
+  ['agent', 'AI agent development and MCP servers', 'AI agents that do one job well with Claude, ChatGPT or a local model, and MCP servers that connect them to your systems, with a person approving what matters.'],
+  ['plug', 'Integrations between systems', 'Data your team types twice today moves on its own: from sales to operations, from a web app to your database, from spreadsheets into the tool that needs it.'],
+  ['log', 'Google Sheets, Excel and data pipelines', 'Spreadsheet automation, scraping and scheduled pipelines that collect, clean and join data from APIs, websites and archives into files or a database.'],
+  ['lock', 'Private, local AI', 'Speech-to-text, translation and classification on your own hardware. No per-minute cloud bills, and your content never leaves your network.'],
+] as const;
+
+const WORK = [
+  {
+    tag: 'Media · validator',
+    title: 'Broadcast playlist checker for a multi-channel TV network',
+    problem: 'Each day’s playlist is exported from a cloud scheduling system and sent to playout. Mistakes were caught on air, or by people reading hundreds of lines.',
+    href: '/studio/playlist-checker',
+    built: 'A browser extension that catches every export before it is saved and runs more than 20 checks on it: booked spots against the sales sheet, spot lengths, idents never back to back, end credits and “next” bumpers that match the coming show, episode order against the schedule, expired promos and early starts. It times the day, inserts missing clips from per-series rules and writes a corrected file, with a report that points to each problem.',
+  },
+  {
+    tag: 'Media · integration',
+    title: 'From booked campaign to placed spots',
+    problem: 'Ad campaigns were booked in one system, and the traffic team typed every spot again in the scheduling system, break by break.',
+    built: 'A pipeline that reads each campaign per channel, maps channels, ad boxes and spot lengths, and writes the order with every spot placed in its exact break. It stays within the vendor’s session limit and tests each step against the live API.',
+  },
+  {
+    tag: 'AI agent',
+    title: 'An agent that rebuilds airing patterns',
+    problem: 'Turning a programme’s week on air into a reusable pattern meant reading the schedule and rebuilding it by hand.',
+    built: 'An agent skill that reads how a programme airs across the week, first runs and repeats, in a scheduling web app, and recreates it as a pattern step by step for a person to check.',
+  },
+  {
+    tag: 'Local AI',
+    title: 'Offline video translation pipeline',
+    problem: 'Translating shows for subtitles and dubbing meant sending content to cloud services and paying by the minute.',
+    built: 'Video in, a translated script and subtitles out: speech recognition with exact timestamps, speaker detection, then translation by a local language model that keeps real names. It runs fully offline on one 6 GB graphics card.',
+  },
+  {
+    tag: 'Data',
+    title: 'Market research from what users complain about',
+    problem: 'A product team wanted to know what people actually ask for, without reading thousands of reviews.',
+    built: 'A collector that gathers low-star reviews and feature requests from app stores, Product Hunt, Reddit archives, Stack Exchange and GitHub issues, and sorts them by votes into a sheet the team can act on.',
+  },
+  {
+    tag: 'Data · research',
+    title: 'Market data pipeline with walk-forward testing',
+    problem: 'Backtests looked good and failed live, because models had seen the future.',
+    built: 'A pipeline that collects and cleans exchange market data, then tests models strictly walk-forward: trained only on the past, judged only on what came after, so results are not flattered by hindsight.',
+  },
+] as const;
+
+const TOOLS = [
+  ['Timing checker', 'Checks that each programme block’s time-code in and out add up, and flags blocks that run long or short.'],
+  ['Catalog helper', 'Automates repetitive list selection in a catalog web app, so a long job is one click.'],
+  ['One-click capture to database', 'A button inside a booking web app that pulls the campaign data from an API and saves it to PostgreSQL.'],
+] as const;
+
+const STEPS = [
+  ['Free call', '30 minutes on the job you want gone: what the team does, in which software, and how often.', '#64748b'],
+  ['Fixed quote', 'A written plan with scope, price and delivery date. No hourly billing.', '#0d9488'],
+  ['Build', 'Short cycles, each ending in a working demo on your real screens and data.', '#7c3aed'],
+  ['Check', 'Tested on real cases, with validators where a mistake is expensive.', '#db2777'],
+  ['Hand over', 'Source code, a short guide and a video. You own what you paid for.', '#2563eb'],
+  ['Support', 'An optional monthly plan for changes when your software changes.', '#16a34a'],
+];
+
+// Questions in the words people search with (docs/design/site.md, Keywords).
+const FAQ: FaqItem[] = [
+  { q: 'What do your workflow automation services include?', a: 'Finding the manual work worth automating, building the automation (a Chrome extension, a script, an integration, a validator or an AI agent), testing it on your real data, and handing over the code with a guide. Each project is fixed in scope and price before we start.' },
+  { q: 'Can you automate a web app that has no API?', a: 'Yes. If the software has an API we use it; if not, we automate the screen itself with a custom Chrome extension or browser automation: clicking, filling forms, selecting and exporting the way a person does, only faster and the same way every time. Data entry from Excel or Google Sheets into a web form is a common first project.' },
+  { q: 'Do you build custom Chrome extensions for internal tools?', a: 'Yes. Manifest V3 extensions for your team’s own use: a button inside the web app you already work in, a check before an export is saved, or a form filled from a spreadsheet. They can be installed privately, without the Chrome Web Store.' },
+  { q: 'What is an MCP server, and do we need one?', a: 'MCP (Model Context Protocol) is an open standard that lets AI assistants such as Claude or ChatGPT use your systems as tools: read a record, run a search, create an order. An MCP server is the small program that offers those tools. You need one when you want an AI agent to work with your own data and software, with access limited to what you allow.' },
+  { q: 'Do you build AI agents?', a: `Yes, where they help: agents that do one job, with a person approving the result, built on Claude, ChatGPT or a model on your own hardware. Where plain rules do the job better, we use plain rules. ${BRAND}, our broadcast platform, is built the same way.` },
+  { q: 'How much does an automation project cost?', a: 'Every project has a fixed price, agreed before we start and based on the software, the steps and the checks involved. The first call is free, and the written quote states the scope, the price and the delivery date. An optional monthly plan covers changes after hand-over.' },
+  { q: 'Do you need access to our systems?', a: 'Only what the job needs, ideally a test account. We can start from screen recordings and sample files, and we sign an NDA before we see your data.' },
+  { q: 'Who owns the code?', a: 'You do, once the project is paid. You get the source code, a short guide and a hand-over video.' },
+  { q: 'Do you work with clients in other countries?', a: 'Yes. We work remotely with teams anywhere in the world, in English, with written updates and demos at times that suit your time zone.' },
+];
+const DESCRIPTION = 'Workflow automation for the software you already use: Chrome extensions for web apps without an API, AI agents, MCP servers, validators. Fixed price, worldwide.';
+---
+<Base
+  title={`Workflow Automation Services and AI Agent Development | ${STUDIO}`}
+  description={DESCRIPTION}
+  current="studio"
+  jsonLd={[
+    service(Astro.site, {
+      name: 'Workflow automation services',
+      description: DESCRIPTION,
+      path: '/studio',
+      serviceType: ['Workflow automation', 'Browser automation', 'Chrome extension development', 'AI agent development', 'MCP server development', 'Data validation', 'System integration'],
+    }),
+    faqPage(FAQ),
+  ]}
+>
+  <section class="container">
+    <div class="page-hero">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+        <span class="chip chip--accent"><span class="chip__dot"></span>{STUDIO} · custom automation</span>
+        <span class="mono meta" aria-hidden="true">analyse → build → check → hand over</span>
+      </div>
+      <h1 class="h1 h1--page">Workflow automation services for the software your team already uses.</h1>
+      <p class="lead lead--lg" style="max-width: 760px">{STUDIO} is the team behind the <a href="/">{BRAND} broadcast platform</a>. We automate the work your team does by hand in software, or check it before it goes out: Chrome extensions for web apps without an API, AI agents and MCP servers, validators and integrations for spreadsheets, file exports and older systems. Fixed-price projects, for teams anywhere in the world.</p>
+      <div class="btn-row" style="padding-top: 8px">
+        <a class="btn btn--primary" href="#start">Start a project</a>
+        <a class="btn btn--secondary" href="#work">See our work</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="container section">
+    <div class="section-head">
+      <h2 class="h2">Automation services, from the browser to AI agents.</h2>
+      <p class="lead">Six kinds of work, often in one project: an extension that does the job, a validator that checks it, and an agent that runs it when something happens.</p>
+    </div>
+    <div class="grid" style="margin-top: 48px; --min: 320px">
+      {SERVICES.map(([icon, title, text]) => (
+        <article class="card"><span class="icon-box icon-box--accent"><Icon name={icon} /></span><h3 class="h3" style="font-size: 17px">{title}</h3><p>{text}</p></article>
+      ))}
+    </div>
+  </section>
+
+  <section class="container section" id="work">
+    <div class="section-head">
+      <h2 class="h2">Selected work.</h2>
+      <p class="lead">Real projects, described without client names. Most of our work is under NDA, so details are changed and no client data is shown.</p>
+    </div>
+    <div class="grid" style="margin-top: 48px; --min: 340px">
+      <article class="card">
+        <span class="badge badge--accent" style="align-self: flex-start">Our product</span>
+        <h3 class="h3" style="font-size: 19px">{BRAND}: broadcast scheduling with AI agents</h3>
+        <p>A multi-tenant scheduling and traffic platform for TV channels, from catalog to as-run, with ten AI agents, a check-and-fix loop of validators and an MCP connection for any AI.</p>
+        <span class="spacer"></span>
+        <a class="link-arrow" href="/">See {BRAND} <span aria-hidden="true">→</span></a>
+      </article>
+      {WORK.map((w) => (
+        <article class="card">
+          <span class="badge badge--accent" style="align-self: flex-start">{w.tag}</span>
+          <h3 class="h3" style="font-size: 19px">{w.title}</h3>
+          <p><b>The problem.</b> {w.problem}</p>
+          <p><b>What we built.</b> {w.built}</p>
+          {'href' in w && <a class="link-arrow" href={w.href}>Read the case study <span aria-hidden="true">→</span></a>}
+        </article>
+      ))}
+    </div>
+    <ul class="tiles">
+      {TOOLS.map(([name, text]) => (
+        <li><h3>{name}</h3><p>{text}</p></li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="container section">
+    <div class="split" style="align-items: stretch">
+      <div class="section-head">
+        <h2 class="h2">If people can do it in the software, it can be automated.</h2>
+        <p class="lead">We start from the screen your team works in, not from the vendor’s roadmap. If there is an API, we use it. If there is not, we work with the app the way a person does, only faster and the same way every time.</p>
+      </div>
+      <ul class="ticks" style="align-self: center">
+        {[
+          'Web apps, with or without an API',
+          'Chrome extensions (Manifest V3)',
+          'Excel, Google Sheets, Drive, Dropbox and FTP',
+          'XML, CSV and JSON exports and imports',
+          'REST APIs, webhooks and PostgreSQL',
+          'Python, Node.js and TypeScript',
+          'MCP servers for Claude, ChatGPT and other AI',
+          'Local AI: speech-to-text, speaker detection, local language models',
+        ].map((t) => <li><Icon name="check" size={20} stroke={2} style="color: var(--accent)" />{t}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="container section">
+    <div class="split" style="align-items: stretch">
+      <div class="section-head">
+        <h2 class="h2">Automation for broadcasters and media companies.</h2>
+        <p class="lead">Our deepest work is in TV: playlist QC before playout, ad traffic that places itself, airing patterns rebuilt by an agent, and translation for subtitles on your own hardware. If your channel runs on a scheduling, traffic or playout system, we already speak its language.</p>
+        <a class="link-arrow" href="/studio/playlist-checker">See the broadcast Playlist Checker <span aria-hidden="true">→</span></a>
+      </div>
+      <ul class="ticks" style="align-self: center">
+        {[
+          'Broadcast playlist QC and validation before playout',
+          'Campaign-to-traffic bridges and ad placement',
+          'Scheduling patterns, catalog and metadata automation',
+          'Subtitles and translation without cloud costs',
+          `Built on what we learned making ${BRAND}, our scheduling platform`,
+        ].map((t) => <li><Icon name="check" size={20} stroke={2} style="color: var(--accent)" />{t}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="container section">
+    <div class="section-head">
+      <h2 class="h2">How a project works.</h2>
+      <p class="lead">Fixed scope, fixed price, and something working early.</p>
+    </div>
+    <ol class="steps" style="--min: 300px">
+      {STEPS.map(([name, text, color], i) => (
+        <li style={`--c: ${color}`}><span class="num">{String(i + 1).padStart(2, '0')}</span><h3>{name}</h3><p>{text}</p></li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="container section" id="start">
+    <div class="split" style="gap: 56px">
+      <div class="stack" style="--gap: 24px; flex-basis: 380px">
+        <h2 class="h2">Tell us the job your team repeats.</h2>
+        <p class="lead">Which software, what people do in it, and how often. We reply with questions or a time for a call, then send a plan and a fixed price.</p>
+        <div class="contact-list">
+          <div><h2>E-mail</h2><p><a href={`mailto:${EMAIL}`}>{EMAIL}</a></p></div>
+          <div><h2>WhatsApp</h2><p><a href={WHATSAPP_URL}>{WHATSAPP}</a></p></div>
+        </div>
+        <p class="meta" style="margin: 0; font-size: 14px">We use these details only to answer your message. See the <a href="/privacy">privacy policy</a>.</p>
+      </div>
+
+      <div class="form-box" data-form-box style="flex-basis: 520px">
+        <form class="form" data-subject={`Studio project – ${BRAND}`}>
+          <div class="fields">
+            <div class="field"><label for="s-name">Full name</label><input class="input" id="s-name" name="name" type="text" autocomplete="name" required maxlength="200" /></div>
+            <div class="field"><label for="s-email">Work e-mail</label><input class="input" id="s-email" name="email" type="email" autocomplete="email" required maxlength="200" /></div>
+            <div class="field"><label for="s-company">Company <span class="optional">Optional</span></label><input class="input" id="s-company" name="Company" type="text" autocomplete="organization" maxlength="200" /></div>
+            <div class="field"><label for="s-country">Country <span class="optional">Optional</span></label><input class="input" id="s-country" name="Country" type="text" autocomplete="country-name" maxlength="100" /></div>
+            <div class="field"><label for="s-software">Which software</label><input class="input" id="s-software" name="Software" type="text" required maxlength="300" placeholder="e.g. our booking web app and Google Sheets" /></div>
+            <div class="field">
+              <label for="s-budget">Budget <span class="optional">Optional</span></label>
+              <select class="input" id="s-budget" name="Budget">
+                <option>Not sure yet</option>
+                <option>Under $1,000</option>
+                <option>$1,000 – $5,000</option>
+                <option>$5,000 – $15,000</option>
+                <option>Over $15,000</option>
+              </select>
+            </div>
+          </div>
+          <div class="field"><label for="s-message">What should happen</label><textarea class="input" id="s-message" name="Message" rows="6" required maxlength="4000" placeholder="What your team does by hand today, and what you want instead."></textarea></div>
+          <div class="hp" aria-hidden="true"><label for="s-botcheck">Leave empty</label><input id="s-botcheck" name="botcheck" type="text" tabindex="-1" autocomplete="off" /></div>
+          <label class="consent"><input type="checkbox" name="Consent" value="yes" required />I agree that {STUDIO} may use these details to answer my message.</label>
+          <button class="btn btn--primary btn--block" type="submit">Send project details</button>
+        </form>
+        <FormResult title="Thank you. Your project is in." text="We reply to your e-mail address with questions or a time for a call." again="Send another project" />
+      </div>
+    </div>
+  </section>
+
+  <Faq title="Studio questions" items={FAQ} />
+</Base>
+
+<script>
+  import '../scripts/forms.ts';
+</script>

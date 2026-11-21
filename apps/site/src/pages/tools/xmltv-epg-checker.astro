@@ -1,0 +1,89 @@
+---
+// The free XMLTV EPG checker (seo-plan.md: free tools for broadcast departments). The example guide is
+// checked here, so the page shows a real result before any script runs (xmltv-model.ts).
+import Base from '../../layouts/Base.astro';
+import Faq from '../../components/Faq.astro';
+import { BRAND, STUDIO } from '../../site';
+import { breadcrumbs, faqPage, webApplication, type Faq as FaqItem } from '../../seo';
+import { EXAMPLE, check, renderHtml } from '../../scripts/xmltv-model';
+
+const title = 'XMLTV EPG checker';
+const description = 'Free XMLTV validator: drop an EPG file and see the gaps, overlaps, missing titles, bad times and XML errors of every channel, with line numbers.';
+const path = '/tools/xmltv-epg-checker';
+
+const FAQ: FaqItem[] = [
+  { q: 'What is XMLTV?', a: 'A widely used file format for TV guide data (EPG). It is XML: a <tv> element holds <channel> elements, each with an id and a display name, and <programme> elements with a start, a stop, a channel id and a title, plus optional descriptions, categories, pictures and episode numbers. IPTV players, set-top boxes, media servers and FAST platforms read it.' },
+  { q: 'Why does my EPG not show in the player?', a: 'Most often for one of four reasons: the channel id in the guide is not exactly the id the playlist uses (in an M3U playlist, the tvg-id), so the player cannot connect them; one XML mistake, such as a bare "&" in a title, makes the whole file unreadable; times without an offset are read in another time zone; or the guide has run out. The checker shows the first three from the guide side; compare its channel ids with the tvg-id values in your playlist.' },
+  { q: 'What time format does XMLTV use?', a: 'YYYYMMDDhhmmss followed by the offset from UTC: 20261109200000 +0100 is 9 November 2026 at 20:00, one hour ahead of UTC. The seconds can be left out. Without an offset the XMLTV standard reads the time as UTC, but some players read it as local time, so always write the offset.' },
+  { q: 'How does xmltv_ns episode numbering work?', a: 'Three numbers separated by dots: season, episode and part, each counted from zero. Season 1, episode 5 is "0.4."; part 1 of 2 of that episode is "0.4.0/2". A number can be left out, but both dots stay. For text such as S01E05, use an episode-num with system="onscreen".' },
+  { q: 'Do gaps and overlaps in an EPG matter?', a: 'Yes. In a gap, the guide shows nothing or stretches the previous programme. An overlap usually means one programme was moved and the next one was not, so the guide shows the wrong programme at that time. Many FAST platforms ask for a guide without either. A gap of a second or two is often only rounding; raise "Report gaps from" to hide short ones.' },
+  { q: 'Is my file uploaded? How big can it be?', a: 'Nothing is uploaded. The file is read and checked in your browser, and .xml.gz files are unpacked there too. A 33 MB guide with 200 channels and 67,000 programmes takes about a second on a laptop; very large guides depend on your browser\'s memory.' },
+];
+---
+<Base
+  title={`XMLTV Validator: Check EPG Gaps and Overlaps Online | ${BRAND}`}
+  description={description}
+  jsonLd={[webApplication(Astro.site, { name: `${BRAND} ${title}`, description, path }), breadcrumbs(Astro.site, [{ name: 'Home', path: '/' }, { name: title, path }]), faqPage(FAQ)]}
+>
+  <section class="container">
+    <div class="page-hero">
+      <span class="chip chip--accent"><span class="chip__dot"></span>Free tool</span>
+      <h1 class="h1 h1--page">XMLTV EPG checker</h1>
+      <p class="lead lead--lg" style="max-width: 760px">Drop an XMLTV guide or paste it, and see what a player or a FAST platform would trip over: XML mistakes, gaps and overlaps, missing titles, unreadable times and channel ids that do not match. Every problem comes with its line number. Free, and the file never leaves your browser.</p>
+    </div>
+
+    <div class="form-box stack" style="--gap: 20px; margin-top: 48px" data-xmltv-tool>
+      <label class="drop" data-part="drop">
+        <input type="file" class="sr-only" accept=".xml,.gz,.xmltv,.txt,text/xml,application/xml,application/gzip" data-part="file" />
+        <span style="font-weight: 500">Drop an XMLTV file here, or <span style="color: var(--accent-text); text-decoration: underline">choose a file</span></span>
+        <span class="meta">.xml or .xml.gz · checked in your browser, never uploaded</span>
+      </label>
+      <div class="field">
+        <label for="xmltv-input">Or paste the guide</label>
+        <textarea id="xmltv-input" class="input mono" rows="10" data-part="input" autocomplete="off" spellcheck="false" placeholder="<tv> <channel id=…> … <programme start=… channel=…> … </tv>" style="font-size: 13px">{EXAMPLE}</textarea>
+      </div>
+      <div class="btn-row" style="justify-content: space-between; align-items: flex-end">
+        <div class="field" style="width: 220px; max-width: 100%">
+          <label for="xmltv-gap">Report gaps from (seconds)</label>
+          <input id="xmltv-gap" class="input mono" type="number" min="1" step="1" value="1" data-part="min-gap" />
+        </div>
+        <div class="btn-row" style="gap: 8px">
+          <button type="button" class="btn btn--secondary btn--sm" data-part="example">Example</button>
+          <button type="button" class="btn btn--secondary btn--sm" data-part="clear">Clear</button>
+          <button type="button" class="btn btn--secondary btn--sm" data-part="copy">Copy report</button>
+          <button type="button" class="btn btn--secondary btn--sm" data-part="csv">Download CSV</button>
+        </div>
+      </div>
+      <p class="meta" style="margin: 0" data-part="status" aria-live="polite">The example guide, with the mistakes we see most</p>
+      <div class="stack" style="--gap: 20px; padding-top: 24px; border-top: 1px solid var(--hairline)" data-part="out" set:html={renderHtml(check(EXAMPLE))} />
+      <noscript><p class="notice notice--amber">The checker needs JavaScript. The result above is for the example guide.</p></noscript>
+      <p class="meta" style="margin: 0">Need every guide checked before it goes out, automatically? <a href="/studio#start">{STUDIO} builds that</a>.</p>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="prose">
+      <section>
+        <h2>What the checker looks at</h2>
+        <ul>
+          <li><strong>The XML:</strong> a bare <code>&amp;</code>, HTML names such as <code>&amp;nbsp;</code>, tags that do not match, invisible control characters and a file cut off in the middle. One of these is enough for most players to reject the whole guide.</li>
+          <li><strong>Channels:</strong> every <code>&lt;channel&gt;</code> has an id and a display name, no id is used twice, and every programme points to a channel that exists — including ids that differ only in capital letters.</li>
+          <li><strong>Programmes:</strong> a title, a start time, a stop time after the start, times in the XMLTV form with an offset such as <code>+0100</code>, and <code>xmltv_ns</code> episode numbers counted from zero.</li>
+          <li><strong>Each channel's timeline:</strong> gaps where nothing is on, overlaps where two programmes claim the same minutes, the same programme listed twice, and programmes over 12 hours.</li>
+          <li><strong>Completeness:</strong> how many programmes have a description and a picture, which players and FAST platforms show in the guide.</li>
+        </ul>
+        <p><strong>Copy report</strong> gives a plain-text summary to paste into a ticket or an e-mail. <strong>Download CSV</strong> gives one row per problem with its line number, to open in Excel or Google Sheets.</p>
+      </section>
+      <section>
+        <h2>Where the guide comes from</h2>
+        <p>A guide is only as good as the schedule behind it: most gaps and overlaps start as a change to the schedule that did not reach the EPG. {BRAND} is broadcast scheduling software that exports the EPG from the same schedule that makes the playlist, for linear and FAST channels. See <a href="/fast-channel-scheduling">FAST channel scheduling</a> or <a href="/tv-traffic-software">TV traffic software</a>. More free tools: the <a href="/tools/scte35-decoder">SCTE-35 decoder</a>, the <a href="/tools/tv-schedule-template">TV schedule template</a>, the <a href="/tools/ad-break-calculator">ad break calculator</a> and the <a href="/tools/timecode-calculator">timecode calculator</a>.</p>
+      </section>
+    </div>
+  </section>
+
+  <Faq title="XMLTV and EPG questions" items={FAQ} />
+</Base>
+
+<script>
+  import '../../scripts/xmltv-tool.ts';
+</script>

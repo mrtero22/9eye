@@ -1,0 +1,123 @@
+---
+// Screenshot: one series order on the Scheduling page — order details, and the week with first airings and repeats.
+import ShotFrame from './ShotFrame.astro';
+
+const C = '#0284c7';
+const mono = "font-family:'Geist Mono Variable',ui-monospace,monospace";
+const chevL = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg>';
+const chevR = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg>';
+const dots = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>';
+const undo = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/></svg>';
+const redo = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m15 14 5-5-5-5"/><path d="M20 9H9a5 5 0 0 0 0 10h3"/></svg>';
+
+type Cell = [number, number, string | null, 'other' | 'first' | 'repeat' | 'late' | 'none'];
+const weekday: Cell[] = [
+  [720, 780, 'Midday News', 'other'], [780, 840, null, 'repeat'], [840, 1020, 'Kids Afternoon', 'other'],
+  [1020, 1080, 'Quiz Hour', 'other'], [1080, 1140, 'Kitchen Duel · ep. 17', 'other'], [1140, 1200, 'News and Weather', 'other'],
+  [1200, 1260, 'Coastline · ep. 6', 'other'], [1260, 1320, null, 'first'], [1320, 1410, 'Late Movie', 'other'],
+  [1410, 1470, null, 'late'], [1470, 1560, 'Night Repeats', 'other'],
+];
+const sat: Cell[] = [
+  [720, 780, 'Midday News', 'other'], [780, 840, null, 'repeat'], [840, 1020, 'Matinee Movie', 'other'],
+  [1020, 1140, 'Weekend Sport', 'other'], [1140, 1200, 'News and Weather', 'other'], [1200, 1350, 'Saturday Movie', 'other'],
+  [1350, 1560, 'Night Repeats', 'other'],
+];
+const sun: Cell[] = [
+  [720, 780, 'Midday News', 'other'], [780, 840, 'No programme', 'none'], [840, 1020, 'Family Film', 'other'],
+  [1020, 1140, 'Sunday Magazine', 'other'], [1140, 1200, 'News and Weather', 'other'], [1200, 1320, 'Sunday Drama', 'other'],
+  [1320, 1560, 'Night Repeats', 'other'],
+];
+const from = 12 * 60, span = 13 * 60;
+const pct = (m: number) => `${(((m - from) / span) * 100).toFixed(3)}%`;
+const cellStyle = (di: number, [s, e0, , kind]: Cell) => {
+  const e = Math.min(e0, from + span);
+  const base = `top:${pct(s)};height:calc(${(((e - s) / span) * 100).toFixed(3)}% - 2px);`;
+  if (kind === 'first') return base + `background:${C}3d;border:1px solid ${C}66;border-left:3px solid ${C};box-shadow:${di === 2 ? '0 0 0 2px #2563eb' : 'none'}`;
+  if (kind === 'repeat' || kind === 'late') return base + `background:${C}14;border:1px solid ${C}40`;
+  if (kind === 'none') return base + 'background:transparent;border:1px dashed #d97706';
+  return base + 'background:#fff;border:1px solid #e4e4e7';
+};
+const cellTitle = (di: number, [, , title, kind]: Cell) => {
+  if (kind === 'first' || kind === 'late') return `Wildmere · ep. ${19 + di}`;
+  if (kind === 'repeat') return `Wildmere · ep. ${18 + di}`;
+  return title ?? '';
+};
+const cellSub = ([, , , kind]: Cell) => (kind === 'first' ? 'First airing' : kind === 'repeat' || kind === 'late' ? 'Repeat' : '');
+const cellColor = ([, , , kind]: Cell) => (kind === 'none' ? '#9a5200' : kind === 'other' ? '#6b6b74' : '#18181b');
+const notes = ['1 first · 2 repeats', '1 first · 2 repeats', '1 first · 2 repeats', '1 first · 2 repeats', '1 first · 2 repeats', '1 repeat', '1 without a programme'];
+const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((label, i) => ({ label, date: String(9 + i), note: notes[i], cells: i < 5 ? weekday : i === 5 ? sat : sun }));
+const hours = [12, 14, 16, 18, 20, 22, 0].map((h, i) => ({ label: `${String(h).padStart(2, '0')}:00`, top: `${(((i * 2) / 13) * 100).toFixed(3)}%` }));
+const legend = [
+  ['First airing', `${C}3d`, `1px solid ${C}66`], ['Repeat', `${C}14`, `1px solid ${C}40`],
+  ['Other orders', '#fff', '1px solid #e4e4e7'], ['No programme', 'transparent', '1px dashed #d97706'],
+];
+---
+<ShotFrame active="Scheduling" label="One series order: order details on the left, and the week with first airings at 21:00 and their repeats.">
+  <div style="flex: none; display: flex; align-items: flex-end; gap: 12px; padding: 16px 24px 14px">
+    <div style="display: flex; flex-direction: column; gap: 4px">
+      <span style="display: inline-flex; align-items: center; gap: 4px; color: #52525b"><Fragment set:html={chevL} />Scheduling · Tessa One</span>
+      <span style="display: flex; align-items: center; gap: 10px"><span style={`width:12px;height:12px;border-radius:3px;background:${C}`}></span><span style="font-size: 22px; font-weight: 600; letter-spacing: -0.02em">Wildmere - T1</span><span style="display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 4px; background: #e8f6ec; color: #15803d; font-size: 11px; font-weight: 500">Confirmed</span></span>
+      <span style="color: #52525b">Series · 2 Nov 2026 → 20 Dec 2026 · 18 of 40 aired</span>
+    </div>
+    <span style="flex: 1"></span>
+    <span style="display: inline-flex; width: 32px; height: 32px; align-items: center; justify-content: center; color: #52525b" set:html={undo} />
+    <span style="display: inline-flex; width: 32px; height: 32px; align-items: center; justify-content: center; color: #a1a1aa" set:html={redo} />
+    <span style="display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border-radius: 6px; border: 1px solid #d4d4d8; background: #fff; font-weight: 500">Copy week to the whole order</span>
+    <span style="display: inline-flex; width: 32px; height: 32px; align-items: center; justify-content: center; color: #52525b" set:html={dots} />
+    <span style="display: inline-flex; align-items: center; height: 32px; padding: 0 14px; border-radius: 6px; background: #2563eb; color: #fff; font-weight: 500">Save</span>
+  </div>
+  <div style="flex: 1; min-height: 0; display: flex; gap: 16px; padding: 0 24px 24px">
+    <div style="width: 292px; flex: none; display: flex; flex-direction: column; border: 1px solid #e4e4e7; border-radius: 10px; background: #fff; overflow: hidden">
+      <div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; border-bottom: 1px solid #f0f0f2">
+        <div style="padding: 10px 12px; border-radius: 8px; background: #fdf4e3; color: #9a5200; display: flex; flex-direction: column; gap: 6px"><span>Last episode airs Fri 18 Dec. No order places a programme at 21:00 after it.</span><span style="font-weight: 500; text-decoration: underline">New order from Sat 19 Dec…</span></div>
+        <span style="display: flex; justify-content: space-between; align-items: center"><span style="color: #52525b">Status</span><span style="display: inline-flex; gap: 2px; padding: 2px; border-radius: 7px; background: #e9e9ec"><span style="padding: 2px 10px; border-radius: 5px; background: #fff; font-weight: 500; box-shadow: 0 1px 2px rgba(0,0,0,.08)">Confirmed</span><span style="padding: 2px 10px; color: #52525b">Draft</span></span></span>
+        <span style="display: flex; justify-content: space-between"><span style="color: #52525b">Dates</span><span>2 Nov 2026 → 20 Dec 2026</span></span>
+      </div>
+      <div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid #f0f0f2">
+        <span style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-weight: 600">Episodes · 40</span><span style="color: #1d4ed8; font-weight: 500">Add from catalog</span></span>
+        <span style="display: flex; height: 8px; border-radius: 4px; overflow: hidden; background: #f0f0f2"><span style={`width:45%;background:${C}`}></span><span style={`width:12.5%;background:${C}80`}></span><span style={`width:42.5%;background:${C}26`}></span></span>
+        <span style="font-size: 12px; color: #52525b">18 aired · 5 this week · 17 later</span>
+        <div style="display: flex; flex-direction: column">
+          {[['Episode 19', 'Mon 9 Nov', false], ['Episode 20', 'Tue 10 Nov', false], ['Episode 21', 'Wed 11 Nov', true], ['Episode 22', 'Thu 12 Nov', false]].map(([n, when, on]) => (
+            <span style={`display:flex;align-items:center;gap:8px;height:28px;padding:0 8px;border-radius:6px;background:${on ? '#eaf1ff' : 'transparent'}`}><span style={`width:6px;height:6px;border-radius:50%;background:${C}`}></span><span style="flex: 1; font-weight: 500">{n}</span><span style="font-size: 12px; color: #6b6b74">{when}</span></span>
+          ))}
+        </div>
+      </div>
+      <div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 8px">
+        <span style="font-weight: 600">This week's pattern</span>
+        <span style="display: flex; justify-content: space-between"><span style="color: #52525b">First airings</span><span>Mon–Fri · <span style={mono}>21:00</span></span></span>
+        <span style="display: flex; justify-content: space-between"><span style="color: #52525b">Same day</span><span style={mono}>23:30</span></span>
+        <span style="display: flex; justify-content: space-between"><span style="color: #52525b">Next day</span><span style={mono}>13:00</span></span>
+      </div>
+    </div>
+    <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; border: 1px solid #e4e4e7; border-radius: 10px; background: #fff; overflow: hidden">
+      <div style="height: 40px; flex: none; display: flex; align-items: center; gap: 12px; padding: 0 12px; background: #f4f4f5; border-bottom: 1px solid #e4e4e7; color: #52525b">
+        <span style="display: inline-flex; align-items: center; gap: 6px; color: #18181b; font-weight: 500"><Fragment set:html={chevL} />Week of 9 Nov 2026<Fragment set:html={chevR} /></span>
+        <span style="display: inline-flex; gap: 2px; padding: 2px; border-radius: 7px; background: #e9e9ec"><span style="padding: 2px 10px; border-radius: 5px; background: #fff; color: #18181b; font-weight: 500; box-shadow: 0 1px 2px rgba(0,0,0,.08)">This order</span><span style="padding: 2px 10px">All programmes</span></span>
+        <span style="flex: 1"></span>
+        {legend.map(([n, bg, bd]) => <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px"><span style={`width:14px;height:10px;border-radius:3px;background:${bg};border:${bd}`}></span>{n}</span>)}
+      </div>
+      <div style="height: 40px; flex: none; display: grid; grid-template-columns: 52px repeat(7, minmax(0, 1fr)); border-bottom: 1px solid #e4e4e7">
+        <span></span>
+        {days.map((d) => <span style="display: flex; flex-direction: column; justify-content: center; padding: 0 8px; border-left: 1px solid #f0f0f2; line-height: 1.25"><span style="font-weight: 500">{d.label} <span style="color: #6b6b74; font-weight: 400">{d.date}</span></span><span style="font-size: 11px; color: #6b6b74; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{d.note}</span></span>)}
+      </div>
+      <div style="flex: 1; min-height: 0; padding: 10px 0">
+        <div style="position: relative; height: 100%; display: grid; grid-template-columns: 52px repeat(7, minmax(0, 1fr))">
+          <div style="position: relative">
+            {hours.map((h) => <span style={`position:absolute;right:8px;top:${h.top};transform:translateY(-50%);${mono};font-size:10.5px;color:#6b6b74`}>{h.label}</span>)}
+          </div>
+          {days.map((d, di) => (
+            <div style="position: relative; border-left: 1px solid #f0f0f2; background-image: repeating-linear-gradient(to bottom, #f0f0f2 0 1px, transparent 1px 7.6923%)">
+              {d.cells.map((c) => (
+                <div style={`position:absolute;left:3px;right:3px;box-sizing:border-box;padding:3px 6px;border-radius:5px;overflow:hidden;display:flex;flex-direction:column;font-size:11px;line-height:1.3;${cellStyle(di, c)}`}>
+                  <span style={`font-weight:${c[3] === 'other' ? 400 : 500};color:${cellColor(c)};overflow:hidden;white-space:nowrap;text-overflow:ellipsis`}>{cellTitle(di, c)}</span>
+                  {cellSub(c) && <span style="font-size: 10.5px; color: #52525b; white-space: nowrap">{cellSub(c)}</span>}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</ShotFrame>

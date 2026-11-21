@@ -1,0 +1,25 @@
+# 9eye's own Postgres: localhost only, memory-limited, nothing shared with other databases on the host.
+name: 9eye
+services:
+  9eye-db:
+    image: postgres:16-alpine
+    container_name: 9eye-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: nineeye
+      POSTGRES_PASSWORD: ${NINEEYE_DB_PASSWORD:?set NINEEYE_DB_PASSWORD in .env}
+      POSTGRES_DB: nineeye
+    ports:
+      - "127.0.0.1:5442:5432"
+    volumes:
+      - 9eye-db-data:/var/lib/postgresql/data
+      - ./docker/initdb:/docker-entrypoint-initdb.d:ro
+    mem_limit: 512m
+    shm_size: 128m
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nineeye -d nineeye"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+volumes:
+  9eye-db-data:

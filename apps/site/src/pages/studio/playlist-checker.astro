@@ -1,0 +1,207 @@
+---
+// Studio case study: the Playlist Checker (user, 2026-11-03). Built for a TV network; no client, vendor or
+// channel names, and the pictures are our own drawings with sample data (src/shots/Checker*Shot.astro).
+import Base from '../../layouts/Base.astro';
+import Faq from '../../components/Faq.astro';
+import Icon from '../../components/Icon.astro';
+import Shot from '../../components/Shot.astro';
+import { STUDIO } from '../../site';
+import { breadcrumbs, faqPage, service, type Faq as FaqItem } from '../../seo';
+
+// Search terms (docs/design/site.md, Keywords): broadcast playlist checker, playout playlist QC, playlist
+// validation before playout, pre-playout checks, commercial spot verification. "Playlist checker" alone
+// means Spotify and IPTV tools on Google, so the page always pairs it with broadcast or playout.
+const path = '/studio/playlist-checker';
+const DESCRIPTION = 'Broadcast playlist QC before playout: validate every playlist export against the schedule and booked spots with 20+ rules, and time the day to the frame.';
+
+const MISTAKES = [
+  ['repeat', 'The wrong episode', 'Episode 12 goes out when the schedule says 13, or a part is missing from the middle of an episode.'],
+  ['tag', 'A spot that was paid for and never aired', 'One commercial too few against the booking, and the sales team hears it from the advertiser.'],
+  ['file', 'Credits and bumpers out of place', 'An episode without its end credits, or a “next” bumper that announces the wrong show.'],
+  ['clock', 'A fixed start that slips', 'The 21:00 drama starts at 21:02, or twelve minutes early because a break was left short.'],
+] as const;
+
+const STEPS = [
+  ['Capture', 'The extension adds a Check export button next to the scheduling system’s own Export. The export is caught before it is saved and named by channel and date.', '#64748b'],
+  ['Load the reference', 'The day’s schedule and the booked spots come from the team’s Google Sheets, together with each channel’s series settings.', '#0d9488'],
+  ['Check', 'More than 20 rules run on every item of the day. Each problem is listed with its row and time, by group.', '#7c3aed'],
+  ['Fix', 'Auto timing brings every programme onto its target time; the editor handles the rest by hand, with undo.', '#db2777'],
+  ['Export', 'A corrected XML in the same format goes to playout’s FTP, Google Drive or Dropbox, or to the operator’s disk.', '#2563eb'],
+];
+
+const CHECKS: { name: string; icon: 'repeat' | 'tag' | 'lists' | 'clock'; items: string[] }[] = [
+  { name: 'Programmes', icon: 'repeat', items: [
+    'Episode numbers: the file and the title agree',
+    'Parts per episode: each run has the parts set for its series',
+    'Part continuity: parts in order, in and out points line up',
+    'Against the schedule: the right episode on the right day',
+    'Missing programmes: everything on the schedule is in the playlist',
+    'End credits: each run ends with its credits, exactly once',
+    'Next bumpers: one before each show, for the show that follows, never inside a programme',
+  ] },
+  { name: 'Commercials', icon: 'tag', items: [
+    'Commercial spot verification: each spot as many times as it was sold',
+    'Unbooked spots: commercials in the playlist that nobody booked',
+    'Spot length: the length in the title matches the media',
+    'Advertiser tag on every commercial',
+    'Category: anything that looks like a commercial is filed as one',
+    'Running campaigns: spots checked against the campaign list',
+  ] },
+  { name: 'Breaks', icon: 'lists', items: [
+    'Placement: promos and fillers after an ident, commercial groups next to a programme or between idents',
+    'Idents never back to back',
+    'No duplicates or near-duplicates in one break',
+    'Every item within the length range of its type',
+  ] },
+  { name: 'Promos and timing', icon: 'clock', items: [
+    'Expired promos: the end date in the title has passed',
+    'Early starts: a programme more than ten minutes ahead of its target',
+    'Too much filler in one place',
+  ] },
+];
+
+const AUTO = [
+  'Each programme starts on its target time, within a set tolerance',
+  'Adds or removes padding in priority order: fillers first, then clips, then promos',
+  'Never puts the same title back to back, and keeps similar fillers apart',
+  'Spreads promos out: one promo after every three minutes of fillers',
+  'Inserts missing end credits and next bumpers from each series’ rules',
+  'Marks every change on its row, can be undone, and checks the whole day again',
+];
+
+const FAQ: FaqItem[] = [
+  { q: 'What is a broadcast playlist checker?', a: 'A tool that checks a TV channel’s playlist before it is sent to playout: the right episodes in the right order, every booked commercial present, end credits and bumpers in place, breaks built by the channel’s rules, and fixed programmes starting on time. It turns hours of reading by eye into a report of the exact rows that need fixing.' },
+  { q: 'Does it work with our scheduling or playout system?', a: 'This checker was built for one cloud scheduling system, but the approach works with any system that exports a playlist file (XML, CSV or Excel) or shows the playlist in a browser. We adapt the capture and the file reader to your system; the checks are your channel’s rules.' },
+  { q: 'Which playlist formats can it check?', a: 'The XML export of the scheduling system it was built for. For your channel we adapt the reader to the format you have: your system’s own XML, BXF, CSV or Excel.' },
+  { q: 'Does it change the scheduling system?', a: 'No. It adds a button in the operator’s browser and reads the export the system already produces. Nothing is installed or changed on the vendor’s side.' },
+  { q: 'Where does our data go?', a: 'The playlist is checked in the browser. Reference data comes from your own Google Sheets or API, and the corrected file goes only to your own FTP, Google Drive or Dropbox.' },
+  { q: 'Can we add our own rules?', a: 'Yes. Every check is its own module, so a new rule is added without touching the others. Series settings (parts, end credits, next bumpers) and auto-timing options are edited per channel in the extension.' },
+  { q: 'What does a checker like this cost?', a: 'It is quoted per project, at a fixed price, after a call about your system, your file format and your rules. Most channels start with the checks that hurt most and add the rest later.' },
+];
+---
+<Base
+  title={`Broadcast Playlist Checker: Playlist QC Before Playout | ${STUDIO}`}
+  description={DESCRIPTION}
+  current="playlist-checker"
+  jsonLd={[
+    service(Astro.site, {
+      name: 'Broadcast playlist QC and validation',
+      description: DESCRIPTION,
+      path,
+      serviceType: ['Broadcast playlist validation', 'Playout playlist QC', 'Commercial spot verification', 'Playlist auto timing'],
+    }),
+    breadcrumbs(Astro.site, [{ name: STUDIO, path: '/studio' }, { name: 'Playlist Checker', path }]),
+    faqPage(FAQ),
+  ]}
+>
+  <section class="container">
+    <div class="page-hero">
+      <nav aria-label="Breadcrumbs">
+        <ol class="crumbs">
+          <li><a href="/studio">{STUDIO}</a></li>
+          <li><a href="/studio#work">Work</a></li>
+          <li><span aria-current="page">Playlist Checker</span></li>
+        </ol>
+      </nav>
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+        <span class="chip chip--accent"><span class="chip__dot"></span>Case study · media</span>
+        <span class="mono meta" aria-hidden="true">capture → check → time → export</span>
+      </div>
+      <h1 class="h1 h1--page">Playlist Checker: broadcast playlist QC before it goes to playout.</h1>
+      <p class="lead lead--lg" style="max-width: 780px">A playlist validation tool we built for a multi-channel TV network. It catches each day’s playlist export from the scheduling system, checks it against the schedule and the booked spots with more than 20 rules, times the day to the frame and writes a corrected file, before anything reaches playout.</p>
+      <div class="btn-row" style="padding-top: 8px">
+        <a class="btn btn--primary" href="/studio#start">Get one for your channel</a>
+        <a class="btn btn--secondary" href="/studio#work">See all work</a>
+      </div>
+    </div>
+    <figure class="shot" style="margin: 56px 0 0">
+      <Shot name="checker-report" priority />
+    </figure>
+    <ul class="facts mono" style="justify-content: flex-start">
+      <li>Chrome extension</li><li>20+ checks</li><li>Google Sheets</li><li>Auto timing</li><li>FTP · Drive · Dropbox</li><li>~17,000 lines, 70 modules</li>
+    </ul>
+  </section>
+
+  <section class="container section">
+    <div class="section-head">
+      <h2 class="h2">Hundreds of lines a day, checked by eye.</h2>
+      <p class="lead">Every channel of the network sends one playlist a day to playout: programmes in parts, end credits, idents, commercials, promos, fillers and bumpers, around 500 items. Playlist QC meant people reading the export line by line. What slipped through was found on air.</p>
+    </div>
+    <div class="grid" style="margin-top: 48px; --min: 250px">
+      {MISTAKES.map(([icon, title, text]) => (
+        <article class="card"><span class="icon-box"><Icon name={icon} /></span><h3 class="h3" style="font-size: 17px">{title}</h3><p>{text}</p></article>
+      ))}
+    </div>
+  </section>
+
+  <section class="container section">
+    <div class="section-head">
+      <h2 class="h2">How the playlist checker works.</h2>
+      <p class="lead">The operator keeps working in the scheduling system. One extra click, and the day is checked.</p>
+    </div>
+    <ol class="steps" style="--min: 200px">
+      {STEPS.map(([name, text, color], i) => (
+        <li style={`--c: ${color}`}><span class="num">{String(i + 1).padStart(2, '0')}</span><h3>{name}</h3><p>{text}</p></li>
+      ))}
+    </ol>
+    <figure class="shot" style="margin: 64px 0 0">
+      <Shot name="checker-capture" />
+    </figure>
+  </section>
+
+  <section class="container section">
+    <div class="section-head">
+      <h2 class="h2">20+ rules for playlist validation.</h2>
+      <p class="lead">The rules come from the network’s own way of building a day. Each one is a separate module and points to the exact row it is about; series rules are set per series and per channel.</p>
+    </div>
+    <div class="grid" style="margin-top: 48px; --min: 300px">
+      {CHECKS.map((g) => (
+        <article class="card">
+          <span class="icon-box icon-box--accent"><Icon name={g.icon} /></span>
+          <h3 class="h3" style="font-size: 17px">{g.name}</h3>
+          <ul class="ticks" style="gap: 10px; font-size: 15px; color: var(--text-2)">
+            {g.items.map((t) => <li><Icon name="check" size={18} stroke={2} style="color: var(--accent)" />{t}</li>)}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="container section">
+    <div class="split" style="align-items: stretch">
+      <div class="section-head">
+        <h2 class="h2">Auto timing: fixed starts on the exact frame.</h2>
+        <p class="lead">A day only works if the 21:00 drama starts at 21:00:00:00. Auto timing walks the day programme by programme and reshapes the breaks before each fixed start, inside the channel’s rules, then runs every check again.</p>
+      </div>
+      <ul class="ticks" style="align-self: center">
+        {AUTO.map((t) => <li><Icon name="check" size={20} stroke={2} style="color: var(--accent)" />{t}</li>)}
+      </ul>
+    </div>
+    <figure class="shot" style="margin: 56px 0 0">
+      <Shot name="checker-playlist" />
+    </figure>
+  </section>
+
+  <section class="container section">
+    <div class="section-head">
+      <h2 class="h2">Playlist editor, settings and delivery to playout.</h2>
+    </div>
+    <ul class="tiles">
+      <li><h3>A real playlist editor</h3><p>Drag and drop, cut, copy and paste, Shift-click to select a range, Ctrl+Z to undo. Start times are recalculated on every change.</p></li>
+      <li><h3>Settings per series</h3><p>Parts per episode, whether end credits and next bumpers are required, and the target start times of each run.</p></li>
+      <li><h3>Settings per channel</h3><p>What auto timing may remove, whether promos are spaced out, and a debug log the team can download.</p></li>
+      <li><h3>Reference data from Sheets</h3><p>The schedule and the booked spots are read from Google Sheets on every check, so the report always uses the latest booking.</p></li>
+      <li><h3>Delivery to playout</h3><p>The corrected XML goes to the playout FTP, or to Google Drive or Dropbox with a share link, in a folder per channel.</p></li>
+      <li><h3>Nothing changed on the vendor’s side</h3><p>It runs in the operator’s browser and reads the export the system already makes. No access to the vendor’s servers is needed.</p></li>
+    </ul>
+  </section>
+
+  <section class="container section">
+    <div class="cta cta--light">
+      <div><h2>Your channel exports a playlist too.</h2><p>We build checkers like this for any scheduling or playout system that exports XML, CSV or Excel: your rules, your formats, your delivery.</p></div>
+      <a class="btn btn--primary" href="/studio#start">Start a project</a>
+    </div>
+  </section>
+
+  <Faq title="Playlist Checker questions" items={FAQ} />
+</Base>

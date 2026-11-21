@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Account · AI access</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.ds{--bg:#fafafa;--surface:#ffffff;--surface-2:#f4f4f5;--surface-3:#e9e9ec;--hairline:#f0f0f2;--border:#e4e4e7;--border-strong:#d4d4d8;--text:#18181b;--text-2:#52525b;--text-3:#6b6b74;--accent:#2563eb;--accent-hover:#1d4ed8;--accent-soft:#eaf1ff;--accent-text:#1d4ed8;--red:#dc2626;--red-soft:#fdeeee;--red-text:#b91c1c;--amber:#d97706;--amber-soft:#fdf4e3;--amber-text:#9a5200;--green:#16a34a;--green-soft:#e8f6ec;--green-text:#15803d;--shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.08);--fs:14px;--fs-sm:13px;--row:32px;--ctl:32px;color-scheme:light;font-family:'Geist',ui-sans-serif,system-ui,sans-serif;font-size:var(--fs);line-height:1.5;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
+.ds.dark{--bg:#0a0a0b;--surface:#111113;--surface-2:#1a1a1d;--surface-3:#232327;--hairline:#19191c;--border:#26262a;--border-strong:#38383e;--text:#f4f4f5;--text-2:#a8a8b0;--text-3:#8b8b94;--accent:#2563eb;--accent-hover:#3b74f0;--accent-soft:#15203a;--accent-text:#93b4ff;--red:#ef4444;--red-soft:#2a1313;--red-text:#fca5a5;--amber:#f59e0b;--amber-soft:#2a2011;--amber-text:#fcd34d;--green:#22c55e;--green-soft:#102419;--green-text:#86efac;--shadow:0 1px 2px rgba(0,0,0,.5),0 8px 24px rgba(0,0,0,.45);color-scheme:dark}
+.ds.compact{--fs:13px;--fs-sm:12px;--row:28px;--ctl:28px}
+.ds *{box-sizing:border-box}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,monospace;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.ds button,.ds input,.ds select{font:inherit;color:inherit}
+.ds button:focus-visible,.ds a:focus-visible,.ds input:focus-visible,.ds select:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.ds button:disabled{cursor:default!important;opacity:.45}
+@media (pointer:coarse){.ctl{min-height:44px}}
+.hov:hover{background:var(--surface-2)!important}
+.tnl:hover{color:var(--text)!important}
+.bb{display:none}
+@media (max-width:720px){.tn-links,.tn-hide{display:none!important}.bb{display:flex!important}.ds main{padding-bottom:64px}}
+a{color:#1d4ed8}a:hover{color:#1e40af}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="min-height: 100vh; background: var(--bg); color: var(--text); display: flex; flex-direction: column">
+
+<header style="position: relative; display: flex; align-items: center; gap: 8px; height: 52px; padding: 0 16px; border-bottom: 1px solid var(--border); background: var(--surface)">
+<button class="ctl hov" aria-label="Switch company, current Aurora Media" style="display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 8px; border: 0; border-radius: 8px; background: transparent; cursor: pointer; flex: none">
+<span style="width: 24px; height: 24px; flex: none; border-radius: 6px; background: var(--text); color: var(--bg); display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px">A</span>
+<span class="tn-hide" style="font-weight: 600">Aurora Media</span>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--text-3)"><path d="m7 15 5 5 5-5M7 9l5-5 5 5"></path></svg>
+</button>
+<span aria-hidden="true" class="tn-hide" style="width: 1px; height: 20px; background: var(--border); margin: 0 8px; flex: none"></span>
+<nav aria-label="Main" class="tn-links" style="display: flex; align-self: stretch; gap: 4px; min-width: 0; overflow-x: auto">
+<a class="tnl" href="the Home mockup (private)" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; white-space: nowrap; color: var(--text-2); border-bottom: 2px solid transparent">Home</a>
+<a class="tnl" href="the Catalog mockup (private)" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; white-space: nowrap; color: var(--text-2); border-bottom: 2px solid transparent">Media</a>
+<a class="tnl" href="the Week mockup (private)" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; white-space: nowrap; color: var(--text-2); border-bottom: 2px solid transparent">Layouts</a>
+<a class="tnl" href="the Scheduling mockup (private)" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; white-space: nowrap; color: var(--text-2); border-bottom: 2px solid transparent">Scheduling</a>
+<a class="tnl" href="the Playlist mockup (private)" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; white-space: nowrap; color: var(--text-2); border-bottom: 2px solid transparent">Playlist</a>
+<a class="tnl" href="the Orders mockup (private)" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; white-space: nowrap; color: var(--text-2); border-bottom: 2px solid transparent">Ads</a>
+<a class="tnl" href="#asrun" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; white-space: nowrap; color: var(--text-2); border-bottom: 2px solid transparent">As-run</a>
+<a class="tnl" href="#reports" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; white-space: nowrap; color: var(--text-2); border-bottom: 2px solid transparent">Reports</a>
+</nav>
+<span style="flex: 1"></span>
+<button class="ctl hov" aria-label="Search, Ctrl K" style="display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text-3); cursor: pointer; flex: none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><span class="tn-hide">Search</span><span class="mono tn-hide" style="font-size: 11px; margin-left: 16px">Ctrl K</span></button>
+<button class="ctl hov" aria-expanded="{{menuOpen}}" aria-label="Account, settings and display" onClick="{{toggleMenu}}" style="display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 6px; border: 0; border-radius: 8px; background: transparent; cursor: pointer; flex: none">
+<span style="width: 28px; height: 28px; flex: none; border-radius: 50%; background: var(--surface-3); display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600">DE</span>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--text-3)"><path d="m6 9 6 6 6-6"></path></svg>
+</button>
+<sc-if value="{{menuOpen}}" hint-placeholder-val="{{false}}">
+<div role="dialog" aria-label="Account and settings" style="position: absolute; right: 16px; top: 56px; width: 248px; padding: 8px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 2px; z-index: 30">
+<div style="display: flex; flex-direction: column; padding: 6px 8px 10px; line-height: 1.3"><span style="font-weight: 500">Dana Ellis</span><span style="font-size: 12px; color: var(--text-3)">Aurora Media · Company admin</span></div>
+<a class="hov" href="MyAiAccess.dc.html" aria-current="page" style="display: flex; align-items: center; gap: 10px; height: var(--ctl); padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--accent-text); background: var(--accent-soft); font-weight: 500">AI access</a>
+<a class="hov" href="AiAccess.dc.html" style="display: flex; align-items: center; gap: 10px; height: var(--ctl); padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--text)">Settings</a>
+<div style="height: 1px; background: var(--hairline); margin: 6px 0"></div>
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 4px 8px"><span style="font-size: var(--fs-sm); color: var(--text-2)">Theme</span>
+<div role="group" aria-label="Theme" style="display: flex; padding: 2px; gap: 2px; border-radius: 7px; background: var(--surface-2)">
+<sc-for list="{{themeOpts}}" as="o" hint-placeholder-count="2"><button aria-pressed="{{o.pressed}}" onClick="{{o.pick}}" style="flex: 1; height: 28px; border: 0; border-radius: 5px; cursor: pointer; font-weight: 500; font-size: 13px; background: {{o.bg}}; color: {{o.fg}}; box-shadow: {{o.shadow}}">{{o.label}}</button></sc-for>
+</div></div>
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 4px 8px 8px"><span style="font-size: var(--fs-sm); color: var(--text-2)">Density</span>
+<div role="group" aria-label="Density" style="display: flex; padding: 2px; gap: 2px; border-radius: 7px; background: var(--surface-2)">
+<sc-for list="{{densityOpts}}" as="o" hint-placeholder-count="2"><button aria-pressed="{{o.pressed}}" onClick="{{o.pick}}" style="flex: 1; height: 28px; border: 0; border-radius: 5px; cursor: pointer; font-weight: 500; font-size: 13px; background: {{o.bg}}; color: {{o.fg}}; box-shadow: {{o.shadow}}">{{o.label}}</button></sc-for>
+</div></div>
+<div style="height: 1px; background: var(--hairline); margin: 2px 0 6px"></div>
+<button class="hov" style="display: flex; align-items: center; height: var(--ctl); padding: 0 8px; border: 0; border-radius: 6px; background: transparent; color: var(--text); cursor: pointer; text-align: left">Sign out</button>
+</div>
+</sc-if>
+</header>
+
+<main style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+<header style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 16px; padding: 28px 32px 0">
+<div style="display: flex; flex-direction: column; gap: 6px; min-width: 0; flex: 1 1 420px">
+<h1 style="margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.02em">AI access</h1>
+<span style="color: var(--text-2)">Connect Claude, ChatGPT or your own agent to 9eye. It works as you, with your role, in one company.</span>
+</div>
+<button class="ctl" onClick="{{openNew}}" style="display: inline-flex; align-items: center; gap: 6px; height: var(--ctl); padding: 0 14px; border-radius: 6px; font-weight: 500; cursor: pointer; background: var(--accent); color: #ffffff; border: 1px solid var(--accent)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>New token</button>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; padding: 20px 32px 32px; align-items: flex-start">
+
+<div style="flex: 999 1 600px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+<span style="display: flex; flex-direction: column; line-height: 1.3"><span style="font-weight: 600">Your tokens</span><span style="font-size: 12.5px; color: var(--text-3)">A token lets one app work as you in one company. Make one for each app, so you can revoke one alone.</span></span>
+<div style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow-x: auto">
+<div style="min-width: 720px">
+<div style="display: grid; grid-template-columns: minmax(170px, 1.3fr) minmax(120px, 1fr) 140px 96px 110px 120px 84px; column-gap: 14px; align-items: center; height: 38px; padding: 0 14px 0 18px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--text-3)">
+<span>Token</span><span>Company</span><span>Can</span><span>Made</span><span>Last used</span><span>Expires</span><span></span>
+</div>
+<sc-for list="{{tokens}}" as="t" hint-placeholder-count="3">
+<div style="display: grid; grid-template-columns: minmax(170px, 1.3fr) minmax(120px, 1fr) 140px 96px 110px 120px 84px; column-gap: 14px; align-items: center; min-height: 48px; padding: 6px 14px 6px 18px; border-top: 1px solid var(--hairline); font-size: var(--fs-sm); opacity: {{t.opacity}}; background: {{t.bg}}">
+<span style="font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{t.name}}</span>
+<span style="color: var(--text-2)">{{t.company}}</span>
+<span><span style="display: inline-flex; align-items: center; height: 20px; padding: 0 7px; border-radius: 4px; font-size: 11.5px; font-weight: 500; background: {{t.canBg}}; color: {{t.canFg}}">{{t.can}}</span></span>
+<span style="color: var(--text-2)">{{t.made}}</span>
+<span style="color: var(--text-2)">{{t.used}}</span>
+<span style="color: {{t.expColor}}">{{t.expires}}</span>
+<span style="display: flex; justify-content: flex-end"><sc-if value="{{t.canRevoke}}" hint-placeholder-val="{{true}}"><button class="hov" onClick="{{t.revoke}}" style="height: 28px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--red-text); cursor: pointer; font-size: 12.5px; font-weight: 500">Revoke</button></sc-if></span>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; align-items: center; gap: 8px; font-size: var(--fs-sm); color: var(--text-3)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Anyone with the token can work as you. Revoke it if it leaks. No AI app can approve, reopen or export a day.</div>
+</div>
+
+<sc-if value="{{showForm}}" hint-placeholder-val="{{true}}">
+<aside aria-label="New token" style="flex: 1 1 340px; min-width: 300px; max-width: 400px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: center; gap: 8px"><span style="flex: 1; font-weight: 600">New token</span><button class="hov" aria-label="Close" onClick="{{close}}" style="width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 6px; background: transparent; color: var(--text-3); cursor: pointer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></div>
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--text-2)">Name<input value="{{name}}" onChange="{{editName}}" placeholder="Claude on my laptop" style="height: 32px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: var(--fs-sm)"><span style="color: var(--text-3)">So you know which app it is when you revoke it.</span></label>
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--text-2)">Company<select style="height: 32px; padding: 0 6px; border-radius: 6px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: var(--fs-sm)"><option>Aurora Media</option><option>Halcyon Pictures</option></select></label>
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 12px; color: var(--text-2)">What it can do</span>
+<div role="radiogroup" aria-label="What it can do" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{accessOpts}}" as="o" hint-placeholder-count="2">
+<label style="display: flex; gap: 10px; align-items: flex-start; padding: 10px; border-radius: 8px; border: 1px solid {{o.border}}; background: {{o.bg}}; cursor: pointer">
+<input type="radio" name="access" checked="{{o.checked}}" onChange="{{o.pick}}" style="margin: 3px 0 0; accent-color: var(--accent); flex: none">
+<span style="display: flex; flex-direction: column; gap: 1px; line-height: 1.4"><span style="font-weight: 500; font-size: var(--fs-sm)">{{o.title}}</span><span style="font-size: 12px; color: var(--text-2)">{{o.desc}}</span></span>
+</label>
+</sc-for>
+</div>
+<span style="padding: 8px 10px; border-radius: 8px; background: var(--surface-2); font-size: 12px; color: var(--text-2)">Your role in Aurora Media is <b style="font-weight: 600; color: var(--text)">Company admin</b>: an app can do what you can, step by step, and each change can be undone.</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 12px; color: var(--text-2)">Expires in</span>
+<div role="group" aria-label="Expires in" style="display: flex; padding: 2px; gap: 2px; border-radius: 7px; background: var(--surface-2)">
+<sc-for list="{{dayOpts}}" as="o" hint-placeholder-count="4"><button aria-pressed="{{o.pressed}}" disabled="{{o.disabled}}" onClick="{{o.pick}}" style="flex: 1; height: 28px; border: 0; border-radius: 5px; cursor: pointer; font-weight: 500; font-size: 13px; background: {{o.bg}}; color: {{o.fg}}; box-shadow: {{o.shadow}}">{{o.label}}</button></sc-for>
+</div>
+<span style="font-size: 12px; color: var(--text-3)">Aurora Media allows tokens of up to 90 days.</span>
+</div>
+<div style="display: flex; justify-content: flex-end; gap: 8px">
+<button class="ctl hov" onClick="{{close}}" style="height: var(--ctl); padding: 0 12px; border-radius: 6px; font-weight: 500; cursor: pointer; background: transparent; color: var(--text-2); border: 1px solid transparent">Cancel</button>
+<button class="ctl" onClick="{{make}}" style="height: var(--ctl); padding: 0 16px; border-radius: 6px; font-weight: 500; cursor: pointer; background: var(--accent); color: #ffffff; border: 1px solid var(--accent)">Make token</button>
+</div>
+</aside>
+</sc-if>
+
+<sc-if value="{{showMade}}" hint-placeholder-val="{{false}}">
+<aside aria-label="Token made" style="flex: 1 1 340px; min-width: 300px; max-width: 400px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--green)"><path d="M20 6 9 17l-5-5"></path></svg><span style="flex: 1; font-weight: 600">Token made: {{name}}</span></div>
+<div role="status" style="padding: 9px 12px; border-radius: 8px; background: var(--amber-soft); color: var(--amber-text); font-size: 12.5px">Copy it now. It is not shown again: if you lose it, make a new one.</div>
+<div style="display: flex; align-items: stretch; gap: 6px">
+<span class="mono" style="flex: 1; min-width: 0; padding: 8px 10px; border-radius: 6px; background: var(--surface-2); font-size: 12px; overflow-wrap: anywhere">9eye_pat_K7Qm2vX9rL4tB8nW1cZ6yH3pD5fJ0sA2gE7uR4kM</span>
+<button class="ctl hov" onClick="{{copy}}" style="flex: none; height: auto; min-height: var(--ctl); padding: 0 12px; border-radius: 6px; border: 1px solid var(--border-strong); background: var(--surface); cursor: pointer; font-weight: 500">{{copyLabel}}</button>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px"><span style="font-size: 12px; font-weight: 500; color: var(--text-2)">Connect</span>
+<div role="tablist" aria-label="Connect" style="display: flex; padding: 2px; gap: 2px; border-radius: 7px; background: var(--surface-2)">
+<sc-for list="{{tabs}}" as="o" hint-placeholder-count="3"><button role="tab" aria-selected="{{o.pressed}}" onClick="{{o.pick}}" style="flex: 1; height: 28px; border: 0; border-radius: 5px; cursor: pointer; font-weight: 500; font-size: 12.5px; background: {{o.bg}}; color: {{o.fg}}; box-shadow: {{o.shadow}}">{{o.label}}</button></sc-for>
+</div>
+<sc-if value="{{tabCode}}" hint-placeholder-val="{{true}}">
+<div style="display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; color: var(--text-2)"><span>Run this once in a terminal:</span>
+<span class="mono" style="padding: 8px 10px; border-radius: 6px; background: var(--surface-2); font-size: 12px; color: var(--text); overflow-wrap: anywhere">claude mcp add --transport http 9eye https://[your 9eye address]/api/mcp --header "Authorization: Bearer 9eye_pat_K7Qm…"</span>
+<span>Then ask Claude, for example: "Check tomorrow's playlist on AURORA TV SD."</span></div>
+</sc-if>
+<sc-if value="{{tabOther}}" hint-placeholder-val="{{false}}">
+<div style="display: grid; grid-template-columns: 84px 1fr; gap: 6px 10px; font-size: 12.5px">
+<span style="color: var(--text-3)">Address</span><span class="mono" style="font-size: 12px; overflow-wrap: anywhere">https://[your 9eye address]/api/mcp</span>
+<span style="color: var(--text-3)">Transport</span><span>Streamable HTTP (MCP)</span>
+<span style="color: var(--text-3)">Header</span><span class="mono" style="font-size: 12px; overflow-wrap: anywhere">Authorization: Bearer &lt;the token&gt;</span>
+</div>
+</sc-if>
+<sc-if value="{{tabWeb}}" hint-placeholder-val="{{false}}">
+<div style="padding: 9px 12px; border-radius: 8px; background: var(--surface-2); font-size: 12.5px; color: var(--text-2)">ChatGPT and claude.ai connect over the internet with “Sign in with 9eye” instead of a token. That comes when 9eye runs on its own address.</div>
+</sc-if>
+</div>
+<div style="display: flex; justify-content: flex-end"><button class="ctl" onClick="{{close}}" style="height: var(--ctl); padding: 0 16px; border-radius: 6px; font-weight: 500; cursor: pointer; background: var(--accent); color: #ffffff; border: 1px solid var(--accent)">Done</button></div>
+</aside>
+</sc-if>
+
+</div>
+</main>
+<nav aria-label="Main, mobile" class="bb" style="position: fixed; left: 0; right: 0; bottom: 0; height: 60px; justify-content: space-around; align-items: center; background: var(--surface); border-top: 1px solid var(--border); z-index: 20">
+<a href="the Home mockup (private)" style="display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 56px; text-decoration: none; font-size: 11px; font-weight: 500; color: var(--text-3)">Home</a>
+<a href="the Week mockup (private)" style="display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 56px; text-decoration: none; font-size: 11px; font-weight: 500; color: var(--text-3)">Layouts</a>
+<a href="the Playlist mockup (private)" style="display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 56px; text-decoration: none; font-size: 11px; font-weight: 500; color: var(--text-3)">Playlist</a>
+<button aria-label="More" onClick="{{toggleMenu}}" style="display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 56px; border: 0; background: transparent; font-size: 11px; font-weight: 500; color: var(--text); cursor: pointer">More</button>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"compact":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { dark: null, compact: null, menu: false, panel: 'form', name: 'Claude on my laptop', access: 'edit', days: 90, tab: 'code', copied: false, made: null, revoked: {} };
+  }
+  shell() {
+    const dark = this.state.dark === null ? !!(this.props.dark ?? false) : this.state.dark;
+    const compact = this.state.compact === null ? !!(this.props.compact ?? false) : this.state.compact;
+    const seg = (on) => ({ bg: on ? 'var(--surface)' : 'transparent', fg: on ? 'var(--text)' : 'var(--text-2)', shadow: on ? '0 1px 2px rgba(0,0,0,.12)' : 'none' });
+    return {
+      seg,
+      rootClass: 'ds' + (dark ? ' dark' : '') + (compact ? ' compact' : ''),
+      menuOpen: !!this.state.menu, toggleMenu: () => this.setState({ menu: !this.state.menu }),
+      themeOpts: [['Light', false], ['Dark', true]].map(([label, v]) => ({ label, pressed: dark === v, ...seg(dark === v), pick: () => this.setState({ dark: v }) })),
+      densityOpts: [['Calm', false], ['Compact', true]].map(([label, v]) => ({ label, pressed: compact === v, ...seg(compact === v), pick: () => this.setState({ compact: v }) }))
+    };
+  }
+  renderVals() {
+    const sh = this.shell();
+    const st = this.state;
+    const canLabel = (edit) => ({ can: edit ? 'Read and change' : 'Read', canBg: edit ? 'var(--accent-soft)' : 'var(--surface-2)', canFg: edit ? 'var(--accent-text)' : 'var(--text-2)' });
+    const until = (days) => {
+      const d = new Date(Date.UTC(2026, 10, 17) + days * 86400000);
+      return d.getUTCDate() + ' ' + ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getUTCMonth()] + ' ' + d.getUTCFullYear();
+    };
+
+    // Dana Ellis's tokens (sample)
+    const T = [
+      ['m1', 'Claude on my laptop', 'Aurora Media', true, '12 Nov 2026', '2 minutes ago', '10 Feb 2027', 'ok'],
+      ['m2', 'Agent on the server', 'Halcyon Pictures', false, '5 Nov 2026', 'Yesterday', '3 Feb 2027', 'ok'],
+      ['m3', 'Desktop test', 'Aurora Media', false, '2 Oct 2026', '14 Oct 2026', 'Revoked 14 Nov', 'revoked']
+    ];
+    if (st.made) T.unshift(['new', st.made.name, 'Aurora Media', st.made.edit, 'Today', 'Never', until(st.made.days), 'ok']);
+    const tokens = T.map(([id, name, company, edit, made, used, expires, state]) => {
+      const working = state === 'ok' && !st.revoked[id];
+      return {
+        name, company, made, used, ...canLabel(edit),
+        expires: st.revoked[id] ? 'Revoked today' : expires, expColor: working ? 'var(--text-2)' : 'var(--text-3)',
+        opacity: working ? '1' : '0.6', bg: id === 'new' ? 'var(--green-soft)' : 'transparent', canRevoke: working,
+        revoke: () => this.setState({ revoked: { ...st.revoked, [id]: true } })
+      };
+    });
+
+    const accessOpts = [
+      ['read', 'Read only', 'Playlists, plans, media and campaigns, and checks of a day.'],
+      ['edit', 'Read and change drafts', 'Also create weeks, fill days and book spots: always after a preview, with undo.']
+    ].map(([id, title, desc]) => {
+      const on = st.access === id;
+      return { title, desc, checked: on, border: on ? 'var(--accent)' : 'var(--border)', bg: on ? 'var(--accent-soft)' : 'var(--surface)', pick: () => this.setState({ access: id }) };
+    });
+    const dayOpts = [30, 90, 180, 365].map((v) => ({ label: v + ' days', pressed: st.days === v, disabled: v > 90, ...sh.seg(st.days === v), pick: () => this.setState({ days: v }) }));
+    const tabs = [['code', 'Claude Code'], ['other', 'Other MCP app'], ['web', 'ChatGPT, claude.ai']].map(([v, label]) => ({ label, pressed: st.tab === v, ...sh.seg(st.tab === v), pick: () => this.setState({ tab: v }) }));
+
+    return {
+      ...sh,
+      tokens, accessOpts, dayOpts, tabs,
+      name: st.made ? st.made.name : st.name,
+      editName: (ev) => this.setState({ name: ev.target.value }),
+      showForm: st.panel === 'form', showMade: st.panel === 'made',
+      openNew: () => this.setState({ panel: 'form', copied: false }),
+      close: () => this.setState({ panel: null }),
+      make: () => this.setState({ panel: 'made', copied: false, tab: 'code', made: { name: st.name || 'New token', edit: st.access === 'edit', days: st.days } }),
+      copy: () => this.setState({ copied: true }), copyLabel: st.copied ? 'Copied' : 'Copy',
+      tabCode: st.tab === 'code', tabOther: st.tab === 'other', tabWeb: st.tab === 'web'
+    };
+  }
+}
+</script>
+</body>
+</html>

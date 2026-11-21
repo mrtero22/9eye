@@ -1,0 +1,26 @@
+---
+import { BRAND, NAV } from '../site';
+import Mark from './Mark.astro';
+import Icon from './Icon.astro';
+
+interface Props { current?: string }
+const { current } = Astro.props;
+---
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href="/" aria-label={`${BRAND} home`}><Mark /><span>{BRAND}</span></a>
+    <nav class="nav" aria-label="Main">
+      {NAV.map((item) => <a href={item.href} aria-current={item.id === current ? 'page' : undefined}>{item.label}</a>)}
+    </nav>
+    <span class="spacer"></span>
+    <a class="btn btn--primary btn--sm" href="/demo">Request a demo</a>
+    <details class="mnav">
+      <summary aria-label="Menu"><Icon name="menu" size={22} /></summary>
+      <nav class="mnav__panel" aria-label="Main">
+        {NAV.map((item) => <a href={item.href}>{item.label}</a>)}
+        <a href="/contact">Contact</a>
+      </nav>
+    </details>
+  </div>
+</header>

@@ -1,0 +1,167 @@
+---
+// The free TV schedule template (seo-plan.md: free tools for broadcast departments). The Excel file is
+// written by scripts/tv-schedule-template.py from src/data/tv-schedule-sample.json; this page shows the
+// same sample day, counted by schedule-model.ts the way the file's formulas count.
+import Base from '../../layouts/Base.astro';
+import Faq from '../../components/Faq.astro';
+import { BRAND, STUDIO } from '../../site';
+import { breadcrumbs, faqPage, type Faq as FaqItem } from '../../seo';
+import { playlist, weekGrid, type Sample } from '../../scripts/schedule-model';
+import data from '../../data/tv-schedule-sample.json';
+
+const sample = data as unknown as Sample;
+const day = playlist(sample);
+const grid = weekGrid(sample, '18:00', '00:00');
+const FILE = '/downloads/tv-schedule-template.xlsx';
+
+const title = 'TV schedule template';
+const description = 'Free TV schedule template for Excel and Google Sheets: a frame-accurate day playlist, ad minutes per hour and a week grid. Download, no sign-up.';
+const path = '/tools/tv-schedule-template';
+
+const FAQ: FaqItem[] = [
+  { q: 'Is the TV schedule template free?', a: 'Yes. Download it, change it and share it with your team; there is no sign-up and nothing to pay.' },
+  { q: 'Does it work in Google Sheets?', a: 'Yes. In Google Sheets choose File, Import, Upload, and pick the downloaded file; or drop it into Google Drive and open it with Google Sheets. The formulas, drop-down lists and colours come with it. It also works in LibreOffice.' },
+  { q: 'Why does the template count frames?', a: 'Playout runs to the frame, so a schedule that rounds to seconds drifts a little with every item. The template keeps every duration as a whole number of frames at the channel’s frame rate (24, 25, 30, 50 or 60 fps) and shows timecode as HH:MM:SS:FF. Timecode is non-drop; for 29.97 fps drop-frame, use the free timecode calculator.' },
+  { q: 'How does it handle fixed start times?', a: 'Type the planned time next to an item that must start on time, such as the news at 07:00. The "Off by" column shows how early or late the item really starts, to the frame, so you see which part of the hour to shorten or fill.' },
+  { q: 'How are ad minutes counted?', a: 'The Ad minutes sheet adds up commercials, promos, sponsorship and programmes in every clock hour, counting each item in the hour where it starts, and warns when commercials pass the limit you set. Check which items your regulator counts towards the limit; promos for your own programmes and sponsor credits are often counted apart.' },
+];
+---
+<Base
+  title={`TV Schedule Template: Free Excel Broadcast Playlist | ${BRAND}`}
+  description={description}
+  jsonLd={[breadcrumbs(Astro.site, [{ name: 'Home', path: '/' }, { name: title, path }]), faqPage(FAQ)]}
+>
+  <section class="container">
+    <div class="page-hero">
+      <span class="chip chip--accent"><span class="chip__dot"></span>Free template</span>
+      <h1 class="h1 h1--page">TV schedule template</h1>
+      <p class="lead lead--lg" style="max-width: 760px">A free Excel template for TV channels: a day playlist whose start times fill in by themselves, to the frame; a check of fixed starts; ad minutes in every clock hour; and a week grid. It works in Excel, Google Sheets and LibreOffice.</p>
+      <div class="btn-row" style="margin-top: 8px">
+        <a class="btn btn--primary" href={FILE} download>Download the template (.xlsx)</a>
+        <a class="btn btn--secondary" href="#google-sheets">Open it in Google Sheets</a>
+      </div>
+    </div>
+
+    <div class="stack" style="--gap: 48px; margin-top: 56px">
+      <figure class="stack" style="--gap: 12px; margin: 0">
+        <figcaption class="stack" style="--gap: 4px">
+          <h2 class="h3">Day playlist</h2>
+          <p class="muted" style="margin: 0">One row per item. You type the type, title and duration; start, timecode and “Off by” fill in. The sample morning below is in the file.</p>
+        </figcaption>
+        <div class="sheet-box">
+          <dl class="sheet-sum">
+            <div><dt>Channel</dt><dd>{sample.channel}</dd></div>
+            <div><dt>Day starts at</dt><dd class="mono">{sample.dayStart}</dd></div>
+            <div><dt>Frame rate</dt><dd class="mono">{sample.fps} fps</dd></div>
+            <div><dt>Scheduled</dt><dd class="mono">{day.scheduled}</dd></div>
+            <div><dt>{day.leftLabel}</dt><dd class="mono">{day.left}</dd></div>
+            <div><dt>Day ends at</dt><dd class="mono">{day.ends}</dd></div>
+          </dl>
+          <div class="scroll-x">
+            <table class="sheet">
+              <thead><tr><th scope="col">#</th><th scope="col">Start</th><th scope="col">Planned start</th><th scope="col">Off by</th><th scope="col">Type</th><th scope="col">Title</th><th scope="col">Episode / version</th><th scope="col">House ID</th><th scope="col">Duration (TC)</th></tr></thead>
+              <tbody>
+                {day.rows.map((r) => (
+                  <tr>
+                    <td class="mono">{r.n}</td>
+                    <td class="mono">{r.start}</td>
+                    <td class="mono">{r.planned}</td>
+                    <td class:list={['mono', { 'is-off': r.late, 'is-ok': r.offBy === 'On time' }]}>{r.offBy}</td>
+                    <td>{r.item.type}</td>
+                    <td>{r.item.title}</td>
+                    <td>{r.item.episode}</td>
+                    <td class="mono">{r.item.houseId}</td>
+                    <td class="mono">{r.duration}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </figure>
+
+      <figure class="stack" style="--gap: 12px; margin: 0">
+        <figcaption class="stack" style="--gap: 4px">
+          <h2 class="h3">Ad minutes per hour</h2>
+          <p class="muted" style="margin: 0">Commercials, promos, sponsorship and programmes in every clock hour, against your limit (here {sample.adLimitMinutes} minutes).</p>
+        </figcaption>
+        <div class="sheet-box">
+          <div class="scroll-x">
+            <table class="sheet">
+              <thead><tr><th scope="col">Hour</th><th scope="col">Commercials</th><th scope="col">Promos</th><th scope="col">Sponsorship</th><th scope="col">Programmes</th><th scope="col">All items</th><th scope="col">Commercials against the limit</th></tr></thead>
+              <tbody>
+                {day.hours.map((h) => (
+                  <tr>
+                    <td class="mono">{h.hour}</td>
+                    <td class="mono">{h.commercial}</td>
+                    <td class="mono">{h.promo}</td>
+                    <td class="mono">{h.sponsorship}</td>
+                    <td class="mono">{h.programme}</td>
+                    <td class="mono">{h.all}</td>
+                    <td class:list={[{ 'is-ok': h.status === 'OK', 'is-off': h.status !== 'OK' }]}>{h.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </figure>
+
+      <figure class="stack" style="--gap: 12px; margin: 0">
+        <figcaption class="stack" style="--gap: 4px">
+          <h2 class="h3">Week grid</h2>
+          <p class="muted" style="margin: 0">The whole week in half-hour slots; titles starting with News, Kids, Series, Movie, Sport, Music or Magazine get their colour. Prime time from the sample week:</p>
+        </figcaption>
+        <div class="sheet-box">
+          <div class="scroll-x">
+            <table class="sheet sheet--grid">
+              <thead><tr><th scope="col">Time</th>{grid.days.map((d) => <th scope="col">{d.name}</th>)}</tr></thead>
+              <tbody>
+                {grid.times.map((time, i) => (
+                  <tr>
+                    <td class="mono">{time}</td>
+                    {grid.days.map((d) => d.cells.filter((c) => c.row === i).map((c) => <td rowspan={c.span} class={c.genre ? `g-${c.genre}` : undefined}>{c.title}</td>))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </figure>
+
+      <div class="btn-row">
+        <a class="btn btn--primary" href={FILE} download>Download the template (.xlsx)</a>
+        <span class="meta">Excel, about 60 KB · four sheets and a “Start here” guide · free to use and share</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="prose">
+      <section>
+        <h2>How the template counts</h2>
+        <ul>
+          <li><strong>Start times follow from durations.</strong> Each item starts where the one above it ends, from the day start you set. Change one duration and everything below moves.</li>
+          <li><strong>Frames, not rounded seconds.</strong> Durations are kept as whole frames at your frame rate, so the day never drifts. Type a duration as <code>0:22:30</code> plus frames if you need them (Excel reads <code>22:30</code> as 22 hours).</li>
+          <li><strong>Fixed starts are checked.</strong> A planned start shows “On time”, or how early or late the item really starts.</li>
+          <li><strong>The day adds up.</strong> The box at the top shows what is scheduled, what is left to fill or how far the day runs over, and when it ends.</li>
+        </ul>
+      </section>
+      <section id="google-sheets">
+        <h2>Open it in Google Sheets</h2>
+        <ol>
+          <li>Download the template.</li>
+          <li>In Google Sheets, choose <strong>File → Import → Upload</strong> and pick the file. Or drop it into Google Drive and choose <strong>Open with → Google Sheets</strong>.</li>
+          <li>Start on the <strong>Start here</strong> sheet; the yellow cells are yours to fill.</li>
+        </ol>
+      </section>
+      <section>
+        <h2>When the spreadsheet gets too small</h2>
+        <p>One channel and one day fit in a spreadsheet. Several channels, series that must air in order, ad orders to place and a playlist to send to playout every day do not. {BRAND} is broadcast scheduling and traffic software that does this work: week templates, series that place themselves, ad and promo placement, frame-accurate playlists, checks before air and playout export. See the <a href="/platform">platform</a> or <a href="/demo">request a demo</a>. Need a tool of your own, such as a check of your playout files? <a href="/studio#start">{STUDIO} builds it</a>.</p>
+        <p>More free tools: the <a href="/tools/timecode-calculator">timecode calculator</a>, the <a href="/tools/scte35-decoder">SCTE-35 decoder</a> and the <a href="/tools/xmltv-epg-checker">XMLTV EPG checker</a>.</p>
+      </section>
+    </div>
+  </section>
+
+  <Faq title="TV schedule template questions" items={FAQ} />
+</Base>

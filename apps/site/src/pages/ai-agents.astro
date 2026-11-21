@@ -1,0 +1,167 @@
+---
+// The AI agents one by one (decision 0022: labelled preview). The home page shows them working; this page details each.
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+import Icon from '../components/Icon.astro';
+import { BRAND, PRICES, money } from '../site';
+import { faqPage, type Faq as FaqItem } from '../seo';
+
+const AGENTS = [
+  {
+    name: 'Schedule agent',
+    does: 'Builds the next week from the channel’s template and its running orders — next episodes in order, repeats, rotations — then lists what changed from last week.',
+    rules: 'Template blocks, episode order and repeat offsets, air windows and rights dates.',
+    asks: 'Before the week is published, and before a programme leaves its block.',
+  },
+  {
+    name: 'Timing agent',
+    does: 'Times the playlist so fixed starts — the news at 19:00 — land on the exact frame, by balancing segment splits, break lengths and fillers.',
+    rules: 'Fixed starts, shortest and longest breaks, the channel’s frame rate.',
+    asks: 'Before shortening a programme segment or moving a fixed start.',
+  },
+  {
+    name: 'Ad placement agent',
+    does: 'Places the day’s booked commercials in breaks, gives a reason for every placement, and proposes other breaks for spots that do not fit.',
+    rules: 'Clash codes, break lengths, advertising minutes per hour, air windows and booked dayparts.',
+    asks: 'Before dropping a booked spot or moving it to another day.',
+  },
+  {
+    name: 'Promo placement agent',
+    does: 'Schedules promos ahead of the programmes they promote and spreads each campaign over its passes.',
+    rules: 'Never inside the promoted programme; campaign dates and passes per day.',
+    asks: 'Before a promo takes a place meant for a booked spot.',
+  },
+  {
+    name: 'Filler and bumper agent',
+    does: 'Fills what is left between programmes and in each break with fillers, bumpers and idents, to the frame.',
+    rules: 'Rotation lists, item lengths, no item twice in a row.',
+    asks: 'Before using an item from outside its rotation list.',
+  },
+  {
+    name: 'Live-change agent',
+    does: 'When sport overruns or news breaks in, re-flows the rest of the day and moves the spots that no longer fit.',
+    rules: 'Starts that must hold, spots that must air inside their window.',
+    asks: 'Before any change to the day on air.',
+  },
+  {
+    name: 'Playlist check agent',
+    does: 'Before playout export, runs the channel’s validators on every item — timing, gaps, overlaps, missing media, expired rights — hands each failure to the agent that can fix it, and checks again.',
+    rules: 'Which validators block air and which only warn.',
+    asks: 'Before export while a warning is still open.',
+  },
+  {
+    name: 'Reconciliation agent',
+    does: 'Matches the as-run log to the plan, explains each difference and lists the spots that need a make-good.',
+    rules: 'The channel’s tolerance for timing differences.',
+    asks: 'Before the day is closed.',
+    guide: ['/guides/as-run-reconciliation', 'How as-run reconciliation works'],
+  },
+  {
+    name: 'Metadata agent',
+    does: 'Reads new titles from spreadsheets, e-mails or your media asset management into the catalog, and writes programme guide texts in several languages.',
+    rules: 'Your catalog fields and naming, guide text lengths per platform.',
+    asks: 'Before new catalog entries are created.',
+  },
+  {
+    name: 'Ask your schedule',
+    does: 'Answers questions in plain words — “When does episode 12 air?”, “Which spots missed air yesterday?” — with links to the airings, orders and items behind the answer.',
+    rules: 'Only what the person asking may see.',
+    asks: 'Never needs to: it changes nothing.',
+  },
+];
+
+const HOW = [
+  ['/#loop', 'The check-and-fix loop', 'Validators find a problem, the connected agent fixes it, and the day is checked again until every check passes.'],
+  ['/#validators', 'Validators', 'Built-in checks and your own rules in plain words, chosen per channel.'],
+  ['/#skills', 'Skills', 'Your channel’s way of working, written once and given to the agents that need it.'],
+  ['/#mcp', 'MCP', 'Connect Claude, ChatGPT, Grok or your own agent through the open Model Context Protocol.'],
+];
+
+const FAQ: FaqItem[] = [
+  { q: 'Are the AI agents available today?', a: 'They are in preview, as part of early access. Ask in the demo which agents fit your channel.' },
+  { q: 'Which AI models do the agents use?', a: `You choose. The agents can run on the AI provider your company already trusts, and agents you build yourself connect through MCP with only the roles you grant.` },
+  { q: 'What does an agent need to start working?', a: `Your channel in ${BRAND} — catalog, templates and orders — and the skills you give it: your channel’s rules and way of working, in plain words.` },
+  { q: 'Can we turn an agent off, or use only some of them?', a: 'Yes. Each agent works only on the channels and jobs you give it, and only starts when you ask, on a schedule you set, or on the events you choose.' },
+  { q: 'What do the agents cost?', a: `They are part of the Platform + AI agents plan: ${money(PRICES.agents)} per channel per month, with all ten agents.` },
+];
+---
+<Base
+  title={`AI Agents for TV Scheduling, Ad Placement and Playout | ${BRAND}`}
+  description="Ten AI agents for broadcast scheduling and TV traffic: weekly schedules, playlist timing, ad and promo placement, live changes and as-run checks."
+  current="agents"
+  jsonLd={[faqPage(FAQ)]}
+>
+  <section class="container">
+    <div class="page-hero">
+      <span class="chip chip--accent"><span class="chip__dot"></span>AI agents · preview</span>
+      <h1 class="h1 h1--page">AI agents for TV scheduling, ad placement and playout checks.</h1>
+      <p class="lead lead--lg" style="max-width: 760px">Ten agents, each built for one part of a channel’s day. They do the repeated work of a traffic and scheduling team inside your rules — and every change waits for a person’s approval before it reaches playout.</p>
+      <div class="btn-row" style="padding-top: 8px">
+        <a class="btn btn--primary" href="/demo">Request a demo</a>
+        <a class="btn btn--secondary" href="/#desk">Watch the agents work</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="container section">
+    <div class="section-head">
+      <h2 class="h2">Ten agents, one broadcast job each.</h2>
+      <p class="lead">What each agent does, the rules it keeps, and when it stops to ask a person.</p>
+    </div>
+    <div class="grid" style="--min: 480px; margin-top: 48px">
+      {AGENTS.map((a, i) => (
+        <article class="card">
+          <div style="display: flex; align-items: center; gap: 10px"><span class="num">{String(i + 1).padStart(2, '0')}</span><h3 class="h3">{a.name}</h3></div>
+          <p>{a.does}</p>
+          <p><strong style="color: var(--text); font-weight: 500">Keeps:</strong> {a.rules}</p>
+          <p><strong style="color: var(--text); font-weight: 500">Asks a person:</strong> {a.asks}</p>
+          {a.guide && <a href={a.guide[0]} style="font-size: 15px; font-weight: 500; text-decoration: none">{a.guide[1]} <span aria-hidden="true">→</span></a>}
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="container section">
+    <div class="section-head">
+      <h2 class="h2">How the agents work together.</h2>
+      <p class="lead">The agents are not ten separate tools. They share your channel’s data, checks and skills, and hand work to each other.</p>
+    </div>
+    <div class="grid" style="--min: 260px; margin-top: 48px">
+      {HOW.map(([href, title, text]) => (
+        <a class="card" href={href} style="text-decoration: none; color: var(--text)">
+          <h3 class="h3" style="font-size: 17px">{title}</h3>
+          <p style="flex: 1">{text}</p>
+          <span style="font-weight: 500; color: var(--accent-text)">See it <span aria-hidden="true">→</span></span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="container section">
+    <div class="section-head">
+      <h2 class="h2">Guardrails on every agent.</h2>
+    </div>
+    <div class="grid" style="--min: 480px; margin-top: 48px">
+      {[
+        ['shield', 'Approval before air', 'Nothing reaches playout until a person approves the change.'],
+        ['person', 'Your permissions, never more', 'An agent acts with the roles of the person who runs it, on the channels they may touch.'],
+        ['log', 'A record of every step', 'Each step is logged with its reason, and every change can be undone.'],
+        ['lock', 'Your data stays yours', 'Schedule data stays in your company’s space and is not used to train AI models.'],
+      ].map(([icon, title, text]) => (
+        <article class="card card--row">
+          <span class="icon-box icon-box--accent"><Icon name={icon as 'shield'} /></span>
+          <div class="stack" style="--gap: 6px"><h3 class="h3" style="font-size: 17px">{title}</h3><p>{text}</p></div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="container section">
+    <div class="cta cta--night">
+      <div><h2>Bring one channel. Watch the agents run it.</h2><p>Early access starts with a demo on a channel like yours, then a trial on your own catalog and templates.</p></div>
+      <a class="btn btn--primary" href="/demo">Request a demo</a>
+    </div>
+  </section>
+
+  <Faq title="Questions about the agents" items={FAQ} />
+</Base>

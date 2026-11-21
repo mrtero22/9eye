@@ -1,0 +1,107 @@
+---
+import Guide from '../../layouts/Guide.astro';
+import { BRAND } from '../../site';
+
+const CODE = `// Drop-frame timecode <-> frame count. 29.97 fps: FPS 30, DROP 2. 59.94 fps: FPS 60, DROP 4.
+const FPS = 30;                              // labels per second
+const DROP = 2;                              // numbers skipped at the start of most minutes
+const PER_MIN = FPS * 60 - DROP;             // frames in a minute that skips: 1798
+const PER_10_MIN = FPS * 600 - 9 * DROP;     // frames in ten minutes: 17982
+const pad = (n: number) => String(n).padStart(2, '0');
+
+function toTimecode(frames: number): string {
+  const tens = Math.floor(frames / PER_10_MIN);
+  const rest = frames % PER_10_MIN;
+  const skipped = 9 * DROP * tens + (rest >= DROP ? DROP * Math.floor((rest - DROP) / PER_MIN) : 0);
+  const n = frames + skipped;                // the label, counted as if the rate were FPS
+  const ff = n % FPS;
+  const ss = Math.floor(n / FPS) % 60;
+  const mm = Math.floor(n / (FPS * 60)) % 60;
+  const hh = Math.floor(n / (FPS * 3600));
+  return \`\${pad(hh)}:\${pad(mm)}:\${pad(ss)};\${pad(ff)}\`;
+}
+
+function toFrames(hh: number, mm: number, ss: number, ff: number): number {
+  const minutes = 60 * hh + mm;
+  return (3600 * hh + 60 * mm + ss) * FPS + ff - DROP * (minutes - Math.floor(minutes / 10));
+}
+
+toTimecode(1800);       // "00:01:00;02"
+toTimecode(17982);      // "00:10:00;00"
+toFrames(1, 0, 0, 0);   // 107892`;
+---
+<Guide
+  slug="drop-frame-timecode"
+  title={`Drop-Frame Timecode Explained: 29.97 and 59.94 fps | ${BRAND}`}
+  description="Why 29.97 fps video needs drop-frame timecode, which frame numbers are skipped, and how to convert between frames and timecode, with working code."
+>
+  <section>
+    <p>Timecode gives every frame of video a label: hours, minutes, seconds and frames, <code>HH:MM:SS:FF</code>. At 25 frames per second the labels and the clock agree — after one hour of video the timecode reads exactly one hour. At 29.97 frames per second they do not, and over a broadcast day the difference grows to almost a minute and a half.</p>
+    <p><strong>Drop-frame timecode</strong> is the fix. It skips some frame <em>numbers</em> — never frames of picture — so that the timecode keeps up with the clock. This guide explains why it is needed, exactly which numbers are skipped, and how to convert between frame counts and drop-frame timecode.</p>
+  </section>
+
+  <section>
+    <h2>Why 29.97 fps drifts</h2>
+    <p>The frame rates used in North America, Japan and other former NTSC regions are not whole numbers. “29.97” is exactly 30000/1001 frames per second, and “59.94” is 60000/1001: both run 0.1% slower than 30 and 60.</p>
+    <p>Timecode, though, counts 30 labels per second. In one real hour, 29.97 fps video has <strong>107,892</strong> frames, while 30 labels a second would need 108,000. Counted the plain way — <strong>non-drop-frame</strong> — the timecode reads <code>00:59:56:12</code> when the clock says one hour has passed: 3.6 seconds behind, and 86.4 seconds behind after a full day.</p>
+    <p>For a film edit that may not matter. For a broadcast schedule, where the news must start at 19:00:00 by the clock, it does.</p>
+  </section>
+
+  <section>
+    <h2>Which frame numbers are skipped</h2>
+    <p>At 29.97 fps, drop-frame timecode skips the frame numbers <code>;00</code> and <code>;01</code> at the start of every minute, <strong>except every tenth minute</strong> (minutes 00, 10, 20, 30, 40 and 50).</p>
+    <ul>
+      <li><code>00:00:59;29</code> is followed by <code>00:01:00;02</code> — the labels <code>;00</code> and <code>;01</code> of minute one do not exist.</li>
+      <li><code>00:09:59;29</code> is followed by <code>00:10:00;00</code> — minute ten keeps all its numbers.</li>
+    </ul>
+    <p>That is 2 numbers in 54 minutes of every hour: 108 numbers, exactly the 108 frames the plain count was ahead. After one real hour, drop-frame timecode reads <code>01:00:00;00</code>.</p>
+    <p>At <strong>59.94 fps</strong> the rule is the same with four numbers: <code>;00</code> to <code>;03</code> are skipped at the start of every minute except every tenth.</p>
+    <p>What is left over is tiny: because 29.97 is really 30000/1001, drop-frame timecode is still about 2.6 frames (0.09 seconds) off the clock after 24 hours. Systems that follow the time of day usually correct it once a day, by re-syncing timecode to the clock.</p>
+  </section>
+
+  <section>
+    <h2>How to recognise drop-frame timecode</h2>
+    <p>By convention the last separator changes: a semicolon (or, in some systems, a full stop) before the frames means drop-frame, colons throughout mean non-drop-frame.</p>
+    <ul>
+      <li><code>01:00:00;00</code> — drop-frame</li>
+      <li><code>01:00:00:00</code> — non-drop-frame</li>
+    </ul>
+    <p>The separator is only a convention, so when two systems exchange times, agree explicitly which one each side uses.</p>
+  </section>
+
+  <section>
+    <h2>Frame rates and timecode at a glance</h2>
+    <div class="scroll-x"><table>
+      <thead><tr><th scope="col">Frame rate</th><th scope="col">Exact rate</th><th scope="col">Drop-frame</th><th scope="col">Plain count after one hour</th></tr></thead>
+      <tbody>
+        <tr><td>24, 25, 30, 50</td><td>Whole numbers</td><td>Not needed</td><td>Matches the clock</td></tr>
+        <tr><td>23.976</td><td>24000/1001</td><td>Not defined — always counted plain</td><td>3.6 s behind</td></tr>
+        <tr><td>29.97</td><td>30000/1001</td><td>Skips <code>;00</code> and <code>;01</code></td><td>3.6 s behind</td></tr>
+        <tr><td>59.94</td><td>60000/1001</td><td>Skips <code>;00</code> to <code>;03</code></td><td>3.6 s behind</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Converting between frames and drop-frame timecode</h2>
+    <p>The safe way to work with time is to count frames and turn them into timecode only for display. These two functions do the conversion; set <code>FPS</code> to 60 and <code>DROP</code> to 4 for 59.94 fps.</p>
+    <pre><code>{CODE}</code></pre>
+    <p>From timecode to frames: count every label as if the rate were 30, then subtract the two skipped numbers for each minute that is not a multiple of ten. From frames to timecode: add the skipped numbers back, then split the result into hours, minutes, seconds and frames.</p>
+    <p>To try numbers without writing code, use the free <a href="/tools/timecode-calculator">timecode calculator</a>: timecode to frames and back, sums of durations and frame rate changes, drop-frame included.</p>
+  </section>
+
+  <section>
+    <h2>What this means for a broadcast schedule</h2>
+    <ul>
+      <li><strong>Store frames, not strings.</strong> Durations add up exactly as frame counts. Adding timecode strings at 29.97 goes wrong as soon as a minute boundary is crossed.</li>
+      <li><strong>One frame rate per channel.</strong> A 25 fps channel and a 29.97 fps channel can share a catalog, but a 30-second commercial is 750 frames on one and 900 (<code>00:00:30;00</code>) on the other — each channel needs its own count.</li>
+      <li><strong>Agree with playout.</strong> If traffic counts drop-frame and the automation does not, every time in the day drifts by up to 3.6 seconds an hour, and the <a href="/guides/as-run-reconciliation">as-run reconciliation</a> fills with false differences.</li>
+      <li><strong>Check exchange formats.</strong> When schedules travel as <a href="/guides/bxf-explained">BXF</a> or in an automation format, confirm how each side writes timecode and whether times are local or UTC.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Timecode in {BRAND}</h2>
+    <p>{BRAND} keeps every time as a whole number of frames at the channel’s own frame rate — 23.976, 24, 25, 29.97 drop-frame, 30, 50 or 59.94 drop-frame — and shows timecode only on screen. Each channel also has its own time zone, broadcast day start and first weekday, so a 29.97 fps feed in one region and a 25 fps feed in another run side by side without conversion errors. See the <a href="/platform">platform</a>, or <a href="/demo">request a demo</a> on a channel like yours.</p>
+  </section>
+</Guide>

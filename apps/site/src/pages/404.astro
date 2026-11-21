@@ -1,0 +1,14 @@
+---
+import Base from '../layouts/Base.astro';
+import { BRAND } from '../site';
+---
+<Base title={`Page not found | ${BRAND}`} description="This page does not exist." noindex>
+  <div class="container">
+    <div class="page-hero" style="padding-bottom: 32px">
+      <span class="mono meta">404</span>
+      <h1 class="h1 h1--page">This page does not exist.</h1>
+      <p class="lead">The link may be old, or the address mistyped.</p>
+      <div class="btn-row"><a class="btn btn--primary" href="/">Go to the home page</a><a class="btn btn--secondary" href="/contact">Contact us</a></div>
+    </div>
+  </div>
+</Base>

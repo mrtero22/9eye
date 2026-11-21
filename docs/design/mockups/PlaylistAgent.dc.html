@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Playlist with its agent</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.ds{--bg:#fafafa;--surface:#ffffff;--surface-2:#f4f4f5;--surface-3:#e9e9ec;--hairline:#f0f0f2;--border:#e4e4e7;--border-strong:#d4d4d8;--text:#18181b;--text-2:#52525b;--text-3:#6b6b74;--accent:#2563eb;--accent-hover:#1d4ed8;--accent-soft:#eaf1ff;--accent-text:#1d4ed8;--red:#dc2626;--red-soft:#fdeeee;--red-text:#b91c1c;--amber:#d97706;--amber-soft:#fdf4e3;--amber-text:#9a5200;--green:#16a34a;--green-soft:#e8f6ec;--green-text:#15803d;--ct-program:#2563eb;--ct-filler:#7c3aed;--ct-promo:#0891b2;--shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.08);--fs:14px;--fs-sm:13px;--row:32px;--ctl:32px;color-scheme:light;font-family:'Geist',ui-sans-serif,system-ui,sans-serif;font-size:var(--fs);line-height:1.5;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
+.ds.dark{--bg:#0a0a0b;--surface:#111113;--surface-2:#1a1a1d;--surface-3:#232327;--hairline:#19191c;--border:#26262a;--border-strong:#38383e;--text:#f4f4f5;--text-2:#a8a8b0;--text-3:#8b8b94;--accent:#2563eb;--accent-hover:#3b74f0;--accent-soft:#15203a;--accent-text:#93b4ff;--red:#ef4444;--red-soft:#2a1313;--red-text:#fca5a5;--amber:#f59e0b;--amber-soft:#2a2011;--amber-text:#fcd34d;--green:#22c55e;--green-soft:#102419;--green-text:#86efac;--ct-program:#5b8def;--ct-filler:#a78bfa;--ct-promo:#22b8cf;--shadow:0 1px 2px rgba(0,0,0,.5),0 8px 24px rgba(0,0,0,.45);color-scheme:dark}
+.ds *{box-sizing:border-box}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,monospace;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.ds button,.ds input,.ds textarea{font:inherit;color:inherit}
+.ds button:focus-visible,.ds a:focus-visible,.ds textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.ds button:disabled{cursor:default!important;opacity:.45}
+@media (pointer:coarse){.ctl{min-height:44px}}
+.hov:hover{background:var(--surface-2)!important}
+.tnl:hover{color:var(--text)!important}
+a{color:#1d4ed8}a:hover{color:#1e40af}
+@media (max-width:720px){.tn-links,.tn-hide{display:none!important}}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="min-height: 100vh; background: var(--bg); color: var(--text); display: flex; flex-direction: column">
+
+<header style="position: relative; display: flex; align-items: center; gap: 8px; height: 52px; padding: 0 16px; border-bottom: 1px solid var(--border); background: var(--surface)">
+<button class="ctl hov" aria-label="Switch company, current Aurora Media" style="display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 8px; border: 0; border-radius: 8px; background: transparent; cursor: pointer; flex: none">
+<span style="width: 24px; height: 24px; flex: none; border-radius: 6px; background: var(--text); color: var(--bg); display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px">A</span>
+<span class="tn-hide" style="font-weight: 600">Aurora Media</span>
+</button>
+<span aria-hidden="true" class="tn-hide" style="width: 1px; height: 20px; background: var(--border); margin: 0 8px; flex: none"></span>
+<nav aria-label="Main" class="tn-links" style="display: flex; align-self: stretch; gap: 4px; min-width: 0; overflow-x: auto">
+<a class="tnl" href="the Home mockup (private)" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; white-space: nowrap; color: var(--text-2); border-bottom: 2px solid transparent">Home</a>
+<a class="tnl" href="the Catalog mockup (private)" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; white-space: nowrap; color: var(--text-2); border-bottom: 2px solid transparent">Media</a>
+<a class="tnl" href="the Week mockup (private)" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; white-space: nowrap; color: var(--text-2); border-bottom: 2px solid transparent">Layouts</a>
+<a class="tnl" href="the Scheduling mockup (private)" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; white-space: nowrap; color: var(--text-2); border-bottom: 2px solid transparent">Scheduling</a>
+<a class="tnl" href="PlaylistAgent.dc.html" aria-current="page" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; white-space: nowrap; color: var(--text); border-bottom: 2px solid var(--text)">Playlist</a>
+<a class="tnl" href="the Orders mockup (private)" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; white-space: nowrap; color: var(--text-2); border-bottom: 2px solid transparent">Ads</a>
+<a class="tnl" href="#reports" style="display: inline-flex; align-items: center; padding: 0 10px; text-decoration: none; font-weight: 500; white-space: nowrap; color: var(--text-2); border-bottom: 2px solid transparent">Reports</a>
+<a class="tnl" href="AgentsHub.dc.html" style="display: inline-flex; align-items: center; gap: 6px; padding: 0 10px; text-decoration: none; font-weight: 500; white-space: nowrap; color: var(--text-2); border-bottom: 2px solid transparent">Agents<span class="mono" aria-label="4 waiting for you" style="display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; font-size: 11px; background: var(--accent); color: #ffffff">4</span></a>
+</nav>
+<span style="flex: 1"></span>
+<button class="ctl hov" aria-pressed="{{dark}}" onClick="{{toggleDark}}" style="height: 32px; padding: 0 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text-3); cursor: pointer; font-size: 12.5px">Theme</button>
+<span style="width: 28px; height: 28px; flex: none; border-radius: 50%; background: var(--surface-3); display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600">DE</span>
+</header>
+
+<main style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+<header style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 16px; padding: 24px 32px 0">
+<div style="display: flex; flex-direction: column; gap: 6px; min-width: 0; flex: 1 1 420px">
+<h1 style="margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.02em">Playlist</h1>
+<span style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; color: var(--text-2)"><button class="hov" style="height: 26px; padding: 0 6px; margin-left: -6px; border: 0; border-radius: 5px; background: transparent; cursor: pointer; font-weight: 500; color: var(--text)">AURORA TV SD ▾</button><span>Main playlist</span><span>Wednesday 18 Nov 2026</span><span style="display: inline-flex; align-items: center; height: 20px; padding: 0 7px; border-radius: 4px; font-size: 11.5px; font-weight: 500; background: var(--surface-2); color: var(--text-2)">Draft · version {{version}}</span></span>
+</div>
+<div style="display: flex; align-items: center; gap: 8px">
+<button class="ctl hov" disabled="{{true}}" style="height: var(--ctl); padding: 0 12px; border-radius: 6px; font-weight: 500; background: transparent; color: var(--text-2); border: 1px solid transparent">Undo</button>
+<button class="ctl hov" aria-pressed="{{panelOpen}}" onClick="{{togglePanel}}" style="display: inline-flex; align-items: center; gap: 6px; height: var(--ctl); padding: 0 12px; border-radius: 6px; font-weight: 500; cursor: pointer; background: {{agentBtnBg}}; color: {{agentBtnFg}}; border: 1px solid {{agentBtnBorder}}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"></path><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"></path></svg>Agent</button>
+<button class="ctl" disabled="{{true}}" style="height: var(--ctl); padding: 0 16px; border-radius: 6px; font-weight: 500; background: var(--accent); color: #ffffff; border: 1px solid var(--accent)">Save</button>
+</div>
+</header>
+<nav aria-label="Playlist" style="display: flex; gap: 4px; padding: 12px 32px 0; border-bottom: 1px solid var(--border)">
+<a href="the Playlist mockup (private)" class="tnl" style="display: inline-flex; align-items: center; height: 36px; padding: 0 10px; text-decoration: none; font-weight: 500; color: var(--text-2); border-bottom: 2px solid transparent">Weeks</a>
+<span aria-current="page" style="display: inline-flex; align-items: center; height: 36px; padding: 0 10px; font-weight: 500; color: var(--text); border-bottom: 2px solid var(--text)">Day</span>
+</nav>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; padding: 16px 32px 32px; align-items: flex-start">
+
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<sc-if value="{{pending}}" hint-placeholder-val="{{true}}">
+<div role="status" style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--accent); background: var(--accent-soft)">
+<span style="flex: 1 1 320px; display: flex; flex-direction: column; line-height: 1.35"><span style="font-weight: 600; color: var(--accent-text)">The Playlist agent's change, not saved yet</span><span style="font-size: 12.5px; color: var(--text-2)">+4 programmes and +31 rows from rotation lists. New rows are green; 1 gap stays (amber).</span></span>
+<button class="ctl hov" onClick="{{reject}}" style="height: var(--ctl); padding: 0 12px; border-radius: 6px; font-weight: 500; cursor: pointer; background: var(--surface); color: var(--text); border: 1px solid var(--border-strong)">Reject</button>
+<button class="ctl" onClick="{{approve}}" style="height: var(--ctl); padding: 0 14px; border-radius: 6px; font-weight: 500; cursor: pointer; background: var(--accent); color: #ffffff; border: 1px solid var(--accent)">Approve and save</button>
+</div>
+</sc-if>
+<sc-if value="{{approved}}" hint-placeholder-val="{{false}}">
+<div role="status" style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px; background: var(--green-soft); color: var(--green-text)"><span style="flex: 1">Saved as version 15. The agent's change is in Activity.</span><button class="ctl hov" onClick="{{undo}}" style="height: 28px; padding: 0 10px; border-radius: 6px; font-weight: 500; cursor: pointer; background: var(--surface); color: var(--text); border: 1px solid var(--border-strong); font-size: 12.5px">Undo</button></div>
+</sc-if>
+
+<div style="background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow-x: auto">
+<div style="min-width: 640px">
+<div style="display: grid; grid-template-columns: 104px 96px minmax(220px, 1fr) 140px; column-gap: 12px; align-items: center; height: 36px; padding: 0 14px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--text-3)"><span>Start</span><span>Length</span><span>Title</span><span>Break · media</span></div>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="14">
+<sc-if value="{{r.isBlock}}" hint-placeholder-val="{{false}}">
+<div style="display: grid; grid-template-columns: 104px 96px minmax(220px, 1fr) 140px; column-gap: 12px; align-items: center; min-height: 34px; padding: 0 14px; border-top: 1px solid var(--hairline); background: var(--surface-2); font-size: var(--fs-sm)"><span class="mono" style="color: var(--text-2)">{{r.start}}</span><span class="mono" style="color: var(--text-3)">{{r.len}}</span><span style="font-weight: 600">{{r.title}}</span><span style="font-size: 12px; color: {{r.gapColor}}">{{r.gap}}</span></div>
+</sc-if>
+<sc-if value="{{r.isRow}}" hint-placeholder-val="{{true}}">
+<div style="display: grid; grid-template-columns: 104px 96px minmax(220px, 1fr) 140px; column-gap: 12px; align-items: center; min-height: 32px; padding: 0 14px; border-top: 1px solid var(--hairline); background: {{r.bg}}; box-shadow: inset 3px 0 0 {{r.edge}}; font-size: var(--fs-sm)">
+<span class="mono" style="padding-left: {{r.indent}}">{{r.start}}</span><span class="mono" style="color: var(--text-2)">{{r.len}}</span>
+<span style="display: flex; align-items: center; gap: 8px; min-width: 0"><span style="width: 3px; height: 16px; border-radius: 2px; flex: none; background: {{r.kind}}"></span><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.title}}</span><sc-if value="{{r.isNew}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; height: 18px; padding: 0 6px; border-radius: 4px; font-size: 11px; font-weight: 500; background: var(--green-soft); color: var(--green-text); flex: none">new</span></sc-if></span>
+<span style="font-size: 12px; color: var(--text-3)">{{r.meta}}</span>
+</div>
+</sc-if>
+</sc-for>
+</div>
+</div>
+</div>
+
+<sc-if value="{{panelOpen}}" hint-placeholder-val="{{true}}">
+<aside aria-label="Playlist agent" style="flex: 1 1 360px; min-width: 300px; max-width: 400px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden">
+<div style="display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 8px 0 16px; border-bottom: 1px solid var(--hairline)">
+<span style="flex: 1; display: flex; flex-direction: column; line-height: 1.25"><span style="font-weight: 600">Playlist agent</span><span style="font-size: 11.5px; color: var(--text-3)">Claude Sonnet 5.5 · as Traffic operator</span></span>
+<a href="AgentsHub.dc.html" class="hov" style="height: 28px; display: inline-flex; align-items: center; padding: 0 8px; border-radius: 6px; font-size: 12.5px; text-decoration: none; color: var(--text-2)">Routines</a>
+<button class="hov" aria-label="Close the agent" onClick="{{togglePanel}}" style="width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 6px; background: transparent; color: var(--text-3); cursor: pointer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+</div>
+<div style="padding: 8px 16px; border-bottom: 1px solid var(--hairline); font-size: 12px; color: var(--text-3)">Sees this page: <span style="color: var(--text-2)">AURORA TV SD · Main · 18 Nov</span></div>
+
+<div style="flex: 1; display: flex; flex-direction: column; gap: 12px; padding: 14px 16px; min-height: 380px">
+<div style="align-self: flex-end; max-width: 85%; padding: 8px 12px; border-radius: 12px 12px 4px 12px; background: var(--accent); color: #ffffff; font-size: var(--fs-sm)">Fill this day and check it.</div>
+
+<button class="hov" onClick="{{toggleSteps}}" aria-expanded="{{stepsOpen}}" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 8px; border: 1px solid var(--border); border-radius: 13px; background: var(--surface); cursor: pointer; font-size: 12px; color: var(--text-2)">{{stepsLabel}}</button>
+<sc-if value="{{stepsOpen}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; gap: 4px; padding: 8px 10px; border-radius: 8px; background: var(--surface-2); font-size: 12px">
+<sc-for list="{{steps}}" as="s" hint-placeholder-count="4"><div style="display: flex; gap: 8px"><span class="mono" style="width: 14px; color: var(--text-3)">{{s.n}}</span><span style="flex: 1; color: var(--text-2)"><span style="font-weight: 500; color: var(--text)">{{s.label}}</span> · {{s.answer}}</span></div></sc-for>
+</div>
+</sc-if>
+
+<div style="align-self: flex-start; max-width: 92%; display: flex; flex-direction: column; gap: 8px; font-size: var(--fs-sm); color: var(--text)">
+<span>The day can be filled: the 4 airings of confirmed plans, and 23 of 24 gaps from rotation lists.</span>
+<span style="color: var(--amber-text)">"1 Hr Drama Rerun 1 Slot 6" keeps a gap of <span class="mono">00:00:42:10</span>: no item of its list is that short. Pick something for it?</span>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 10px; border: 1px solid {{cardBorder}}; background: var(--surface)">
+<span style="display: flex; align-items: center; gap: 8px"><span style="flex: 1; font-weight: 600; font-size: var(--fs-sm)">Fill the day</span><span style="font-size: 12px; color: {{cardStateColor}}">{{cardState}}</span></span>
+<span style="font-size: 12px; color: var(--text-2)">+4 programmes · +31 rows · 1 gap stays · at version 14</span>
+<sc-if value="{{pending}}" hint-placeholder-val="{{true}}"><span style="display: flex; gap: 8px"><button class="ctl hov" onClick="{{reject}}" style="flex: 1; height: 30px; border-radius: 6px; font-weight: 500; cursor: pointer; background: var(--surface); color: var(--text); border: 1px solid var(--border-strong)">Reject</button><button class="ctl" onClick="{{approve}}" style="flex: 1; height: 30px; border-radius: 6px; font-weight: 500; cursor: pointer; background: var(--accent); color: #ffffff; border: 1px solid var(--accent)">Approve</button></span></sc-if>
+</div>
+
+<sc-if value="{{approved}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 10px 12px; border-radius: 10px; background: var(--surface-2); font-size: var(--fs-sm)">
+<span>Do this every day for the next day?</span>
+<sc-if value="{{noRoutine}}" hint-placeholder-val="{{true}}"><span style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center"><span style="font-size: 12px; color: var(--text-2)">Every day at</span><span class="mono" style="padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border-strong); background: var(--surface); font-size: 12px">19:00</span><button class="ctl" onClick="{{makeRoutine}}" style="height: 28px; padding: 0 10px; border-radius: 6px; font-weight: 500; cursor: pointer; background: var(--accent); color: #ffffff; border: 1px solid var(--accent); font-size: 12.5px">Make it a routine</button></span></sc-if>
+<sc-if value="{{routineMade}}" hint-placeholder-val="{{false}}"><span style="font-size: 12.5px; color: var(--green-text)">Routine made: every day at 19:00 · its changes wait in Agents › Inbox.</span></sc-if>
+</div>
+</sc-if>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 6px; padding: 0 16px 10px">
+<sc-for list="{{quick}}" as="q" hint-placeholder-count="4"><button class="hov" style="height: 28px; padding: 0 10px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); cursor: pointer; font-size: 12.5px; color: var(--text-2)">{{q}}</button></sc-for>
+</div>
+<div style="display: flex; gap: 8px; align-items: flex-end; padding: 10px 12px; border-top: 1px solid var(--hairline)">
+<textarea aria-label="Ask the Playlist agent" placeholder="Ask the Playlist agent… e.g. move the news to 20:00 and refill the gaps" style="flex: 1; min-height: 40px; max-height: 120px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: var(--fs-sm); resize: none"></textarea>
+<button class="ctl" aria-label="Send" style="width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; padding: 0; border-radius: 8px; cursor: pointer; background: var(--accent); color: #ffffff; border: 1px solid var(--accent)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+</div>
+<div style="padding: 0 16px 12px; font-size: 11.5px; color: var(--text-3)">Every change waits for you. Approving a day for air always asks twice.</div>
+</aside>
+</sc-if>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { dark: null, panel: true, change: 'pending', stepsOpen: false, routine: false };
+  }
+  renderVals() {
+    const st = this.state;
+    const dark = st.dark === null ? !!(this.props.dark ?? false) : st.dark;
+    const show = st.change !== 'rejected';
+    const P = 'var(--ct-program)', F = 'var(--ct-filler)', T = 'var(--ct-promo)', B = 'var(--border-strong)';
+    // block: [start, planned length, name, gap text, gap tone]; row: [start, length, title, kind colour, meta, isNew, inBreak]
+    const D = [
+      ['b', '06:00:00:00', '00:30:00:00', '30 Min Show Premiere Slot 4', 'Gap 00:30:00:00', 'gap'],
+      ['r', '06:00:00:00', '00:00:00:00', 'Billboard 1 06:00', B, 'Break · empty', false, false],
+      ['r', '06:00:00:00', '00:28:40:00', 'Painted Trail - 7', P, 'Media ready', true, false],
+      ['r', '06:28:40:00', '00:01:20:00', 'Aurora ident · Morning 3', F, 'Rotation list', true, false],
+      ['b', '06:30:00:00', '00:30:00:00', '30 Min Show Premiere Slot 5', 'Gap 00:30:00:00', 'gap'],
+      ['r', '06:30:00:00', '00:00:15:00', 'Spot 15s · Meridian Beverages', T, 'Billboard 5 06:45', false, true],
+      ['r', '06:30:15:00', '00:27:55:00', 'Painted Trail - 8', P, 'Media ready', true, false],
+      ['r', '06:58:10:00', '00:01:50:00', 'Trailer · Falling Moon week', T, 'Rotation list', true, false],
+      ['b', '07:00:00:00', '01:00:00:00', '1 Hr Drama Premiere Slot 2', 'Gap 00:59:48:03', 'gap'],
+      ['r', '07:00:00:00', '00:00:11:22', 'Spot 12s · Harborview Beauty', T, 'Billboard 6 07:50', false, true],
+      ['r', '07:00:11:22', '00:44:10:00', 'Falling Moon - 23', P, 'Media ready', true, false],
+      ['r', '07:44:21:22', '00:15:38:03', '6 rows from Drama Fillers', F, 'Rotation list', true, false],
+      ['b', '11:30:00:00', '01:00:00:00', '1 Hr Drama Rerun 1 Slot 6', 'Short 00:00:42:10', 'stays'],
+      ['r', '11:30:00:00', '00:59:17:15', 'Falling Moon - 22 (repeat) and 4 fillers', P, 'Rotation list', true, false]
+    ];
+    const rows = D.map((d) => {
+      if (d[0] === 'b') {
+        const [, start, len, title, gap, tone] = d;
+        const filled = show && tone === 'gap';
+        return { isBlock: true, isRow: false, start, len, title, gap: filled ? 'Filled by the agent' : gap, gapColor: tone === 'stays' && show ? 'var(--amber-text)' : filled ? 'var(--green-text)' : 'var(--amber-text)' };
+      }
+      const [, start, len, title, kind, meta, isNew, inBreak] = d;
+      if (isNew && !show) return null;
+      const mark = isNew && st.change === 'pending';
+      return { isBlock: false, isRow: true, start, len, title, kind, meta, isNew: mark, bg: mark ? 'var(--green-soft)' : 'transparent', edge: mark ? 'var(--green)' : 'transparent', indent: inBreak ? '14px' : '0' };
+    }).filter(Boolean);
+
+    const steps = [['Check this day', '4 airings missing; 24 blocks have gaps'], ['Fill · Program placements (preview)', '4 placed'], ['Fill · Rotation lists (preview)', '23 placed, 1 not'], ['Check the result', '1 gap of 00:00:42:10 left']];
+    const pending = st.change === 'pending';
+    return {
+      rootClass: 'ds' + (dark ? ' dark' : ''), dark, toggleDark: () => this.setState({ dark: !dark }),
+      panelOpen: !!st.panel, togglePanel: () => this.setState({ panel: !st.panel }),
+      agentBtnBg: st.panel ? 'var(--accent-soft)' : 'var(--surface)', agentBtnFg: st.panel ? 'var(--accent-text)' : 'var(--text)', agentBtnBorder: st.panel ? 'var(--accent)' : 'var(--border-strong)',
+      version: st.change === 'approved' ? '15' : '14',
+      rows, pending, approved: st.change === 'approved',
+      approve: () => this.setState({ change: 'approved' }), reject: () => this.setState({ change: 'rejected' }), undo: () => this.setState({ change: 'pending', routine: false }),
+      cardBorder: pending ? 'var(--accent)' : 'var(--border)', cardState: pending ? 'Waiting for you' : st.change === 'approved' ? 'Approved · saved' : 'Rejected', cardStateColor: pending ? 'var(--accent-text)' : st.change === 'approved' ? 'var(--green-text)' : 'var(--text-3)',
+      stepsOpen: !!st.stepsOpen, toggleSteps: () => this.setState({ stepsOpen: !st.stepsOpen }), stepsLabel: (st.stepsOpen ? '▾ ' : '▸ ') + '4 steps · 21 s',
+      steps: steps.map(([label, answer], i) => ({ n: String(i + 1), label, answer })),
+      noRoutine: !st.routine, routineMade: !!st.routine, makeRoutine: () => this.setState({ routine: true }),
+      quick: ['Check this day', 'Fill the gaps', 'Create next week', 'Why is a block over?']
+    };
+  }
+}
+</script>
+</body>
+</html>

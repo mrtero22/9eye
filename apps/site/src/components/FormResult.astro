@@ -1,0 +1,20 @@
+---
+// The thank-you after a form is sent, and the message when it could not be sent.
+import Icon from './Icon.astro';
+import { EMAIL, WHATSAPP, WHATSAPP_URL } from '../site';
+
+interface Props { title: string; text: string; again: string }
+const { title, text, again } = Astro.props;
+---
+<p class="notice notice--red" data-part="error" role="alert" hidden>
+  Your message could not be sent. Please write to <a href={`mailto:${EMAIL}`}>{EMAIL}</a> or on WhatsApp at <a href={WHATSAPP_URL}>{WHATSAPP}</a>.
+</p>
+<div class="done" data-part="done" role="status" tabindex="-1" hidden>
+  <span class="done__icon"><Icon name="check" size={24} stroke={2.25} /></span>
+  <h2>{title}</h2>
+  <p>{text}</p>
+  <div class="btn-row" style="padding-top: 8px">
+    <a class="link-arrow" href="/">Back to home</a>
+    <button type="button" class="text-btn" data-part="again">{again}</button>
+  </div>
+</div>

@@ -1,0 +1,47 @@
+name: Bug report
+description: Something in 9eye does not work as it should.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Security problems go through SECURITY.md, not here.
+        Please use made-up names in examples — never a real schedule, client or contract.
+  - type: input
+    id: page
+    attributes:
+      label: Where
+      description: The page or part (for example Playlist › Day, Ads › campaign, MCP tool, API route).
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open …
+        2. Click …
+        3. See …
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected, and what happened instead
+    validations:
+      required: true
+  - type: input
+    id: channel
+    attributes:
+      label: Channel settings, if they matter
+      description: Frame rate, day start, week start, time zone.
+      placeholder: 29.97 drop-frame · day starts 06:00 · week starts Monday · America/Chicago
+  - type: input
+    id: version
+    attributes:
+      label: Commit or version
+      placeholder: git rev-parse --short HEAD
+  - type: textarea
+    id: extra
+    attributes:
+      label: Screenshots or logs

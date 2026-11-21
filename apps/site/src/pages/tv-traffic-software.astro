@@ -1,0 +1,136 @@
+---
+// Landing page for "TV traffic software" / "broadcast traffic system" (docs/design/site.md, Keywords).
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+import Icon from '../components/Icon.astro';
+import Shot from '../components/Shot.astro';
+import { BRAND } from '../site';
+import { faqPage, type Faq as FaqItem } from '../seo';
+
+const FLOW = [
+  ['Spots', 'Commercials, promos, idents and fillers in the catalog, each with its length, clash codes and the hours it may air.', '#64748b'],
+  ['Breaks', 'Ad breaks drawn into the week template at exact positions inside each programme block.', '#0d9488'],
+  ['Placement', 'Booked spots placed in breaks by your rules, promos ahead of the programmes they promote.', '#7c3aed'],
+  ['Fill', 'What is left in each break closed with fillers, bumpers and idents from rotation lists, to the frame.', '#db2777'],
+  ['Check', 'Every break checked before export: length, clash codes, minutes per hour, air windows, missing media.', '#2563eb'],
+  ['Air and as-run', 'The day exported to playout as BXF or an automation format, and the as-run log reconciled against the plan.', '#16a34a'],
+];
+
+const RULES = [
+  ['tag', 'Clash codes', 'Spots for competing brands or categories are kept out of the same break.'],
+  ['clock', 'Breaks to the frame', 'Every break filled to its exact length at the channel’s frame rate, drop-frame included.'],
+  ['lists', 'Minutes per hour', 'Advertising minutes per clock hour checked against your limit before the day goes to air.'],
+  ['shield', 'Air windows', 'Products and programmes that may only air at certain hours stay inside them.'],
+  ['repeat', 'Promos in the right place', 'A promo runs before the programme it promotes, never inside it.'],
+  ['checkCircle', 'Rotation lists', 'Idents, bumpers and fillers taken in turn from lists, so the channel never looks repetitive.'],
+] as const;
+
+const AGENTS = [
+  ['Ad placement agent', 'Places the day’s booked spots in the right breaks, gives a reason for every placement, and proposes other breaks for spots that do not fit.'],
+  ['Promo placement agent', 'Spreads each campaign over its passes, ahead of the programmes it promotes.'],
+  ['Filler and bumper agent', 'Closes every gap in every break with items from your rotation lists, to the frame.'],
+  ['Reconciliation agent', 'Matches the as-run log to the plan, explains each difference and lists the spots that need a make-good.'],
+];
+
+const FAQ: FaqItem[] = [
+  { q: 'What is TV traffic software?', a: 'Traffic software manages everything that fills a channel’s breaks: commercials, promos, idents and fillers. It places them in breaks by rules, builds the log that goes to playout, and checks the as-run log afterwards against what was planned.' },
+  { q: 'Does it handle ad sales, contracts and invoicing?', a: `Not yet. ${BRAND} does traffic and scheduling: booked spots come in from your sales system or a spreadsheet, and the reconciled as-run tells your billing team what aired. Sales and billing will come later, as a module or a connection to your own system.` },
+  { q: 'What are clash codes?', a: 'Codes given to commercials whose brands or categories compete — two car makers, two banks. The traffic system keeps spots with the same clash code out of the same break.' },
+  { q: 'How are ad breaks defined?', a: 'In the channel’s week template. Each programme block has its ad breaks linked at exact positions, and a main playlist and an ads playlist stay linked at those positions.' },
+  { q: 'Does it work for channels with few or no ads?', a: 'Yes. Public and subscription channels use the same breaks for promos, idents and fillers. A channel’s settings and rules decide what goes where.' },
+];
+---
+<Base
+  title={`TV Traffic Software for Ads, Promos and Breaks | ${BRAND}`}
+  description="TV traffic software that places commercials, promos and fillers in every break, keeps clash codes apart, exports to playout and reconciles the as-run log."
+  current="platform"
+  jsonLd={[faqPage(FAQ)]}
+>
+  <section class="container">
+    <div class="page-hero">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+        <span class="chip chip--accent"><span class="chip__dot"></span>TV traffic software</span>
+        <span class="mono meta" aria-hidden="true">Break 20:58:30:00 · 00:02:30:00</span>
+      </div>
+      <h1 class="h1 h1--page">TV traffic software for every break on every channel.</h1>
+      <p class="lead lead--lg" style="max-width: 760px">{BRAND} places commercials, promos, idents and fillers in every break by your rules, keeps each break to the frame, sends the day to playout and checks the as-run log against the plan — with programme scheduling in the same system.</p>
+      <div class="btn-row" style="padding-top: 8px">
+        <a class="btn btn--primary" href="/demo">Request a demo</a>
+        <a class="btn btn--secondary" href="/pricing">See pricing</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="container section">
+    <div class="section-head">
+      <h2 class="h2">From booked spot to proof of air.</h2>
+      <p class="lead">A traffic system turns the spots a channel has sold and the promos it wants to run into breaks that play out exactly — and then proves what aired. In {BRAND} every step is connected.</p>
+    </div>
+    <ol class="steps" style="--min: 300px">
+      {FLOW.map(([name, text, color], i) => (
+        <li style={`--c: ${color}`}><span class="num">{String(i + 1).padStart(2, '0')}</span><h3>{name}</h3><p>{text}</p></li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="container section">
+    <div class="section-head">
+      <h2 class="h2">The rules a traffic team lives by, kept for you.</h2>
+      <p class="lead">Each channel has its own rules. {BRAND} keeps them while spots are placed, and checks them again before the playlist leaves for playout.</p>
+    </div>
+    <div class="grid" style="margin-top: 48px; --min: 320px">
+      {RULES.map(([icon, title, text]) => (
+        <article class="card"><span class="icon-box"><Icon name={icon} /></span><h3 class="h3" style="font-size: 17px">{title}</h3><p>{text}</p></article>
+      ))}
+    </div>
+  </section>
+
+  <section class="container section">
+    <div class="section-head">
+      <h2 class="h2">Programmes and breaks in one plan.</h2>
+      <p class="lead">Traffic and scheduling work on the same channel week. Ad breaks are linked into programme blocks at exact positions, and the main playlist and the ads playlist stay linked, so the programme team and the traffic team never work from two versions of the day.</p>
+    </div>
+    <figure class="shot" style="margin: 48px 0 0">
+      <Shot name="templates" />
+    </figure>
+  </section>
+
+  <section class="container section">
+    <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px">
+      <div class="section-head" style="flex: 1 1 560px">
+        <span class="chip chip--accent">AI agents · preview</span>
+        <h2 class="h2">Traffic work the AI agents take on.</h2>
+        <p class="lead">With Platform + AI agents, four agents do the repeated traffic work inside your rules. Every change waits for a person’s approval before it reaches playout.</p>
+      </div>
+      <a class="link-arrow" href="/ai-agents">All ten agents <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="grid" style="--min: 480px; margin-top: 48px">
+      {AGENTS.map(([name, text]) => (
+        <article class="card card--row">
+          <span class="icon-box icon-box--accent"><Icon name="agent" /></span>
+          <div class="stack" style="--gap: 6px"><h3 class="h3" style="font-size: 17px">{name}</h3><p>{text}</p></div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="container section">
+    <div class="section-head">
+      <h2 class="h2">Learn more about traffic.</h2>
+    </div>
+    <div class="grid" style="--min: 320px; margin-top: 32px">
+      <a class="card" href="/guides/as-run-reconciliation" style="text-decoration: none; color: var(--text)"><h3 class="h3">As-run reconciliation</h3><p>How channels match what aired against the plan, and how make-goods work.</p></a>
+      <a class="card" href="/guides/bxf-explained" style="text-decoration: none; color: var(--text)"><h3 class="h3">What is BXF?</h3><p>The standard traffic and playout systems use to exchange schedules and as-run logs.</p></a>
+      <a class="card" href="/platform" style="text-decoration: none; color: var(--text)"><h3 class="h3">The whole platform</h3><p>Catalog, templates, orders, playlists, playout export and as-run in one system.</p></a>
+    </div>
+  </section>
+
+  <section class="container section">
+    <div class="cta cta--light">
+      <div><h2>Bring one channel’s breaks. See them run on {BRAND}.</h2><p>Early access starts with a demo on a channel like yours, then a trial on your own catalog and templates.</p></div>
+      <a class="btn btn--primary" href="/demo">Request a demo</a>
+    </div>
+  </section>
+
+  <Faq title="Traffic questions" items={FAQ} />
+</Base>

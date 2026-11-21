@@ -1,0 +1,1526 @@
+// 9eye database — see docs/design/data-model.md (§2 tenancy, §3 channels, §4 catalog, §5 templates, §7 orders).
+// Times are integer frames (decision 0004); dates are plain dates without a zone.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Tenant {
+  id               String   @id @default(uuid(7)) @db.Uuid
+  name             String
+  slug             String   @unique
+  /// Frame rate of every catalog length and timecode (a code of @9eye/core FRAME_RATES).
+  catalogFrameRate String   @default("25") @map("catalog_frame_rate")
+  /// What AI apps (MCP, decision 0023) may do in this company: "off", "read" or "edit".
+  aiAccess         String   @default("read") @map("ai_access")
+  /// What AI may do, part × action (decision 0025): { "playlist": { "read": "on", "change": "ask", … }, … }.
+  /// null: from ai_access as before 0025 ("read" → Read only, "edit" → Drafts). ai_access "off" turns AI off.
+  aiPolicy         Json?    @map("ai_policy")
+  /// The longest life of a new personal access token, in days.
+  aiTokenMaxDays   Int      @default(90) @map("ai_token_max_days")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  channels     Channel[]
+  blockGroups  BlockGroup[]
+  roles        Role[]
+  memberships  Membership[]
+  connections  Connection[]
+  contentTypes ContentType[]
+  accessTokens AccessToken[]
+  auditEvents  AuditEvent[]
+  aiProviders  AiProvider[]
+  agents       Agent[]
+  agentRooms   AgentRoom[]
+
+  @@map("tenant")
+}
+
+model Channel {
+  id                      String    @id @default(uuid(7)) @db.Uuid
+  tenantId                String    @map("tenant_id") @db.Uuid
+  name                    String
+  code                    String
+  /// One of the codes in @9eye/core FRAME_RATES: 23.976, 24, 25, 29.97df, 30, 50, 59.94df.
+  frameRate               String    @map("frame_rate")
+  /// Broadcast-day start as a time of day in frames.
+  dayStartFrames          Int       @map("day_start_frames")
+  /// First weekday of the channel's week, 0 = Sunday … 6 = Saturday.
+  weekStart               Int       @map("week_start")
+  /// IANA name; null = literal wall-clock time.
+  timeZone                String?   @map("time_zone")
+  /// BCP 47 locale for month and day names in dates (e.g. "es", "en-GB").
+  dateLocale              String    @default("en") @map("date_locale")
+  /// null = no age logo; "top-left" / "top-right"
+  ageLogoPosition         String?   @map("age_logo_position")
+  defaultBreakListId      String?   @map("default_break_list_id") @db.Uuid
+  /// Shortest linked break, in frames.
+  shortestBreakFrames     Int       @default(0) @map("shortest_break_frames")
+  /// Until rotation lists exist (catalog): the name of the default list in the system it came from.
+  defaultRotationListName String?   @map("default_rotation_list_name")
+  /// Exporter codes, see @9eye/core EXPORTERS.
+  defaultExport           String?   @map("default_export")
+  allowedExports          String[]  @default([]) @map("allowed_exports")
+  epgTypes                String[]  @default([]) @map("epg_types")
+  bxfTimesUtc             Boolean   @default(false) @map("bxf_times_utc")
+  /// Difference accepted when the as-run log is matched.
+  reconcileTolerance      Int       @default(0) @map("reconcile_tolerance")
+  version                 Int       @default(1)
+  importRef               String?   @map("import_ref")
+  createdAt               DateTime  @default(now()) @map("created_at")
+  updatedAt               DateTime  @updatedAt @map("updated_at")
+  deletedAt               DateTime? @map("deleted_at")
+
+  tenant           Tenant            @relation(fields: [tenantId], references: [id])
+  playlists        ChannelPlaylist[]
+  breakLists       BreakList[]       @relation("ChannelBreakLists")
+  defaultBreakList BreakList?        @relation("ChannelDefaultBreakList", fields: [defaultBreakListId], references: [id], onDelete: SetNull)
+  roleScopes       RoleScope[]
+  orderChannels    OrderChannel[]
+  airings          Airing[]
+  contractChannels ContractChannel[]
+
+  @@unique([tenantId, code])
+  @@index([tenantId])
+  @@map("channel")
+}
+
+/// The main playlist (always) and the optional ads playlist of a channel.
+model ChannelPlaylist {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  channelId String   @map("channel_id") @db.Uuid
+  /// "main" or "ads"
+  kind      String
+  importRef String?  @map("import_ref")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  channel    Channel       @relation(fields: [channelId], references: [id])
+  blockTypes BlockType[]
+  templates  Template[]
+  weeks      Week[]
+  days       DayPlaylist[]
+
+  @@unique([channelId, kind])
+  @@index([tenantId])
+  @@map("channel_playlist")
+}
+
+/// Groups block types in the Block types panel (tenant-wide).
+model BlockGroup {
+  id        String    @id @default(uuid(7)) @db.Uuid
+  tenantId  String    @map("tenant_id") @db.Uuid
+  name      String
+  color     String?
+  importRef String?   @map("import_ref")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  tenant     Tenant      @relation(fields: [tenantId], references: [id])
+  blockTypes BlockType[]
+
+  @@index([tenantId])
+  @@map("block_group")
+}
+
+/// A reusable block definition, owned by one channel playlist, usable in every template of the tenant.
+model BlockType {
+  id                   String    @id @default(uuid(7)) @db.Uuid
+  tenantId             String    @map("tenant_id") @db.Uuid
+  playlistId           String    @map("playlist_id") @db.Uuid
+  groupId              String    @map("group_id") @db.Uuid
+  name                 String
+  color                String
+  textColor            String    @map("text_color")
+  lengthFrames         Int       @map("length_frames")
+  validFrom            DateTime  @map("valid_from") @db.Date
+  validTo              DateTime  @map("valid_to") @db.Date
+  /// Index = weekday (0 = Sunday).
+  validWeekdays        Boolean[] @map("valid_weekdays")
+  fillGaps             Boolean   @default(true) @map("fill_gaps")
+  rotationListId       String?   @map("rotation_list_id") @db.Uuid
+  opensWithBreak       Boolean   @default(false) @map("opens_with_break")
+  limitsPerContentType Json      @default("[]") @map("limits_per_content_type")
+  note                 String    @default("")
+  importRef            String?   @map("import_ref")
+  createdAt            DateTime  @default(now()) @map("created_at")
+  updatedAt            DateTime  @updatedAt @map("updated_at")
+  deletedAt            DateTime? @map("deleted_at")
+
+  playlist       ChannelPlaylist @relation(fields: [playlistId], references: [id])
+  group          BlockGroup      @relation(fields: [groupId], references: [id])
+  blocks         TemplateBlock[]
+  linkedBreaks   LinkedBreak[]
+  airings        Airing[]
+  playlistBlocks PlaylistBlock[]
+  playlistBreaks PlaylistEvent[]
+  bookedSpots    AiringItem[]
+
+  @@index([tenantId])
+  @@index([playlistId])
+  @@map("block_type")
+}
+
+/// The weekly pattern of one channel playlist, valid between two dates.
+model Template {
+  id             String    @id @default(uuid(7)) @db.Uuid
+  tenantId       String    @map("tenant_id") @db.Uuid
+  playlistId     String    @map("playlist_id") @db.Uuid
+  name           String    @db.VarChar(50)
+  validFrom      DateTime  @map("valid_from") @db.Date
+  validTo        DateTime  @map("valid_to") @db.Date
+  /// Index = weekday (0 = Sunday).
+  activeWeekdays Boolean[] @map("active_weekdays")
+  version        Int       @default(1)
+  importRef      String?   @map("import_ref")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  deletedAt      DateTime? @map("deleted_at")
+
+  playlist      ChannelPlaylist @relation(fields: [playlistId], references: [id])
+  blocks        TemplateBlock[]
+  orderChannels OrderChannel[]
+  weeks         Week[]
+
+  @@index([tenantId])
+  @@index([playlistId])
+  @@map("template")
+}
+
+model TemplateBlock {
+  id                   String  @id @default(uuid(7)) @db.Uuid
+  templateId           String  @map("template_id") @db.Uuid
+  /// 0 = Sunday … 6 = Saturday
+  weekday              Int
+  blockTypeId          String  @map("block_type_id") @db.Uuid
+  /// Offset from the channel's broadcast-day start.
+  startFrames          Int     @map("start_frames")
+  lengthFrames         Int     @map("length_frames")
+  fillGaps             Boolean @map("fill_gaps")
+  rotationListId       String? @map("rotation_list_id") @db.Uuid
+  opensWithBreak       Boolean @map("opens_with_break")
+  note                 String  @default("")
+  limitsPerContentType Json    @default("[]") @map("limits_per_content_type")
+
+  template  Template      @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  blockType BlockType     @relation(fields: [blockTypeId], references: [id], onDelete: Restrict)
+  breaks    LinkedBreak[]
+
+  @@index([templateId, weekday])
+  @@index([blockTypeId])
+  @@map("template_block")
+}
+
+/// A linked break: a reference to a block of the channel's ads template, by its block type (0016).
+model LinkedBreak {
+  id          String @id @default(uuid(7)) @db.Uuid
+  blockId     String @map("block_id") @db.Uuid
+  position    Int
+  breakTypeId String @map("break_type_id") @db.Uuid
+
+  block     TemplateBlock @relation(fields: [blockId], references: [id], onDelete: Cascade)
+  breakType BlockType     @relation(fields: [breakTypeId], references: [id], onDelete: Restrict)
+
+  @@unique([blockId, position])
+  @@index([breakTypeId])
+  @@map("linked_break")
+}
+
+/// A channel's own list of break positions (1st, 2nd, … ads-template break inside a block's time).
+model BreakList {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  channelId String   @map("channel_id") @db.Uuid
+  name      String
+  /// 0-based positions, in order.
+  positions Int[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  channel    Channel   @relation("ChannelBreakLists", fields: [channelId], references: [id])
+  defaultFor Channel[] @relation("ChannelDefaultBreakList")
+
+  @@unique([channelId, name])
+  @@index([tenantId])
+  @@map("break_list")
+}
+
+/// Where in an ad break a booked spot goes (spec commercials §7). The company's own list, edited and
+/// saved as a whole; sort_order 1 = first in the break, kept 1…n.
+model BreakPosition {
+  id             String   @id @default(uuid(7)) @db.Uuid
+  tenantId       String   @map("tenant_id") @db.Uuid
+  name           String   @db.VarChar(500)
+  sortOrder      Int      @map("sort_order")
+  /// The position a new booked spot gets; at most one per company.
+  isDefault      Boolean  @default(false) @map("is_default")
+  color          String?
+  /// Percent added to (or, below 0, taken from) the price of a spot in this position.
+  priceModifier  Decimal  @default(0) @map("price_modifier") @db.Decimal(7, 2)
+  /// Content types that may take this position; empty = any.
+  contentTypeIds String[] @default([]) @map("content_type_ids") @db.Uuid
+  version        Int      @default(1)
+  importRef      String?  @map("import_ref")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  bookedSpots AiringItem[]
+
+  @@index([tenantId])
+  @@map("break_position")
+}
+
+// ---------------------------------------------------------------- people and access (decision 0007)
+
+/// A person. Platform-level: one login for every company (decision 0021).
+model User {
+  id            String    @id @default(uuid(7)) @db.Uuid
+  email         String    @unique
+  name          String
+  platformAdmin Boolean   @default(false) @map("platform_admin")
+  mfaEnabled    Boolean   @default(false) @map("mfa_enabled")
+  /// scrypt hash ("scrypt$N$r$p$salt$hash"); null = cannot sign in yet.
+  passwordHash  String?   @map("password_hash")
+  /// Wrong passwords in a row; five lock the sign-in for 15 minutes.
+  failedSignIns Int       @default(0) @map("failed_sign_ins")
+  lockedUntil   DateTime? @map("locked_until")
+  lastActiveAt  DateTime? @map("last_active_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  memberships  Membership[]
+  sessions     Session[]
+  accessTokens AccessToken[]
+  auditEvents  AuditEvent[]
+  weeksCreated Week[]       @relation("WeekCreatedBy")
+  weeksUpdated Week[]       @relation("WeekUpdatedBy")
+
+  @@map("app_user")
+}
+
+/// A signed-in browser. The cookie holds a random token; only its SHA-256 is stored.
+model Session {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  tokenHash String   @unique @map("token_hash")
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("session")
+}
+
+/// A personal access token for MCP clients (decision 0023): one person in one company. The token is
+/// shown once when it is made; only its SHA-256 is stored.
+model AccessToken {
+  id         String    @id @default(uuid(7)) @db.Uuid
+  userId     String    @map("user_id") @db.Uuid
+  tenantId   String    @map("tenant_id") @db.Uuid
+  /// What the person called it, e.g. "Claude on my laptop".
+  name       String
+  tokenHash  String    @unique @map("token_hash")
+  /// "read" only for now; editing comes later (decision 0023, phase 3).
+  access     String    @default("read")
+  /// The token's own limits (decision 0025), never wider than the company's; null = the same as the company
+  /// (a token made before 0025 with access "read" reads only).
+  policy     Json?
+  expiresAt  DateTime  @map("expires_at")
+  lastUsedAt DateTime? @map("last_used_at")
+  revokedAt  DateTime? @map("revoked_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([tenantId])
+  @@map("access_token")
+}
+
+/// What people and AI clients did in a company (decision 0023, phase 2): every change made through
+/// the API and every MCP tool call. Written once, never changed.
+model AuditEvent {
+  id         String   @id @default(uuid(7)) @db.Uuid
+  tenantId   String   @map("tenant_id") @db.Uuid
+  /// null once the person is deleted.
+  userId     String?  @map("user_id") @db.Uuid
+  /// "web" (the app's API) or "mcp"
+  via        String
+  /// The MCP access token it came with.
+  tokenId    String?  @map("token_id") @db.Uuid
+  /// "PUT /days/:id", or "tool get_day_playlist" for MCP.
+  action     String
+  /// The item named in the address (its ":id"), if any.
+  targetId   String?  @map("target_id")
+  channelIds String[] @default([]) @map("channel_ids") @db.Uuid
+  ok         Boolean
+  /// HTTP status of the answer.
+  status     Int?
+  /// Why it failed.
+  message    String?
+  /// The request body or tool arguments, secrets hidden (over 50 KB: only its size).
+  input      Json?
+  /// MCP changes (phase 3): what was there before and what the change made — what undo_change reads.
+  before     Json?
+  after      Json?
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user   User?  @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId, createdAt])
+  @@map("audit_event")
+}
+
+/// A role of one company: module × action grants and a channel scope.
+model Role {
+  id          String   @id @default(uuid(7)) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  name        String
+  description String   @default("")
+  /// "company-admin", "traffic", "scheduler", "sales", "viewer" for built-in roles; null for the company's own.
+  systemKey   String?  @map("system_key")
+  allChannels Boolean  @default(true) @map("all_channels")
+  version     Int      @default(1)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  tenant      Tenant       @relation(fields: [tenantId], references: [id])
+  grants      RoleGrant[]
+  scopes      RoleScope[]
+  memberships Membership[]
+  agents      Agent[]
+
+  @@unique([tenantId, name])
+  @@index([tenantId])
+  @@map("role")
+}
+
+model RoleGrant {
+  id     String @id @default(uuid(7)) @db.Uuid
+  roleId String @map("role_id") @db.Uuid
+  /// catalog, templates, playlist, orders, asrun, reports, admin
+  module String
+  /// view, edit, approve, export
+  action String
+
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, module, action])
+  @@map("role_grant")
+}
+
+model RoleScope {
+  id        String @id @default(uuid(7)) @db.Uuid
+  roleId    String @map("role_id") @db.Uuid
+  channelId String @map("channel_id") @db.Uuid
+
+  role    Role    @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  channel Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, channelId])
+  @@map("role_scope")
+}
+
+model Membership {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  roleId    String   @map("role_id") @db.Uuid
+  /// "invited" or "active"
+  status    String   @default("invited")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role   Role   @relation(fields: [roleId], references: [id])
+
+  @@unique([tenantId, userId])
+  @@index([userId])
+  @@map("membership")
+}
+
+// ---------------------------------------------------------------- connections (decisions 0005, 0008)
+
+/// A connection to another system: MAM, playout export, as-run source, bookings.
+model Connection {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  /// "mam", "playout", "asrun", "bookings"
+  kind      String
+  /// adapter code, see @9eye/core CONNECTION_ADAPTERS
+  adapter   String
+  detail    String   @default("")
+  /// Non-secret settings (address, user name, folder).
+  config    Json     @default("{}")
+  /// Encrypted credentials (AES-256-GCM); never sent to the browser.
+  secret    String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId])
+  @@map("connection")
+}
+
+// ---------------------------------------------------------------- catalog (data model §4a, decision 0014)
+
+/// A category of the catalog. family: "program", "filling" (promos, fillers, idents, music) or "advert".
+model ContentType {
+  id                     String    @id @default(uuid(7)) @db.Uuid
+  tenantId               String    @map("tenant_id") @db.Uuid
+  name                   String
+  code                   String    @default("")
+  family                 String
+  color                  String?
+  showInGrid             Boolean   @default(false) @map("show_in_grid")
+  showTitleInGrid        Boolean   @default(false) @map("show_title_in_grid")
+  showSegmentInGrid      Boolean   @default(false) @map("show_segment_in_grid")
+  showChapterInGrid      Boolean   @default(false) @map("show_chapter_in_grid")
+  hasLogo                Boolean   @default(false) @map("has_logo")
+  contractFree           Boolean   @default(false) @map("contract_free")
+  showInEpg              Boolean   @default(false) @map("show_in_epg")
+  epgNameFromBlock       Boolean   @default(false) @map("epg_name_from_block")
+  epgNameFromContent     Boolean   @default(false) @map("epg_name_from_content")
+  epgShortFromContent    Boolean   @default(false) @map("epg_short_from_content")
+  epgShortFromProduction Boolean   @default(false) @map("epg_short_from_production")
+  epgDescFromContent     Boolean   @default(false) @map("epg_desc_from_content")
+  epgDescFromProduction  Boolean   @default(false) @map("epg_desc_from_production")
+  showInPress            Boolean   @default(false) @map("show_in_press")
+  version                Int       @default(1)
+  importRef              String?   @map("import_ref")
+  createdAt              DateTime  @default(now()) @map("created_at")
+  updatedAt              DateTime  @updatedAt @map("updated_at")
+  deletedAt              DateTime? @map("deleted_at")
+
+  tenant   Tenant    @relation(fields: [tenantId], references: [id])
+  contents Content[]
+
+  @@index([tenantId])
+  @@map("content_type")
+}
+
+/// A series, a show, an ident set — any grouping of productions.
+model Content {
+  id                 String    @id @default(uuid(7)) @db.Uuid
+  tenantId           String    @map("tenant_id") @db.Uuid
+  contentTypeId      String    @map("content_type_id") @db.Uuid
+  title              String
+  code               String    @default("")
+  season             String?
+  validFrom          DateTime? @map("valid_from") @db.Date
+  validTo            DateTime? @map("valid_to") @db.Date
+  originalTitle      String    @default("") @map("original_title")
+  /// Number used for the next production's Id.
+  nextProductionId   Int       @default(1) @map("next_production_id")
+  lengthFrames       Int?      @map("length_frames")
+  segmentCount       Int       @default(1) @map("segment_count")
+  sourceId           String?   @map("source_id") @db.Uuid
+  genres             String    @default("")
+  directors          String    @default("")
+  nationalities      String    @default("")
+  languages          String    @default("")
+  countries          String[]  @default([])
+  synopsis           String    @default("")
+  epgDescription     String    @default("") @map("epg_description")
+  notes              String    @default("")
+  ageLogoId          String?   @map("age_logo_id") @db.Uuid
+  channelLogoId      String?   @map("channel_logo_id") @db.Uuid
+  logo1Id            String?   @map("logo1_id") @db.Uuid
+  logo2Id            String?   @map("logo2_id") @db.Uuid
+  logo3Id            String?   @map("logo3_id") @db.Uuid
+  logo4Id            String?   @map("logo4_id") @db.Uuid
+  /// Empty = every channel.
+  channelIds         String[]  @default([]) @map("channel_ids") @db.Uuid
+  /// Company names until clients exist (decision 0006).
+  companies          String[]  @default([])
+  secondaryActionIds String[]  @default([]) @map("secondary_action_ids") @db.Uuid
+  version            Int       @default(1)
+  importRef          String?   @map("import_ref")
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+  deletedAt          DateTime? @map("deleted_at")
+
+  contentType ContentType  @relation(fields: [contentTypeId], references: [id])
+  source      Source?      @relation(fields: [sourceId], references: [id])
+  productions Production[]
+
+  @@index([tenantId])
+  @@index([contentTypeId])
+  @@map("content")
+}
+
+/// The thing that is scheduled: an episode, a film, a promo, an ident, a clip.
+model Production {
+  id                  String    @id @default(uuid(7)) @db.Uuid
+  tenantId            String    @map("tenant_id") @db.Uuid
+  contentId           String    @map("content_id") @db.Uuid
+  title               String
+  code                String    @default("")
+  /// Episode number; null when the production has none.
+  chapter             Int?
+  /// The "[TEMPLATE]" production (chapter 0) kept in every series; hidden in the catalog picker.
+  isTemplate          Boolean   @default(false) @map("is_template")
+  /// null = no length in the catalog.
+  lengthFrames        Int?      @map("length_frames")
+  starts              DateTime? @db.Date
+  expires             DateTime? @db.Date
+  /// "ready", "not-ready" or null (unknown).
+  mediaStatus         String?   @map("media_status")
+  originalTitle       String    @default("") @map("original_title")
+  isDefaultChapter    Boolean   @default(false) @map("is_default_chapter")
+  sourceId            String?   @map("source_id") @db.Uuid
+  segmentCount        Int       @default(1) @map("segment_count")
+  genres              String    @default("")
+  thematics           String    @default("")
+  directors           String    @default("")
+  actors              String    @default("")
+  nationalities       String    @default("")
+  languages           String    @default("")
+  countries           String[]  @default([])
+  synopsis            String    @default("")
+  epgDescription      String    @default("") @map("epg_description")
+  notes               String    @default("")
+  /// Empty = every channel.
+  channelIds          String[]  @default([]) @map("channel_ids") @db.Uuid
+  secondaryActionIds  String[]  @default([]) @map("secondary_action_ids") @db.Uuid
+  /// { <custom field key>: text }
+  customValues        Json      @default("{}") @map("custom_values")
+  externalId          String    @default("") @map("external_id")
+  thumbnail           String    @default("")
+  mediaAvailable      Boolean   @default(false) @map("media_available")
+  proxyAvailable      Boolean   @default(false) @map("proxy_available")
+  publishedExternally Boolean   @default(false) @map("published_externally")
+  /// Free text; Aurora Media keeps the playout file path here.
+  additionalData      String    @default("") @map("additional_data")
+  version             Int       @default(1)
+  importRef           String?   @map("import_ref")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+  deletedAt           DateTime? @map("deleted_at")
+
+  content        Content            @relation(fields: [contentId], references: [id])
+  source         Source?            @relation(fields: [sourceId], references: [id])
+  orderItems     OrderItem[]
+  segmentations  Segmentation[]
+  listItems      RotationListItem[]
+  playlistEvents PlaylistEvent[]
+
+  @@index([tenantId])
+  @@index([contentId])
+  @@map("production")
+}
+
+/// A cut of a production (data model §4b).
+model Segmentation {
+  id                  String    @id @default(uuid(7)) @db.Uuid
+  tenantId            String    @map("tenant_id") @db.Uuid
+  productionId        String    @map("production_id") @db.Uuid
+  code                Int       @default(1)
+  name                String
+  externalId          String    @default("") @map("external_id")
+  thumbnail           String    @default("")
+  mediaAvailable      Boolean   @default(false) @map("media_available")
+  proxyAvailable      Boolean   @default(false) @map("proxy_available")
+  publishedExternally Boolean   @default(false) @map("published_externally")
+  version             Int       @default(1)
+  importRef           String?   @map("import_ref")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+  deletedAt           DateTime? @map("deleted_at")
+
+  production Production         @relation(fields: [productionId], references: [id])
+  segments   Segment[]
+  listItems  RotationListItem[]
+
+  @@index([tenantId])
+  @@index([productionId])
+  @@map("segmentation")
+}
+
+/// A part of a segmentation between break points; times in the catalog frame rate.
+model Segment {
+  id                  String    @id @default(uuid(7)) @db.Uuid
+  segmentationId      String    @map("segmentation_id") @db.Uuid
+  code                Int
+  sourceId            String?   @map("source_id") @db.Uuid
+  mediaId             String    @default("") @map("media_id")
+  tcInFrames          Int?      @map("tc_in_frames")
+  tcOutFrames         Int?      @map("tc_out_frames")
+  lengthFrames        Int?      @map("length_frames")
+  notes               String    @default("")
+  externalId          String    @default("") @map("external_id")
+  thumbnail           String    @default("")
+  mediaAvailable      Boolean   @default(false) @map("media_available")
+  proxyAvailable      Boolean   @default(false) @map("proxy_available")
+  publishedExternally Boolean   @default(false) @map("published_externally")
+  version             Int       @default(1)
+  importRef           String?   @map("import_ref")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+  deletedAt           DateTime? @map("deleted_at")
+
+  segmentation Segmentation @relation(fields: [segmentationId], references: [id])
+  source       Source?      @relation(fields: [sourceId], references: [id])
+
+  playlistEvents PlaylistEvent[]
+
+  @@index([segmentationId])
+  @@map("segment")
+}
+
+/// Where media comes from (SERVER, LIVE) and how a new production's Id is made.
+model Source {
+  id                String   @id @default(uuid(7)) @db.Uuid
+  tenantId          String   @map("tenant_id") @db.Uuid
+  name              String
+  code              String   @default("")
+  /// "production-id" or "custom"
+  mediaIdGeneration String   @default("production-id") @map("media_id_generation")
+  customPattern     String   @default("") @map("custom_pattern")
+  isLive            Boolean  @default(false) @map("is_live")
+  syncable          Boolean  @default(false)
+  importRef         String?  @map("import_ref")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  contents    Content[]
+  productions Production[]
+  segments    Segment[]
+
+  @@index([tenantId])
+  @@map("source")
+}
+
+/// Age logo (1), Channel logo (2), Logo 1–4 (3–6).
+model LogoType {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  name      String
+  number    Int
+  importRef String?  @map("import_ref")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  logos Logo[]
+
+  @@index([tenantId])
+  @@map("logo_type")
+}
+
+model Logo {
+  id         String   @id @default(uuid(7)) @db.Uuid
+  tenantId   String   @map("tenant_id") @db.Uuid
+  logoTypeId String   @map("logo_type_id") @db.Uuid
+  name       String
+  code       String   @default("")
+  importRef  String?  @map("import_ref")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  logoType LogoType @relation(fields: [logoTypeId], references: [id])
+
+  @@index([tenantId])
+  @@map("logo")
+}
+
+model SecondaryAction {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  name      String
+  code      String   @default("")
+  importRef String?  @map("import_ref")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([tenantId])
+  @@map("secondary_action")
+}
+
+/// A company's own catalog field (Aurora Media: STAR, GRAPHICS on productions); values in production.custom_values.
+model CustomField {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  /// "production"
+  entity    String
+  key       String
+  label     String
+  /// "text"
+  type      String   @default("text")
+  position  Int      @default(0)
+  importRef String?  @map("import_ref")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([tenantId, entity, key])
+  @@map("custom_field")
+}
+
+/// A list of productions that fills blocks in rotation.
+model RotationList {
+  id                       String    @id @default(uuid(7)) @db.Uuid
+  tenantId                 String    @map("tenant_id") @db.Uuid
+  name                     String
+  /// Position of the last inserted item; rotation resumes after it.
+  lastItemPosition         Int?      @map("last_item_position")
+  insertionDaysInterval    Int       @default(0) @map("insertion_days_interval")
+  allowSameDayRepeat       Boolean   @default(false) @map("allow_same_day_repeat")
+  randomInsert             Boolean   @default(false) @map("random_insert")
+  applyChannelRestrictions Boolean   @default(false) @map("apply_channel_restrictions")
+  allowProductionRepeats   Boolean   @default(false) @map("allow_production_repeats")
+  allowOverlap             Boolean   @default(false) @map("allow_overlap")
+  version                  Int       @default(1)
+  importRef                String?   @map("import_ref")
+  createdAt                DateTime  @default(now()) @map("created_at")
+  updatedAt                DateTime  @updatedAt @map("updated_at")
+  deletedAt                DateTime? @map("deleted_at")
+
+  items          RotationListItem[]
+  playlistEvents PlaylistEvent[]
+
+  @@index([tenantId])
+  @@map("rotation_list")
+}
+
+model RotationListItem {
+  id             String    @id @default(uuid(7)) @db.Uuid
+  listId         String    @map("list_id") @db.Uuid
+  productionId   String    @map("production_id") @db.Uuid
+  /// null = the production's first segmentation.
+  segmentationId String?   @map("segmentation_id") @db.Uuid
+  name           String
+  position       Int
+  insertedAt     DateTime? @map("inserted_at")
+  importRef      String?   @map("import_ref")
+
+  list         RotationList  @relation(fields: [listId], references: [id], onDelete: Cascade)
+  production   Production    @relation(fields: [productionId], references: [id])
+  segmentation Segmentation? @relation(fields: [segmentationId], references: [id])
+
+  @@index([listId])
+  @@index([productionId])
+  @@map("rotation_list_item")
+}
+
+model GraphicSource {
+  id        String    @id @default(uuid(7)) @db.Uuid
+  tenantId  String    @map("tenant_id") @db.Uuid
+  name      String
+  code      String    @default("")
+  channelId String?   @map("channel_id") @db.Uuid
+  version   Int       @default(1)
+  importRef String?   @map("import_ref")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  objects   GraphicObject[]
+  templates GraphicTemplate[]
+
+  @@index([tenantId])
+  @@map("graphic_source")
+}
+
+model GraphicObject {
+  id        String    @id @default(uuid(7)) @db.Uuid
+  tenantId  String    @map("tenant_id") @db.Uuid
+  sourceId  String    @map("source_id") @db.Uuid
+  name      String
+  code      String    @default("")
+  /// "auto" or "1" … "4"
+  layer     String    @default("auto")
+  version   Int       @default(1)
+  importRef String?   @map("import_ref")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  source    GraphicSource     @relation(fields: [sourceId], references: [id])
+  templates GraphicTemplate[]
+
+  @@index([tenantId])
+  @@map("graphic_object")
+}
+
+/// A graphic with its timing (start, end, frequency); times in the catalog frame rate.
+model GraphicTemplate {
+  id                   String    @id @default(uuid(7)) @db.Uuid
+  tenantId             String    @map("tenant_id") @db.Uuid
+  sourceId             String    @map("source_id") @db.Uuid
+  objectId             String?   @map("object_id") @db.Uuid
+  name                 String
+  code                 String    @default("")
+  description          String    @default("")
+  /// "from-start", "at-tc", "manual", "to-end"
+  startType            String    @default("from-start") @map("start_type")
+  startOffsetFrames    Int       @default(0) @map("start_offset_frames")
+  startTcInFrames      Int       @default(0) @map("start_tc_in_frames")
+  /// "automatic", "duration", "until-end", "manual"
+  endType              String    @default("automatic") @map("end_type")
+  endDurationFrames    Int       @default(0) @map("end_duration_frames")
+  endTcOutFrames       Int       @default(0) @map("end_tc_out_frames")
+  /// "once", "n-times", "until-end"
+  frequency            String    @default("once")
+  repeatIntervalFrames Int       @default(0) @map("repeat_interval_frames")
+  repeatCount          Int       @default(0) @map("repeat_count")
+  layer                String    @default("auto")
+  version              Int       @default(1)
+  importRef            String?   @map("import_ref")
+  createdAt            DateTime  @default(now()) @map("created_at")
+  updatedAt            DateTime  @updatedAt @map("updated_at")
+  deletedAt            DateTime? @map("deleted_at")
+
+  source GraphicSource  @relation(fields: [sourceId], references: [id])
+  object GraphicObject? @relation(fields: [objectId], references: [id])
+
+  @@index([tenantId])
+  @@map("graphic_template")
+}
+
+/// Named times of the week where items may or may not be placed.
+model TimeWindow {
+  id           String   @id @default(uuid(7)) @db.Uuid
+  tenantId     String   @map("tenant_id") @db.Uuid
+  name         String
+  color        String?
+  lengthFrames Int      @default(0) @map("length_frames")
+  showInGrid   Boolean  @default(false) @map("show_in_grid")
+  importRef    String?  @map("import_ref")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  ranges TimeWindowRange[]
+
+  @@index([tenantId])
+  @@map("time_window")
+}
+
+model TimeWindowRange {
+  id           String  @id @default(uuid(7)) @db.Uuid
+  timeWindowId String  @map("time_window_id") @db.Uuid
+  /// null = every channel
+  channelId    String? @map("channel_id") @db.Uuid
+  /// 0 = Sunday … 6 = Saturday
+  weekday      Int
+  startFrames  Int     @map("start_frames")
+  lengthFrames Int     @map("length_frames")
+
+  timeWindow TimeWindow @relation(fields: [timeWindowId], references: [id], onDelete: Cascade)
+
+  @@index([timeWindowId])
+  @@map("time_window_range")
+}
+
+/// Clash code of advertising items.
+model ProductCode {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  name      String
+  code      String   @default("")
+  importRef String?  @map("import_ref")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([tenantId])
+  @@map("product_code")
+}
+
+/// An item's own relation (linear, graphics, time window, product code). Inherited ones are read from the parents.
+model CatalogRelation {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  /// "linear", "graphics", "time-window", "product-code"
+  kind      String
+  /// "content-type", "content", "production", "segmentation", "segment"
+  level     String
+  itemId    String   @map("item_id") @db.Uuid
+  /// null = every channel
+  channelId String?  @map("channel_id") @db.Uuid
+  position  Int      @default(0)
+  /// Checked by a schema per kind (data model §4b).
+  params    Json     @default("{}")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([tenantId, itemId])
+  @@map("catalog_relation")
+}
+
+// ---------------------------------------------------------------- orders (data model §7, Scheduling page)
+
+/// A plan of airings for one channel (or several) over a date range (type 3), or
+/// a commercial order of a contract (type 1, mode "commercials": its booked spots, Orders page).
+model Order {
+  id           String    @id @default(uuid(7)) @db.Uuid
+  tenantId     String    @map("tenant_id") @db.Uuid
+  name         String
+  /// "series", "programmes", "promos", "jingles", "graphics"; "commercials" (Orders page only)
+  mode         String
+  /// Commercial orders: the contract they belong to.
+  contractId   String?   @map("contract_id") @db.Uuid
+  /// "confirmed" or "draft"; only confirmed orders reach the playlist.
+  status       String    @default("draft")
+  startDate    DateTime  @map("start_date") @db.Date
+  endDate      DateTime  @map("end_date") @db.Date
+  color        String
+  /// Series: first episode to place (null = the first of the list).
+  firstItemId  String?   @map("first_item_id") @db.Uuid
+  /// Series: start again from the first episode when the list runs out.
+  reuseInLoop  Boolean   @default(false) @map("reuse_in_loop")
+  maxAirings   Int?      @map("max_airings")
+  totalAirings Int?      @map("total_airings")
+  /// { allowed: [], rejected: [] }, each { weekdays: boolean[7], fromFrames, toFrames }.
+  timeWindows  Json      @default("{\"allowed\":[],\"rejected\":[]}") @map("time_windows")
+  version      Int       @default(1)
+  importRef    String?   @map("import_ref")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
+
+  contract       Contract?      @relation(fields: [contractId], references: [id])
+  channels       OrderChannel[]
+  items          OrderItem[]
+  airings        Airing[]
+  playlistEvents PlaylistEvent[]
+
+  @@index([tenantId])
+  @@index([contractId])
+  @@map("order")
+}
+
+// ---------------------------------------------------------------- commercials (spec commercials.md)
+
+/// An advertiser or agency that books commercials (Orders → Clients).
+model Client {
+  id               String    @id @default(uuid(7)) @db.Uuid
+  tenantId         String    @map("tenant_id") @db.Uuid
+  name             String    @db.VarChar(500)
+  /// "advertiser", "agency" or "both"
+  type             String    @default("advertiser")
+  country          String    @default("")
+  address          String    @default("")
+  billingAddress   String    @default("") @map("billing_address")
+  web              String    @default("")
+  email            String    @default("")
+  phone            String    @default("")
+  fax              String    @default("")
+  vatNumber        String    @default("") @map("vat_number")
+  notes            String    @default("")
+  /// How far (seconds) a spot may air from its booked time when the as-run is matched; null = off.
+  toleranceSeconds Int?      @map("tolerance_seconds")
+  version          Int       @default(1)
+  importRef        String?   @map("import_ref")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+  deletedAt        DateTime? @map("deleted_at")
+
+  contracts Contract[]
+
+  @@index([tenantId])
+  @@map("client")
+}
+
+/// One campaign of a client: its channels, dates and currency. Owns the
+/// commercial orders, one per channel.
+model Contract {
+  id          String    @id @default(uuid(7)) @db.Uuid
+  tenantId    String    @map("tenant_id") @db.Uuid
+  clientId    String    @map("client_id") @db.Uuid
+  name        String    @db.VarChar(500)
+  startDate   DateTime  @map("start_date") @db.Date
+  endDate     DateTime  @map("end_date") @db.Date
+  /// ISO 4217 code, e.g. "USD".
+  currency    String    @default("USD")
+  totalAgreed Decimal   @default(0) @map("total_agreed") @db.Decimal(14, 2)
+  notes       String    @default("")
+  version     Int       @default(1)
+  importRef   String?   @map("import_ref")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  client   Client            @relation(fields: [clientId], references: [id])
+  channels ContractChannel[]
+  orders   Order[]
+
+  @@index([tenantId])
+  @@index([clientId])
+  @@map("contract")
+}
+
+model ContractChannel {
+  contractId String @map("contract_id") @db.Uuid
+  channelId  String @map("channel_id") @db.Uuid
+
+  contract Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  channel  Channel  @relation(fields: [channelId], references: [id])
+
+  @@id([contractId, channelId])
+  @@index([channelId])
+  @@map("contract_channel")
+}
+
+/// The channel an order places on, with the main template whose blocks it uses. Position 0 = own channel.
+model OrderChannel {
+  id         String @id @default(uuid(7)) @db.Uuid
+  orderId    String @map("order_id") @db.Uuid
+  channelId  String @map("channel_id") @db.Uuid
+  templateId String @map("template_id") @db.Uuid
+  position   Int
+
+  order    Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  channel  Channel  @relation(fields: [channelId], references: [id])
+  template Template @relation(fields: [templateId], references: [id])
+
+  @@unique([orderId, channelId])
+  @@index([channelId])
+  @@map("order_channel")
+}
+
+/// The order's item list, in order (series: episodes in airing order).
+model OrderItem {
+  id           String @id @default(uuid(7)) @db.Uuid
+  orderId      String @map("order_id") @db.Uuid
+  position     Int
+  productionId String @map("production_id") @db.Uuid
+  /// Copied from the catalog when added; null = unknown. "Refresh durations" reads it again.
+  lengthFrames Int?   @map("length_frames")
+
+  order      Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  production Production   @relation(fields: [productionId], references: [id])
+  placements AiringItem[]
+
+  @@index([orderId])
+  @@index([productionId])
+  @@map("order_item")
+}
+
+/// One block of the order's template on one broadcast day. A repeat points at its first airing.
+model Airing {
+  id          String   @id @default(uuid(7)) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  orderId     String   @map("order_id") @db.Uuid
+  channelId   String   @map("channel_id") @db.Uuid
+  /// Broadcast day.
+  date        DateTime @db.Date
+  /// Names the block of the template on that weekday (a block type is used at most once a weekday).
+  blockTypeId String   @map("block_type_id") @db.Uuid
+  passes      Int      @default(1)
+  repeatOfId  String?  @map("repeat_of_id") @db.Uuid
+  /// Which item of the first airing it repeats.
+  repeatIndex Int      @default(0) @map("repeat_index")
+  blockColor  String?  @map("block_color")
+  importRef   String?  @map("import_ref")
+
+  order     Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  channel   Channel      @relation(fields: [channelId], references: [id])
+  blockType BlockType    @relation(fields: [blockTypeId], references: [id], onDelete: Restrict)
+  repeatOf  Airing?      @relation("Repeats", fields: [repeatOfId], references: [id], onDelete: Cascade)
+  repeats   Airing[]     @relation("Repeats")
+  items     AiringItem[]
+
+  @@unique([orderId, channelId, date, blockTypeId])
+  @@index([tenantId])
+  @@index([channelId, date])
+  @@index([repeatOfId])
+  @@map("airing")
+}
+
+model AiringItem {
+  id          String  @id @default(uuid(7)) @db.Uuid
+  airingId    String  @map("airing_id") @db.Uuid
+  position    Int
+  orderItemId String  @map("order_item_id") @db.Uuid
+  passes      Int     @default(1)
+  /// Jingles mode: "pre" or "post".
+  jingle      String?
+  /// Commercial orders: the ad break (an ads-playlist block type linked in the block) the spot is
+  /// booked into, and its place in the break.
+  breakTypeId String? @map("break_type_id") @db.Uuid
+  positionId  String? @map("position_id") @db.Uuid
+
+  airing        Airing         @relation(fields: [airingId], references: [id], onDelete: Cascade)
+  orderItem     OrderItem      @relation(fields: [orderItemId], references: [id], onDelete: Restrict)
+  breakType     BlockType?     @relation(fields: [breakTypeId], references: [id], onDelete: Restrict)
+  breakPosition BreakPosition? @relation(fields: [positionId], references: [id], onDelete: Restrict)
+  inPlaylists   PlaylistEvent[]
+
+  @@index([airingId])
+  @@index([orderItemId])
+  @@index([breakTypeId])
+  @@index([positionId])
+  @@map("airing_item")
+}
+
+// ---------------------------------------------------------------- weeks and day playlists (data model §6)
+
+/// A dated copy of a template for one week of one channel playlist. Owns that week's day playlists.
+model Week {
+  id             String    @id @default(uuid(7)) @db.Uuid
+  tenantId       String    @map("tenant_id") @db.Uuid
+  playlistId     String    @map("playlist_id") @db.Uuid
+  /// The template it was made from.
+  templateId     String    @map("template_id") @db.Uuid
+  name           String    @db.VarChar(50)
+  /// First day of the channel's week.
+  firstDate      DateTime  @map("first_date") @db.Date
+  /// Index = weekday (0 = Sunday). A day that is not active has no day playlist.
+  activeWeekdays Boolean[] @map("active_weekdays")
+  version        Int       @default(1)
+  importRef      String?   @map("import_ref")
+  createdById    String?   @map("created_by_id") @db.Uuid
+  updatedById    String?   @map("updated_by_id") @db.Uuid
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  playlist  ChannelPlaylist @relation(fields: [playlistId], references: [id])
+  template  Template        @relation(fields: [templateId], references: [id])
+  createdBy User?           @relation("WeekCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  updatedBy User?           @relation("WeekUpdatedBy", fields: [updatedById], references: [id], onDelete: SetNull)
+  days      DayPlaylist[]
+
+  @@unique([playlistId, firstDate])
+  @@index([tenantId])
+  @@index([templateId])
+  @@map("week")
+}
+
+/// One channel playlist on one broadcast day.
+model DayPlaylist {
+  id         String   @id @default(uuid(7)) @db.Uuid
+  tenantId   String   @map("tenant_id") @db.Uuid
+  weekId     String   @map("week_id") @db.Uuid
+  playlistId String   @map("channel_playlist_id") @db.Uuid
+  /// Broadcast day.
+  date       DateTime @db.Date
+  published  Boolean  @default(false)
+  reconciled Boolean  @default(false)
+  version    Int      @default(1)
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  week     Week            @relation(fields: [weekId], references: [id], onDelete: Cascade)
+  playlist ChannelPlaylist @relation(fields: [playlistId], references: [id])
+  blocks   PlaylistBlock[]
+
+  @@unique([playlistId, date])
+  @@index([tenantId])
+  @@index([weekId])
+  @@map("playlist")
+}
+
+/// A block of a day playlist, copied from the template block when the week is created.
+model PlaylistBlock {
+  id                   String  @id @default(uuid(7)) @db.Uuid
+  dayId                String  @map("playlist_id") @db.Uuid
+  blockTypeId          String  @map("block_type_id") @db.Uuid
+  /// Planned start, as an offset from the channel's broadcast-day start.
+  startFrames          Int     @map("start_frames")
+  lengthFrames         Int     @map("length_frames")
+  fillGaps             Boolean @map("fill_gaps")
+  rotationListId       String? @map("rotation_list_id") @db.Uuid
+  opensWithBreak       Boolean @map("opens_with_break")
+  note                 String  @default("")
+  limitsPerContentType Json    @default("[]") @map("limits_per_content_type")
+
+  day       DayPlaylist     @relation(fields: [dayId], references: [id], onDelete: Cascade)
+  blockType BlockType       @relation(fields: [blockTypeId], references: [id], onDelete: Restrict)
+  events    PlaylistEvent[]
+
+  @@index([dayId])
+  @@index([blockTypeId])
+  @@map("playlist_block")
+}
+
+/// A row of a block, in order. A new week has only "linked-break" rows and one "gap-compensator".
+model PlaylistEvent {
+  id             String  @id @default(uuid(7)) @db.Uuid
+  blockId        String  @map("playlist_block_id") @db.Uuid
+  sequence       Int
+  /// One of @9eye/core EVENT_KINDS: program, commercial, promo, filler, ident, jingle, note,
+  /// linked-break, gap-compensator.
+  kind           String
+  /// Kept on the row, so it stays readable when the catalog item changes.
+  title          String  @default("")
+  lengthFrames   Int     @default(0) @map("length_frames")
+  productionId   String? @map("production_id") @db.Uuid
+  segmentId      String? @map("segment_id") @db.Uuid
+  /// The part of the media that plays, in the catalog's frame rate.
+  tcInFrames     Int     @default(0) @map("tc_in_frames")
+  tcOutFrames    Int     @default(0) @map("tc_out_frames")
+  /// Fixed: the row keeps its start time. Hold: the playout waits on it. Auto adjust: its length
+  /// may change to close a gap.
+  fixed          Boolean @default(false)
+  hold           Boolean @default(false)
+  autoAdjust     Boolean @default(false) @map("auto_adjust")
+  note           String  @default("")
+  /// Linked-break rows: the block type of the ads block that fills it.
+  breakTypeId    String? @map("break_type_id") @db.Uuid
+  /// Break events (spots copied in from the ads playlist): their linked-break row.
+  relatedEventId String? @map("related_event_id") @db.Uuid
+  /// The order a placed row came from.
+  orderId        String? @map("order_id") @db.Uuid
+  /// The rotation list that put the row in (its no-repeat rule and rotation state read it).
+  rotationListId String? @map("rotation_list_id") @db.Uuid
+  /// Ads playlist: the booked spot of a commercial order this row airs (one row per pass).
+  airingItemId   String? @map("airing_item_id") @db.Uuid
+
+  block        PlaylistBlock   @relation(fields: [blockId], references: [id], onDelete: Cascade)
+  breakType    BlockType?      @relation(fields: [breakTypeId], references: [id], onDelete: Restrict)
+  production   Production?     @relation(fields: [productionId], references: [id], onDelete: Restrict)
+  segment      Segment?        @relation(fields: [segmentId], references: [id], onDelete: Restrict)
+  relatedEvent PlaylistEvent?  @relation("BreakSpots", fields: [relatedEventId], references: [id], onDelete: SetNull)
+  spots        PlaylistEvent[] @relation("BreakSpots")
+  order        Order?          @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  rotationList RotationList?   @relation(fields: [rotationListId], references: [id], onDelete: SetNull)
+  airingItem   AiringItem?     @relation(fields: [airingItemId], references: [id], onDelete: SetNull)
+
+  @@unique([blockId, sequence])
+  @@index([breakTypeId])
+  @@index([productionId])
+  @@index([relatedEventId])
+  @@index([orderId])
+  @@index([rotationListId])
+  @@index([airingItemId])
+  @@map("playlist_event")
+}
+
+// ---------------------------------------------------------------- agents (decision 0024)
+
+/// A company's key for an AI provider: encrypted at rest, never sent back (only its last 4 characters).
+model AiProvider {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  /// "anthropic" (Claude), "openai" (ChatGPT) or "xai" (Grok)
+  provider  String
+  secret    String
+  last4     String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, provider])
+  @@map("ai_provider")
+}
+
+/// An agent: one job, on a provider and model, acting with a role of the company.
+model Agent {
+  id            String    @id @default(uuid(7)) @db.Uuid
+  tenantId      String    @map("tenant_id") @db.Uuid
+  name          String
+  /// Two letters shown in its mark, and its colour (m1 … m5).
+  mark          String
+  color         String
+  job           String
+  provider      String
+  model         String
+  roleId        String    @map("role_id") @db.Uuid
+  /// What it may do in each part: { "playlist": "edit", "media": "read", … } ("read" or "edit"; a part left out: nothing).
+  parts         Json
+  /// Empty = every channel its role reaches.
+  channelIds    String[]  @default([]) @map("channel_ids") @db.Uuid
+  skill         String    @default("")
+  /// Agents it may hand work to.
+  worksWith     String[]  @default([]) @map("works_with") @db.Uuid
+  enabled       Boolean   @default(true)
+  maxSteps      Int       @default(30) @map("max_steps")
+  monthlyTokens Int       @default(2000000) @map("monthly_tokens")
+  version       Int       @default(1)
+  createdById   String?   @map("created_by_id") @db.Uuid
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  deletedAt     DateTime? @map("deleted_at")
+
+  tenant  Tenant              @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  role    Role                @relation(fields: [roleId], references: [id], onDelete: Restrict)
+  memory  AgentMemory[]
+  skills  AgentSkillVersion[]
+  runs    AgentRun[]
+  changes AgentChange[]
+  routines AgentRoutine[]
+
+  @@index([tenantId])
+  @@map("agent")
+}
+
+/// What an agent learned from the team.
+model AgentMemory {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  agentId   String   @map("agent_id") @db.Uuid
+  text      String
+  /// Where it came from, in words ("Dana Ellis in the chat").
+  source    String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  agent Agent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@index([agentId])
+  @@map("agent_memory")
+}
+
+/// Each saved skill of an agent, newest last: its history.
+model AgentSkillVersion {
+  id          String   @id @default(uuid(7)) @db.Uuid
+  agentId     String   @map("agent_id") @db.Uuid
+  skill       String
+  changedById String?  @map("changed_by_id") @db.Uuid
+  /// "settings" or "chat"
+  via         String
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  agent Agent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@index([agentId])
+  @@map("agent_skill_version")
+}
+
+/// A room: a shared chat of people and agents.
+model AgentRoom {
+  id          String   @id @default(uuid(7)) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  name        String
+  description String   @default("")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, name])
+  @@map("agent_room")
+}
+
+/// A message in a room, or in an agent's own chat with one person (roomId null; agentId + chatUserId).
+model AgentMessage {
+  id            String   @id @default(uuid(7)) @db.Uuid
+  tenantId      String   @map("tenant_id") @db.Uuid
+  roomId        String?  @map("room_id") @db.Uuid
+  agentId       String?  @map("agent_id") @db.Uuid
+  chatUserId    String?  @map("chat_user_id") @db.Uuid
+  /// The message this one answers (a thread in a room).
+  threadId      String?  @map("thread_id") @db.Uuid
+  /// "person" or "agent"
+  authorKind    String   @map("author_kind")
+  authorUserId  String?  @map("author_user_id") @db.Uuid
+  authorAgentId String?  @map("author_agent_id") @db.Uuid
+  /// "text", "change" (a change card), "skill" (a skill change card), "memory", "error"
+  kind          String   @default("text")
+  text          String
+  payload       Json?
+  runId         String?  @map("run_id") @db.Uuid
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, roomId, createdAt])
+  @@index([agentId, chatUserId, createdAt])
+  @@map("agent_message")
+}
+
+/// One run of an agent: what started it, its steps and tokens.
+model AgentRun {
+  id            String    @id @default(uuid(7)) @db.Uuid
+  tenantId      String    @map("tenant_id") @db.Uuid
+  agentId       String    @map("agent_id") @db.Uuid
+  /// "chat", "room", "handoff", "report", "approved", "routine"
+  trigger       String
+  /// The routine that started it (decision 0024, phase B).
+  routineId     String?   @map("routine_id") @db.Uuid
+  requestedById String?   @map("requested_by_id") @db.Uuid
+  roomId        String?   @map("room_id") @db.Uuid
+  chatUserId    String?   @map("chat_user_id") @db.Uuid
+  threadId      String?   @map("thread_id") @db.Uuid
+  /// Agents earlier in this chain of hand-offs (empty for a run a person started).
+  chain         String[]  @default([]) @db.Uuid
+  /// "running", "done", "stopped" (a limit), "failed"
+  status        String    @default("running")
+  steps         Json      @default("[]")
+  inputTokens   Int       @default(0) @map("input_tokens")
+  outputTokens  Int       @default(0) @map("output_tokens")
+  error         String?
+  startedAt     DateTime  @default(now()) @map("started_at")
+  endedAt       DateTime? @map("ended_at")
+
+  agent Agent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, startedAt])
+  @@index([agentId, startedAt])
+  @@map("agent_run")
+}
+
+/// A change an agent prepared: it waits for a person, who approves it (it is applied then) or rejects it.
+model AgentChange {
+  id          String    @id @default(uuid(7)) @db.Uuid
+  tenantId    String    @map("tenant_id") @db.Uuid
+  /// The agent that prepared it; null for an AI app's change that asked first (decision 0025).
+  agentId     String?   @map("agent_id") @db.Uuid
+  runId       String?   @map("run_id") @db.Uuid
+  /// An AI app's change (decision 0025): its token and the person whose token it is.
+  tokenId     String?   @map("token_id") @db.Uuid
+  userId      String?   @map("user_id") @db.Uuid
+  messageId   String?   @map("message_id") @db.Uuid
+  /// The write tool and the arguments it is applied with (apply: true, the previewed version).
+  tool        String
+  args        Json
+  /// The preview, as the tool answered it.
+  preview     String
+  /// What the agent does next once this is applied (a chained change, phase C): it goes on by itself after the approval.
+  then        String?
+  /// "waiting", "approved", "rejected", "failed"
+  status      String    @default("waiting")
+  /// What applying answered (or why it failed), and its audit change id.
+  result      String?
+  changeId    String?   @map("change_id") @db.Uuid
+  decidedById String?   @map("decided_by_id") @db.Uuid
+  decidedAt   DateTime? @map("decided_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  agent Agent? @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, status])
+  @@map("agent_change")
+}
+
+/// A routine (decision 0024, phase B): the agent starts by itself — at a time on chosen weekdays, or
+/// when something happens — and answers in a room, else in the chat of the person who made it. It
+/// works for that person: never more than their role allows.
+model AgentRoutine {
+  id          String    @id @default(uuid(7)) @db.Uuid
+  tenantId    String    @map("tenant_id") @db.Uuid
+  agentId     String    @map("agent_id") @db.Uuid
+  name        String
+  /// "time" or "event"
+  kind        String
+  /// time: "HH:MM" in timeZone, on these weekdays (index = weekday, 0 = Sunday)
+  time        String?
+  weekdays    Boolean[] @default([])
+  timeZone    String    @default("UTC") @map("time_zone")
+  /// event: "week_created" or "campaign_confirmed"
+  event       String?
+  /// Only events of these channels (empty = every channel).
+  channelIds  String[]  @default([]) @map("channel_ids") @db.Uuid
+  /// What the agent is asked each time.
+  request     String
+  /// Where it answers: a room, else the chat of the person who made it.
+  roomId      String?   @map("room_id") @db.Uuid
+  enabled     Boolean   @default(true)
+  createdById String    @map("created_by_id") @db.Uuid
+  nextRunAt   DateTime? @map("next_run_at")
+  lastRunAt   DateTime? @map("last_run_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  agent Agent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([enabled, nextRunAt])
+  @@map("agent_routine")
+}

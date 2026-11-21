@@ -1,0 +1,65 @@
+---
+// The guides index (/guides): every long-form guide from GUIDES in site.ts.
+import Base from '../layouts/Base.astro';
+import { BRAND, GUIDES } from '../site';
+import { breadcrumbs } from '../seo';
+---
+<Base
+  title={`Broadcast Scheduling and TV Traffic Guides | ${BRAND}`}
+  description="Practical guides for TV schedulers, traffic managers and playout teams: BXF, as-run reconciliation, drop-frame timecode and more."
+  jsonLd={[breadcrumbs(Astro.site, [{ name: 'Home', path: '/' }, { name: 'Guides', path: '/guides' }])]}
+>
+  <section class="container">
+    <div class="page-hero">
+      <span class="chip chip--accent"><span class="chip__dot"></span>Guides</span>
+      <h1 class="h1 h1--page">Guides for the people who run TV channels.</h1>
+      <p class="lead lead--lg" style="max-width: 760px">How broadcast scheduling, traffic and playout fit together — the standards, the timing and the daily work — written for schedulers, traffic managers and playout teams.</p>
+    </div>
+    <div class="grid" style="--min: 340px; margin-top: 56px">
+      {GUIDES.map((g) => (
+        <a class="card" href={`/guides/${g.slug}`} style="text-decoration: none; color: var(--text)">
+          <h2 class="h3">{g.title}</h2>
+          <p style="flex: 1">{g.summary}</p>
+          <span style="font-weight: 500; color: var(--accent-text)">Read the guide <span aria-hidden="true">→</span></span>
+        </a>
+      ))}
+      <a class="card card--dashed" href="/tools/timecode-calculator">
+        <span class="meta" style="font-weight: 500">Free tool</span>
+        <h2 class="h3">Timecode calculator</h2>
+        <p style="flex: 1">Timecode to frames and back, sums of durations and frame rate changes — drop-frame included.</p>
+        <span style="font-weight: 500; color: var(--accent-text)">Open the calculator <span aria-hidden="true">→</span></span>
+      </a>
+      <a class="card card--dashed" href="/tools/scte35-decoder">
+        <span class="meta" style="font-weight: 500">Free tool</span>
+        <h2 class="h3">SCTE-35 decoder</h2>
+        <p style="flex: 1">Paste a base64 or hex cue, or a whole HLS or DASH line, and see the splice command, times, descriptors, UPIDs and CRC.</p>
+        <span style="font-weight: 500; color: var(--accent-text)">Open the decoder <span aria-hidden="true">→</span></span>
+      </a>
+      <a class="card card--dashed" href="/tools/tv-schedule-template">
+        <span class="meta" style="font-weight: 500">Free template</span>
+        <h2 class="h3">TV schedule template</h2>
+        <p style="flex: 1">An Excel and Google Sheets template: a frame-accurate day playlist, fixed-start checks, ad minutes per hour and a week grid.</p>
+        <span style="font-weight: 500; color: var(--accent-text)">Get the template <span aria-hidden="true">→</span></span>
+      </a>
+      <a class="card card--dashed" href="/tools/ad-break-calculator">
+        <span class="meta" style="font-weight: 500">Free tool</span>
+        <h2 class="h3">Ad break calculator</h2>
+        <p style="flex: 1">Ad inventory per day, week and year; how long the programme can be in a slot and where the breaks go; which spots fit a break.</p>
+        <span style="font-weight: 500; color: var(--accent-text)">Open the calculator <span aria-hidden="true">→</span></span>
+      </a>
+      <a class="card card--dashed" href="/tools/xmltv-epg-checker">
+        <span class="meta" style="font-weight: 500">Free tool</span>
+        <h2 class="h3">XMLTV EPG checker</h2>
+        <p style="flex: 1">Drop an XMLTV guide and see each channel's gaps, overlaps, missing titles, bad times and XML errors, with line numbers.</p>
+        <span style="font-weight: 500; color: var(--accent-text)">Open the checker <span aria-hidden="true">→</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section class="container section">
+    <div class="cta cta--light">
+      <div><h2>See {BRAND} on a channel like yours.</h2><p>Broadcast scheduling and traffic software with AI agents built in. Early access starts with a demo.</p></div>
+      <a class="btn btn--primary" href="/demo">Request a demo</a>
+    </div>
+  </section>
+</Base>

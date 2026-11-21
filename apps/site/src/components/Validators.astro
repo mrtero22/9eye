@@ -1,0 +1,68 @@
+---
+// A channel's validators: rule, what happens when it fails, which agent fixes it, on / off.
+// Sample data; the switches work (validators.ts).
+const AGENTS = {
+  timing: ['Timing agent', '#0d9488'],
+  filler: ['Filler and bumper agent', '#db2777'],
+  ads: ['Ad placement agent', '#2563eb'],
+  promo: ['Promo placement agent', '#7c3aed'],
+  schedule: ['Schedule agent', '#0284c7'],
+  operator: ['Operator', '#a1a1aa'],
+} as const;
+
+const VALIDATORS: { name: string; rule: string; blocks: boolean; agent: keyof typeof AGENTS; custom?: boolean }[] = [
+  { name: 'Fixed starts on time', rule: 'Blocks marked fixed start on the exact frame.', blocks: true, agent: 'timing' },
+  { name: 'No gaps or overlaps', rule: 'Every frame from 06:00 to 06:00 is filled, and nothing overlaps.', blocks: true, agent: 'filler' },
+  { name: 'Clash codes apart', rule: 'No two spots with the same clash code in one break.', blocks: true, agent: 'ads' },
+  { name: 'Ad minutes per hour', rule: 'At most 12 minutes of advertising in any clock hour.', blocks: true, agent: 'ads' },
+  { name: 'Alcohol after 21:00', rule: 'Alcohol spots only between 21:00 and 05:00.', blocks: true, agent: 'ads' },
+  { name: 'Premiere promos', rule: 'A premiere gets at least 6 promos in the 3 days before it.', blocks: false, agent: 'promo' },
+  { name: 'Promo media ready', rule: 'Every promo has its media file 24 hours before air.', blocks: true, agent: 'promo' },
+  { name: 'Rights cover the air date', rule: 'A programme airs only while its rights are valid.', blocks: true, agent: 'schedule' },
+  { name: 'Subtitles delivered', rule: 'Programmes in prime time have their subtitle file 48 hours before air.', blocks: false, agent: 'operator' },
+  { name: 'Wildmere promos out of kids hours', rule: 'No Wildmere promo between 15:00 and 18:00: the series is rated 12+.', blocks: true, agent: 'promo', custom: true },
+];
+---
+<div class="panel" style="margin-top: 48px" data-validators>
+  <div class="vpanel__head">
+    <span style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em">Validators</span>
+    <span class="muted" style="display: inline-flex; align-items: center; gap: 6px"><b style="font-weight: 500; color: var(--text)">Tessa One</b><span class="meta">·</span><span data-part="summary">{VALIDATORS.length} of {VALIDATORS.length} validators on</span></span>
+    <span class="spacer"></span>
+    <span class="meta">Sample channel</span>
+  </div>
+  <div class="scroll-x">
+    <div class="vtable" role="table" aria-label="Validators on a sample channel">
+      <div class="vrow vrow--head" role="row">
+        <span role="columnheader">Validator and rule</span><span role="columnheader">When it fails</span><span role="columnheader">Fixed by</span><span role="columnheader">On</span>
+      </div>
+      {VALIDATORS.map((v) => (
+        <div class:list={['vrow', { 'vrow--custom': v.custom }]} role="row">
+          <span class="vrow__name" role="cell">
+            <span style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px"><b>{v.name}</b>{v.custom && <span class="badge badge--accent">Custom rule</span>}</span>
+            <span>{v.rule}</span>
+          </span>
+          <span role="cell"><span class:list={['badge', v.blocks ? 'badge--red' : 'badge--amber']}>{v.blocks ? 'Blocks air' : 'Warning'}</span></span>
+          <span class="vrow__agent" role="cell"><i style={`background:${AGENTS[v.agent][1]}`}></i>{AGENTS[v.agent][0]}</span>
+          <span role="cell"><button type="button" class="switch" role="switch" aria-checked="true" aria-label={v.name}><span></span></button></span>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-validators]');
+  if (root) {
+    const summary = root.querySelector<HTMLElement>('[data-part="summary"]')!;
+    const switches = [...root.querySelectorAll<HTMLButtonElement>('.switch')];
+    root.addEventListener('click', (e) => {
+      const sw = (e.target as HTMLElement).closest<HTMLButtonElement>('.switch');
+      if (!sw) return;
+      const on = sw.getAttribute('aria-checked') !== 'true';
+      sw.setAttribute('aria-checked', String(on));
+      sw.closest('.vrow')?.classList.toggle('is-off', !on);
+      const count = switches.filter((s) => s.getAttribute('aria-checked') === 'true').length;
+      summary.textContent = `${count} of ${switches.length} validators on`;
+    });
+  }
+</script>

@@ -1,0 +1,114 @@
+---
+// Screenshot: the Playlist Checker after auto timing — the rows before a fixed 21:00 start, with what
+// auto timing changed marked on each row, the summary on the right and the export targets.
+import CheckerFrame from './CheckerFrame.astro';
+
+const mono = "font-family:'Geist Mono Variable',ui-monospace,monospace";
+const FPS = 25;
+const frames = (tc: string) => tc.split(':').map(Number).reduce((sum, n, i) => sum + n * [3600 * FPS, 60 * FPS, FPS, 1][i], 0);
+const timecode = (f: number) => [Math.floor(f / (3600 * FPS)), Math.floor(f / (60 * FPS)) % 60, Math.floor(f / FPS) % 60, f % FPS].map((n) => String(n).padStart(2, '0')).join(':');
+
+const TYPES = {
+  Programme: '#475569', 'End credits': '#8b5cf6', Next: '#a855f7', Ident: '#f59e0b',
+  Commercial: '#e11d48', Social: '#db2777', Promo: '#16a34a', Filler: '#0284c7',
+} as const;
+type Row = { type: keyof typeof TYPES; title: string; dur: string; note?: 'Moved' | 'Padded' | 'Spacer' | 'Inserted' | 'Removed' | 'On target' };
+const ROWS: Row[] = [
+  { type: 'Programme', title: 'Harbor Lights 12 · part 4', dur: '00:11:48:10' },
+  { type: 'End credits', title: 'Harbor Lights · end credits', dur: '00:00:45:00' },
+  { type: 'Ident', title: 'Ident_Com_041', dur: '00:00:13:01' },
+  { type: 'Commercial', title: 'Brightmilk_15sec_Nov26', dur: '00:00:15:00' },
+  { type: 'Commercial', title: 'Velora_30sec_Dec26', dur: '00:00:30:00' },
+  { type: 'Commercial', title: 'Nordbank_20sec_Q4', dur: '00:00:20:00' },
+  { type: 'Social', title: 'Social_Sting_02', dur: '00:00:07:00' },
+  { type: 'Ident', title: 'Ident_Com_042', dur: '00:00:13:01' },
+  { type: 'Ident', title: 'Ident_Com_043', dur: '00:00:13:01', note: 'Removed' },
+  { type: 'Promo', title: 'Promo_Kestrel_Road_END_30_Nov_2026', dur: '00:01:20:08', note: 'Moved' },
+  { type: 'Filler', title: 'Coastal_Life_Filler_EP04', dur: '00:03:05:00', note: 'Padded' },
+  { type: 'Promo', title: 'Promo_Silent_Meridian_END_12_Dec_2026', dur: '00:01:05:12' },
+  { type: 'Filler', title: 'Wild_Coasts_Filler_EP11', dur: '00:02:58:00', note: 'Padded' },
+  { type: 'Promo', title: 'Promo_Glass_Orchard_END_20_Dec_2026', dur: '00:01:40:14', note: 'Spacer' },
+  { type: 'Filler', title: 'Harbour_Towns_Filler_EP02', dur: '00:01:12:06' },
+  { type: 'Ident', title: 'Ident_Com_044', dur: '00:00:13:01' },
+  { type: 'Next', title: 'Next_Copper_Valley', dur: '00:00:11:00', note: 'Inserted' },
+  { type: 'Programme', title: 'Copper Valley 7 · part 1', dur: '00:12:02:18', note: 'On target' },
+  { type: 'Programme', title: 'Copper Valley 7 · part 2', dur: '00:11:36:05' },
+];
+// Start times run back from the fixed 21:00 start of Copper Valley 7; a removed row takes no time.
+const target = ROWS.findIndex((r) => r.note === 'On target');
+let start = frames('21:00:00:00') - ROWS.slice(0, target).reduce((sum, r) => sum + (r.note === 'Removed' ? 0 : frames(r.dur)), 0);
+const rows = ROWS.map((r, i) => {
+  const row = { ...r, n: 296 + i, start: timecode(start) };
+  if (r.note !== 'Removed') start += frames(r.dur);
+  return row;
+});
+const NOTE: Record<string, string> = {
+  Moved: 'background:#eef2ff;color:#4338ca', Padded: 'background:#e0f2fe;color:#0369a1', Spacer: 'background:#e8f6ec;color:#15803d',
+  Inserted: 'background:#f3e8ff;color:#7e22ce', Removed: 'background:#f4f4f5;color:#52525b', 'On target': 'background:#ccfbf1;color:#0f766e',
+};
+const cols = 'grid-template-columns: 44px 104px 104px 118px 1fr 84px';
+const changes = [
+  'Copper Valley 7 now starts at 21:00:00:00',
+  'Removed an ident that ran back to back',
+  'Padded 2 fillers from the rotation list',
+  'Moved a promo ahead of its programme',
+  'One promo after every 3 min of fillers',
+  'Inserted the next bumper for Copper Valley',
+  'Inserted end credits for Copper Valley 7',
+];
+---
+<CheckerFrame page="Playlist" address="Playlist Checker · northvale-one_2026-11-17.xml" label="The Playlist Checker after auto timing: the rows before a fixed 21:00 start, with removed, moved, padded and inserted items marked, a summary of the changes and export to FTP, Google Drive or Dropbox.">
+  <div style="flex: none; display: flex; align-items: center; gap: 10px; padding: 14px 20px 10px">
+    <span style="font-size: 20px; font-weight: 600; letter-spacing: -0.02em">Playlist</span>
+    <span style={`${mono};color:#6b6b74;font-size:12px`}>488 items · day starts 06:00:00:00 · 25 fps</span>
+    <span style="flex: 1"></span>
+    <span style="display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border: 1px solid #e4e4e7; border-radius: 6px; background: #fff; font-weight: 500">Undo<span style={`${mono};font-size:11px;color:#6b6b74`}>Ctrl Z</span></span>
+    <span style="display: inline-flex; align-items: center; height: 30px; padding: 0 12px; border: 1px solid #e4e4e7; border-radius: 6px; background: #fff; font-weight: 500">Settings</span>
+    <span style="display: inline-flex; align-items: center; height: 30px; padding: 0 12px; border-radius: 6px; background: #0d9488; color: #fff; font-weight: 500">Run auto timing</span>
+  </div>
+  <div style="flex: 1; min-height: 0; display: flex; gap: 16px; padding: 0 20px 16px">
+    <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; border: 1px solid #e4e4e7; border-radius: 10px; background: #fff; overflow: hidden">
+      <div style={`height:32px;flex:none;display:grid;${cols};align-items:center;gap:10px;padding:0 14px;border-bottom:1px solid #e4e4e7;color:#52525b;font-size:12px;font-weight:500`}>
+        <span>#</span><span>Start</span><span>Duration</span><span>Type</span><span>Title</span><span>Auto timing</span>
+      </div>
+      {rows.map((r) => (
+        <div style={`height:28px;flex:none;display:grid;${cols};align-items:center;gap:10px;padding:0 14px;border-bottom:1px solid #f4f4f5;${r.note === 'On target' ? 'background:#f0fdfa;' : ''}${r.note === 'Removed' ? 'color:#a1a1aa;' : ''}`}>
+          <span style={`${mono};font-size:12px;color:#a1a1aa`}>{r.n}</span>
+          <span style={`${mono};font-size:12px;${r.note === 'Removed' ? 'text-decoration:line-through' : ''}`}>{r.note === 'Removed' ? '—' : r.start}</span>
+          <span style={`${mono};font-size:12px;color:${r.note === 'Removed' ? '#a1a1aa' : '#52525b'}`}>{r.dur}</span>
+          <span style="display: flex; align-items: center; gap: 7px; white-space: nowrap"><span style={`width:8px;height:8px;border-radius:50%;flex:none;background:${r.note === 'Removed' ? '#d4d4d8' : TYPES[r.type]}`}></span>{r.type}</span>
+          <span style={`white-space:nowrap;overflow:hidden;text-overflow:ellipsis;${r.type === 'Programme' ? 'font-weight:500;' : ''}${r.note === 'Removed' ? 'text-decoration:line-through;' : ''}`}>{r.title}</span>
+          <span>{r.note && <span style={`display:inline-flex;align-items:center;height:20px;padding:0 7px;border-radius:4px;font-size:11px;font-weight:500;white-space:nowrap;${NOTE[r.note]}`}>{r.note}</span>}</span>
+        </div>
+      ))}
+    </div>
+
+    <div style="width: 330px; flex: none; display: flex; flex-direction: column; border: 1px solid #e4e4e7; border-radius: 10px; background: #fff; overflow: hidden">
+      <div style="height: 40px; flex: none; display: flex; align-items: center; gap: 8px; padding: 0 16px; border-bottom: 1px solid #e4e4e7"><b>Auto timing</b><span style="flex: 1"></span><span style="display: inline-flex; align-items: center; height: 20px; padding: 0 7px; border-radius: 4px; font-size: 11px; font-weight: 500; background: #e8f6ec; color: #15803d">Done</span></div>
+      <div style="padding: 14px 16px 12px; display: flex; flex-direction: column; gap: 4px; border-bottom: 1px solid #f0f0f2">
+        <span style="font-size: 26px; font-weight: 600; letter-spacing: -0.02em; color: #0f766e">14 of 14</span>
+        <span>programmes start on target</span>
+        <span style="color: #6b6b74; font-size: 12px">Tolerance ±10 s · was 2 min 18 s late</span>
+      </div>
+      <div style="padding: 12px 16px; display: flex; flex-direction: column; gap: 7px; border-bottom: 1px solid #f0f0f2">
+        <span style="color: #52525b; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase">Changes</span>
+        {changes.map((c) => (
+          <span style="display: flex; gap: 8px; align-items: flex-start"><span style="width: 6px; height: 6px; border-radius: 50%; background: #0d9488; flex: none; margin-top: 7px"></span>{c}</span>
+        ))}
+      </div>
+      <div style="padding: 12px 16px; display: flex; flex-direction: column; gap: 4px; border-bottom: 1px solid #f0f0f2">
+        <span style="font-weight: 500">Checked again: 2 errors left</span>
+        <span style="color: #6b6b74; font-size: 12px">Booked spots and spot length go back to the sales team.</span>
+      </div>
+      <span style="flex: 1"></span>
+      <div style="padding: 12px 16px 16px; display: flex; flex-direction: column; gap: 8px; background: #fafafa; border-top: 1px solid #f0f0f2">
+        <span style="color: #52525b; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase">Export the day</span>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px">
+          {['Download XML', 'Upload to FTP', 'Google Drive', 'Dropbox'].map((t, i) => (
+            <span style={`display:inline-flex;align-items:center;justify-content:center;height:32px;border-radius:6px;font-weight:500;${i === 1 ? 'background:#0d9488;color:#fff' : 'border:1px solid #d4d4d8;background:#fff'}`}>{t}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</CheckerFrame>

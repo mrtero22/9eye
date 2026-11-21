@@ -1,0 +1,95 @@
+---
+// Screenshot: a generic scheduling web app with the "Check export" button the Playlist Checker adds next to its
+// own Export button, and the checker's card while it captures the export and loads the reference data.
+import CheckerFrame from './CheckerFrame.astro';
+
+const mono = "font-family:'Geist Mono Variable',ui-monospace,monospace";
+const FPS = 25;
+const frames = (tc: string) => tc.split(':').map(Number).reduce((sum, n, i) => sum + n * [3600 * FPS, 60 * FPS, FPS, 1][i], 0);
+const timecode = (f: number) => [Math.floor(f / (3600 * FPS)), Math.floor(f / (60 * FPS)) % 60, Math.floor(f / FPS) % 60, f % FPS].map((n) => String(n).padStart(2, '0')).join(':');
+
+const ROWS: [category: string, title: string, dur: string, media: string][] = [
+  ['Programme', 'Morning Market · part 1', '00:12:30:00', 'MM_2026-11-17_P1.mxf'],
+  ['Ident', 'Ident_Com_001', '00:00:13:01', 'Ident_Com_001.mxf'],
+  ['Commercial', 'Brightmilk_15sec_Nov26', '00:00:15:00', 'Brightmilk_15sec_Nov26.mxf'],
+  ['Commercial', 'Nordbank_20sec_Q4', '00:00:20:00', 'Nordbank_20sec_Q4.mxf'],
+  ['Commercial', 'Velora_30sec_Dec26', '00:00:30:00', 'Velora_30sec_Dec26.mxf'],
+  ['Ident', 'Ident_Com_002', '00:00:13:01', 'Ident_Com_002.mxf'],
+  ['Promo', 'Promo_Harbor_Lights_END_30_Nov_2026', '00:01:10:00', 'Promo_HL_30Nov.mxf'],
+  ['Programme', 'Morning Market · part 2', '00:13:05:12', 'MM_2026-11-17_P2.mxf'],
+  ['End credits', 'Morning Market · end credits', '00:00:30:00', 'MM_Credits.mxf'],
+  ['Next', 'Next_Harbor_Lights', '00:00:11:00', 'Next_HL.mxf'],
+  ['Programme', 'Harbor Lights 11 · part 1', '00:11:40:20', 'HL_E11_P1.mxf'],
+  ['Ident', 'Ident_Com_003', '00:00:13:01', 'Ident_Com_003.mxf'],
+  ['Commercial', 'Kettle&Co_10sec_Nov26', '00:00:10:00', 'KettleCo_10sec.mxf'],
+  ['Social', 'Social_Sting_01', '00:00:07:00', 'Social_Sting_01.mxf'],
+  ['Commercial', 'Nordbank_20sec_Q4', '00:00:20:00', 'Nordbank_20sec_Q4.mxf'],
+  ['Ident', 'Ident_Com_004', '00:00:13:01', 'Ident_Com_004.mxf'],
+  ['Filler', 'Coastal_Life_Filler_EP03', '00:02:40:00', 'CL_Filler_EP03.mxf'],
+  ['Programme', 'Harbor Lights 11 · part 2', '00:12:12:08', 'HL_E11_P2.mxf'],
+];
+let start = frames('06:00:00:00');
+const rows = ROWS.map(([category, title, dur, media], i) => {
+  const row = { n: i + 1, start: timecode(start), category, title, dur, media };
+  start += frames(dur);
+  return row;
+});
+const cols = 'grid-template-columns: 40px 100px 100px 110px 1fr 200px';
+const steps: [string, string, boolean][] = [
+  ['Export captured', 'northvale-one_2026-11-17.xml · 486 items', true],
+  ['Schedule loaded', '46 programmes from Google Sheets', true],
+  ['Booked spots loaded', '212 spots from 31 advertisers', true],
+  ['Series settings', '18 series on this channel', true],
+  ['Running 21 checks', 'The report opens in a new tab', false],
+];
+const tick = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>';
+---
+<CheckerFrame address="scheduling.example.com / playlist / northvale-one / 2026-11-17" label="The scheduling web app's playlist page with the Check export button added by the Playlist Checker next to Export XML, and the checker's card capturing the export, loading the schedule and booked spots and running 21 checks.">
+  <div style="height: 48px; flex: none; display: flex; align-items: center; gap: 22px; padding: 0 20px; background: #1f2937; color: #d1d5db; font-weight: 500">
+    <span style="color: #fff; font-weight: 600">Scheduling</span>
+    {['Channels', 'Grid', 'Playlist', 'Media', 'Reports'].map((t) => <span style={t === 'Playlist' ? 'color:#fff' : ''}>{t}</span>)}
+  </div>
+  <div style="position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; background: #f3f4f6">
+    <div style="flex: none; display: flex; align-items: center; gap: 10px; padding: 14px 20px">
+      <span style="font-size: 18px; font-weight: 600">Playlist</span>
+      <span style="color: #4b5563">Northvale One · Tuesday 17 November 2026</span>
+      <span style="flex: 1"></span>
+      {['Validate', 'Print'].map((t) => <span style="display: inline-flex; align-items: center; height: 30px; padding: 0 12px; border: 1px solid #d1d5db; border-radius: 4px; background: #fff; font-weight: 500">{t}</span>)}
+      <span style="display: inline-flex; align-items: center; height: 30px; padding: 0 12px; border-radius: 4px; background: #374151; color: #fff; font-weight: 500">Export XML</span>
+      <span style="display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 14px; border-radius: 6px; background: #0d9488; color: #fff; font-weight: 600; box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.22)"><span style="display: inline-flex" set:html={tick} />Check export</span>
+    </div>
+    <div style="flex: 1; min-height: 0; margin: 0 20px 16px; display: flex; flex-direction: column; border: 1px solid #d1d5db; background: #fff; overflow: hidden">
+      <div style={`height:30px;flex:none;display:grid;${cols};align-items:center;gap:10px;padding:0 12px;background:#e5e7eb;color:#374151;font-size:12px;font-weight:600`}>
+        <span>#</span><span>Start</span><span>Duration</span><span>Category</span><span>Title</span><span>Media</span>
+      </div>
+      {rows.map((r) => (
+        <div style={`height:29px;flex:none;display:grid;${cols};align-items:center;gap:10px;padding:0 12px;border-bottom:1px solid #eef0f2;${r.category === 'Programme' ? 'background:#f9fafb;font-weight:500' : ''}`}>
+          <span style={`${mono};font-size:12px;color:#9ca3af`}>{r.n}</span>
+          <span style={`${mono};font-size:12px`}>{r.start}</span>
+          <span style={`${mono};font-size:12px;color:#4b5563`}>{r.dur}</span>
+          <span style="color: #4b5563; font-weight: 400">{r.category}</span>
+          <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{r.title}</span>
+          <span style={`${mono};font-size:12px;color:#6b7280;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis`}>{r.media}</span>
+        </div>
+      ))}
+    </div>
+
+    <div style="position: absolute; right: 36px; bottom: 36px; width: 360px; display: flex; flex-direction: column; border: 1px solid #e4e4e7; border-radius: 12px; background: #fff; box-shadow: 0 24px 48px -12px rgba(24, 24, 27, 0.28), 0 2px 6px rgba(24, 24, 27, 0.08); overflow: hidden">
+      <div style="height: 46px; display: flex; align-items: center; gap: 10px; padding: 0 16px; border-bottom: 1px solid #f0f0f2">
+        <span style="width: 24px; height: 24px; border-radius: 6px; background: #0d9488; color: #fff; display: inline-flex; align-items: center; justify-content: center" set:html={tick} />
+        <b>Playlist Checker</b>
+        <span style="flex: 1"></span>
+        <span style="color: #6b6b74; font-size: 12px">Northvale One</span>
+      </div>
+      <div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 12px">
+        {steps.map(([title, text, done]) => (
+          <div style="display: flex; gap: 10px; align-items: flex-start">
+            <span style={`width:20px;height:20px;border-radius:50%;flex:none;display:inline-flex;align-items:center;justify-content:center;${done ? 'background:#ccfbf1;color:#0f766e' : 'border:2px solid #0d9488;border-right-color:#ccfbf1'}`} set:html={done ? tick : ''} />
+            <span style="display: flex; flex-direction: column; gap: 1px"><span style="font-weight: 500">{title}</span><span style="color: #6b6b74; font-size: 12px">{text}</span></span>
+          </div>
+        ))}
+      </div>
+      <div style="height: 6px; background: #f0f0f2"><div style="width: 78%; height: 100%; background: #0d9488"></div></div>
+    </div>
+  </div>
+</CheckerFrame>

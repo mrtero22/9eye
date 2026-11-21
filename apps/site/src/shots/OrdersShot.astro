@@ -1,0 +1,79 @@
+---
+// Screenshot: the Scheduling page — the orders of a fictional channel, grouped by mode.
+import ShotFrame from './ShotFrame.astro';
+
+const mono = "font-family:'Geist Mono Variable',ui-monospace,monospace";
+const chev = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>';
+const dots = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>';
+const cols = 'grid-template-columns: 2.1fr 0.9fr 0.9fr 1.7fr 1.9fr 1.5fr 1.9fr 32px';
+
+type Row = { name: string; color: string; mode: string; draft?: boolean; dates: string; endsSoon?: boolean; week1: string; week2: string; aired?: number; total?: number; progress?: string; issue?: string; highlight?: boolean };
+const groups: { name: string; note: string; rows: Row[] }[] = [
+  { name: 'Series', note: '· episodes in list order', rows: [
+    { name: 'Wildmere - T1', color: '#0284c7', mode: 'Series', dates: '2 Nov → 20 Dec 2026', week1: 'Mon–Fri · 21:00', week2: 'Ep. 19–23 · 5 first, 10 repeats', aired: 18, total: 40, issue: 'Last episode airs Fri 18 Dec', highlight: true },
+    { name: 'Fernhill - T1', color: '#059669', mode: 'Series', dates: '5 Oct 2026 → 29 Jan 2027', week1: 'Mon–Fri · 09:00', week2: 'Ep. 26–30 · 5 first', aired: 25, total: 80 },
+    { name: 'Kitchen Duel - T1', color: '#db2777', mode: 'Series', dates: '19 Oct → 11 Dec 2026', week1: 'Mon–Fri · 18:00', week2: 'Ep. 16–20 · 5 first', aired: 15, total: 40 },
+    { name: 'Coastline - T1', color: '#7c3aed', mode: 'Series', draft: true, dates: '2 Nov 2026 → 26 Feb 2027', week1: 'Mon–Fri · 20:00', week2: 'Ep. 6–10 · 5 first', aired: 5, total: 85, issue: 'Draft: left out of the playlist' },
+  ] },
+  { name: 'Programmes', note: '', rows: [
+    { name: 'Saturday Movie - T1', color: '#d97706', mode: 'Programmes', dates: '7 Nov → 26 Dec 2026', week1: 'Sat · 20:00', week2: '1 film', aired: 1, total: 8 },
+    { name: 'Matinee Movie - T1', color: '#ea580c', mode: 'Programmes', dates: '2 Nov → 27 Dec 2026', week1: 'Mon–Sat · 14:00', week2: '6 films', aired: 6, total: 48 },
+  ] },
+  { name: 'Promos', note: '', rows: [
+    { name: 'Wildmere promos - T1', color: '#0284c7', mode: 'Promos', dates: '2 Nov → 20 Dec 2026', week1: '4 passes a block', week2: 'Every day, 19:00–23:00', progress: '6 items' },
+    { name: 'Sunday Drama premiere - T1', color: '#0d9488', mode: 'Promos', dates: '9 Nov → 15 Nov 2026', endsSoon: true, week1: '9 passes in all', week2: 'Mon–Sun, 19:00–22:00', progress: '3 items' },
+  ] },
+];
+const chips: [string, string, boolean][] = [['All', '8', true], ['Series', '4', false], ['Programmes', '2', false], ['Promos', '2', false], ['Jingles', '0', false], ['Graphics', '0', false]];
+---
+<ShotFrame active="Scheduling" label="The Scheduling page: a table of series, programme and promo orders with their dates, this week's airings, progress and what needs attention.">
+  <div style="flex: none; display: flex; align-items: flex-end; gap: 12px; padding: 16px 24px 12px">
+    <div style="display: flex; flex-direction: column; gap: 4px">
+      <span style="font-size: 22px; font-weight: 600; letter-spacing: -0.02em">Scheduling</span>
+      <span style="display: flex; align-items: center; gap: 6px; color: #52525b"><span style="font-weight: 500; color: #18181b">Tessa One</span><Fragment set:html={chev} /><span style="color: #a1a1aa">·</span><span>Week from Monday · day starts 06:00 · 25 fps</span></span>
+    </div>
+    <span style="flex: 1"></span>
+    <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: #52525b" set:html={dots} />
+    <span style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 14px; border-radius: 6px; background: #2563eb; color: #fff; font-weight: 500">+ New order</span>
+  </div>
+  <div style="flex: none; display: flex; align-items: center; gap: 8px; padding: 0 24px 12px">
+    <span style="display: inline-flex; align-items: center; height: 30px; width: 180px; flex: none; padding: 0 10px; border: 1px solid #d4d4d8; border-radius: 6px; background: #fff; color: #6b6b74">Search orders</span>
+    {chips.map(([n, c, on]) => (
+      <span style={`display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;white-space:nowrap;flex:none;border-radius:999px;border:1px solid ${on ? '#18181b' : '#e4e4e7'};background:${on ? '#18181b' : '#fff'};color:${on ? '#fff' : '#18181b'};font-weight:500`}>{n}<span style={`${mono};font-size:11px;color:${on ? '#d4d4d8' : '#6b6b74'}`}>{c}</span></span>
+    ))}
+    <span style="width: 1px; height: 20px; background: #e4e4e7; margin: 0 4px"></span>
+    <span style="white-space: nowrap; color: #52525b">Status <b style="color: #18181b; font-weight: 500">All</b></span>
+    <span style="white-space: nowrap; color: #52525b; margin-left: 8px">Dates <b style="color: #18181b; font-weight: 500">Running this week</b></span>
+    <span style="flex: 1"></span>
+    <span style="display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; white-space: nowrap; border-radius: 999px; border: 1px solid #f3d9a6; background: #fdf4e3; color: #9a5200; font-weight: 500">Needs attention<span style={`${mono};font-size:11px`}>2</span></span>
+  </div>
+  <div style="flex: 1; min-height: 0; padding: 0 24px 24px; display: flex">
+    <div style="flex: 1; display: flex; flex-direction: column; border: 1px solid #e4e4e7; border-radius: 10px; background: #fff; overflow: hidden">
+      <div style={`height:36px;flex:none;display:grid;${cols};align-items:center;gap:12px;padding:0 14px;border-bottom:1px solid #e4e4e7;color:#52525b;font-size:12px;font-weight:500`}>
+        <span>Order</span><span>Mode</span><span>Status</span><span>Dates</span><span>This week</span><span>Progress</span><span>Needs attention</span><span></span>
+      </div>
+      {groups.map((g) => (
+        <Fragment>
+          <div style="height: 30px; display: flex; align-items: center; gap: 6px; padding: 0 14px; background: #fafafa; border-bottom: 1px solid #f0f0f2; font-size: 12px; color: #52525b"><b style="color: #18181b">{g.name}</b><span style={mono}>{g.rows.length}</span><span>{g.note}</span></div>
+          {g.rows.map((r) => (
+            <div style={`height:46px;display:grid;${cols};align-items:center;gap:12px;padding:0 14px;border-bottom:1px solid #f0f0f2;background:${r.highlight ? '#f7faff' : '#fff'}`}>
+              <span style="display: flex; align-items: center; gap: 8px; min-width: 0"><span style={`width:10px;height:10px;border-radius:3px;flex:none;background:${r.color}`}></span><span style="font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{r.name}</span></span>
+              <span style="color: #52525b">{r.mode}</span>
+              <span><span style={`display:inline-flex;align-items:center;height:20px;padding:0 6px;border-radius:4px;font-size:11px;font-weight:500;background:${r.draft ? '#f4f4f5' : '#e8f6ec'};color:${r.draft ? '#52525b' : '#15803d'}`}>{r.draft ? 'Draft' : 'Confirmed'}</span></span>
+              <span style="display: flex; flex-direction: column; gap: 2px"><span style="white-space: nowrap">{r.dates}</span>{r.endsSoon && <span style="align-self: flex-start; display: inline-flex; align-items: center; height: 18px; padding: 0 6px; border-radius: 4px; background: #fdf4e3; color: #9a5200; font-size: 11px; font-weight: 500">Ends soon</span>}</span>
+              <span style="display: flex; flex-direction: column; gap: 1px; min-width: 0"><span style="white-space: nowrap">{r.week1}</span><span style="font-size: 12px; color: #6b6b74; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{r.week2}</span></span>
+              <span style="display: flex; flex-direction: column; gap: 5px">
+                {r.total ? <span style="display: block; height: 6px; border-radius: 3px; background: #f0f0f2; overflow: hidden"><span style={`display:block;height:100%;width:${(((r.aired ?? 0) / r.total) * 100).toFixed(1)}%;background:${r.color}`}></span></span> : null}
+                <span style="font-size: 12px; color: #52525b">{r.total ? `${r.aired} of ${r.total} aired` : r.progress}</span>
+              </span>
+              <span style={`font-size:12px;color:${r.issue ? '#9a5200' : '#a1a1aa'}`}>{r.issue ?? '—'}</span>
+              <span style="display: inline-flex; align-items: center; justify-content: center; color: #6b6b74" set:html={dots} />
+            </div>
+          ))}
+        </Fragment>
+      ))}
+      <span style="flex: 1"></span>
+      <div style="height: 36px; flex: none; display: flex; align-items: center; padding: 0 14px; border-top: 1px solid #f0f0f2; color: #6b6b74; font-size: 12px">8 of 8 orders running this week · 23 orders on Tessa One in all</div>
+    </div>
+  </div>
+</ShotFrame>

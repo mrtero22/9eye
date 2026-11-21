@@ -1,0 +1,30 @@
+---
+// The window around a product screenshot: browser dots and the 9eye top bar of a fictional company.
+// Screenshots are drawn here (our own design system, sample data) and captured by scripts/shots.mjs.
+interface Props { active: string; label: string; width?: number; height?: number }
+const { active, label, width = 1200, height = 760 } = Astro.props;
+const TABS = ['Home', 'Catalog', 'Templates', 'Scheduling', 'Playlist', 'As-run'];
+---
+<div id="shot" role="img" aria-label={label} style={`width:${width}px;height:${height}px;overflow:hidden;display:flex;flex-direction:column;background:#fafafa;font-family:'Geist Variable',ui-sans-serif,system-ui,sans-serif;color:#18181b;font-size:13px;line-height:1.4`}>
+  <div style="height: 40px; flex: none; display: flex; align-items: center; gap: 8px; padding: 0 16px; background: #f4f4f5; border-bottom: 1px solid #e4e4e7">
+    <span style="width: 11px; height: 11px; border-radius: 50%; background: #d4d4d8"></span>
+    <span style="width: 11px; height: 11px; border-radius: 50%; background: #d4d4d8"></span>
+    <span style="width: 11px; height: 11px; border-radius: 50%; background: #d4d4d8"></span>
+  </div>
+  <div style="height: 52px; flex: none; display: flex; align-items: center; gap: 8px; padding: 0 16px; background: #fff; border-bottom: 1px solid #e4e4e7">
+    <span style="display: flex; align-items: center; gap: 8px; padding: 0 8px">
+      <span style="width: 24px; height: 24px; border-radius: 6px; background: #18181b; color: #fafafa; display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px">T</span>
+      <span style="font-weight: 600">Tessaline Media</span>
+    </span>
+    <span style="width: 1px; height: 20px; background: #e4e4e7; margin: 0 8px"></span>
+    <span style="display: flex; align-self: stretch; gap: 4px; font-weight: 500">
+      {TABS.map((t) => (
+        <span style={`display:inline-flex;align-items:center;padding:0 10px;color:${t === active ? '#18181b' : '#52525b'};border-bottom:2px solid ${t === active ? '#18181b' : 'transparent'}`}>{t}</span>
+      ))}
+    </span>
+    <span style="flex: 1"></span>
+    <span style="display: inline-flex; align-items: center; gap: 8px; height: 32px; width: 200px; padding: 0 10px; border: 1px solid #e4e4e7; border-radius: 6px; background: #fafafa; color: #6b6b74"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>Search</span>
+    <span style="width: 28px; height: 28px; border-radius: 50%; background: #e9e9ec; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; margin-left: 8px">AR</span>
+  </div>
+  <slot />
+</div>

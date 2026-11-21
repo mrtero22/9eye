@@ -1,0 +1,244 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "the Main mockup (private)": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 5200,
+      "title": "Design system",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "the Home mockup (private)": {
+      "x": 1520,
+      "y": 0,
+      "w": 1440,
+      "h": 960,
+      "title": "Home",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "the Catalog mockup (private)": {
+      "x": 3040,
+      "y": 0,
+      "w": 1440,
+      "h": 1080,
+      "title": "Catalog",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "the Week mockup (private)": {
+      "x": 4560,
+      "y": 0,
+      "w": 1440,
+      "h": 1120,
+      "title": "Templates",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "the Playlist mockup (private)": {
+      "x": 10640,
+      "y": 0,
+      "w": 1440,
+      "h": 1180,
+      "title": "Day playlist",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "the Admin mockup (private)": {
+      "x": 12160,
+      "y": 0,
+      "w": 1440,
+      "h": 1080,
+      "title": "Admin",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "the Scheduling mockup (private)": {
+      "x": 6080,
+      "y": 0,
+      "w": 1440,
+      "h": 1100,
+      "title": "Scheduling \u00b7 orders",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "DatePicker.dc.html": {
+      "x": 0,
+      "y": 5300,
+      "w": 380,
+      "h": 520,
+      "title": "Date picker (component)",
+      "is_interactive": true
+    },
+    "SchedulingOrder.dc.html": {
+      "x": 7600,
+      "y": 0,
+      "w": 1440,
+      "h": 1300,
+      "title": "Scheduling \u00b7 one order",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "SchedulingNew.dc.html": {
+      "x": 9120,
+      "y": 0,
+      "w": 1440,
+      "h": 1300,
+      "title": "Scheduling \u00b7 new order",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "the CatalogPicker mockup (private)": {
+      "x": 480,
+      "y": 5300,
+      "w": 1320,
+      "h": 840,
+      "title": "Catalog picker (component)",
+      "is_interactive": true
+    },
+    "the Orders mockup (private)": {
+      "x": 13680,
+      "y": 0,
+      "w": 1440,
+      "h": 1400,
+      "title": "Orders \u00b7 commercial",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "AiAccess.dc.html": {
+      "x": 15200,
+      "y": 0,
+      "w": 1440,
+      "h": 1100,
+      "title": "Settings \u00b7 AI access and Activity",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "MyAiAccess.dc.html": {
+      "x": 16720,
+      "y": 0,
+      "w": 1440,
+      "h": 1000,
+      "title": "Account \u00b7 AI access",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "PlaylistAgent.dc.html": {
+      "x": 18240,
+      "y": 0,
+      "w": 1440,
+      "h": 1100,
+      "title": "Playlist \u00b7 with its agent",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "AgentTeam.dc.html": {
+      "x": 19760,
+      "y": 0,
+      "w": 1440,
+      "h": 1180,
+      "title": "Agents \u00b7 team room (agents hand work to each other)",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "AgentProfile.dc.html": {
+      "x": 21280,
+      "y": 0,
+      "w": 1440,
+      "h": 1120,
+      "title": "Agents \u00b7 one agent: chat, settings, new agent",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "AiPermissions.dc.html": {
+      "x": 22800,
+      "y": 0,
+      "w": 1440,
+      "h": 1240,
+      "title": "Settings \u00b7 AI access: what AI may do (part \u00d7 action)",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "AiTokenLimits.dc.html": {
+      "x": 24320,
+      "y": 0,
+      "w": 1440,
+      "h": 1000,
+      "title": "Account \u00b7 AI access: a token's own limits",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "AiWaiting.dc.html": {
+      "x": 25840,
+      "y": 0,
+      "w": 1440,
+      "h": 900,
+      "title": "Agents \u00b7 Waiting for you: asked first by an AI app",
+      "expand": "fill",
+      "is_interactive": true
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-10-15T17:10:55.385Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "launch": {
+    "view": "canvas"
+  },
+  "notes": {
+    "note-kh86lo": {
+      "bold": false,
+      "kind": "title1",
+      "page": "page-34fwil",
+      "size": 24,
+      "text": "",
+      "w": 240,
+      "x": -109,
+      "y": 1250
+    },
+    "t1": {
+      "x": 0,
+      "y": -300,
+      "text": "9eye \u2014 UI foundation \u00b7 v2 calm",
+      "kind": "title1",
+      "maxW": 15120
+    }
+  },
+  "order": [
+    "the Main mockup (private)",
+    "DatePicker.dc.html",
+    "the CatalogPicker mockup (private)",
+    "the Home mockup (private)",
+    "the Catalog mockup (private)",
+    "the Week mockup (private)",
+    "the Scheduling mockup (private)",
+    "SchedulingOrder.dc.html",
+    "SchedulingNew.dc.html",
+    "the Playlist mockup (private)",
+    "the Admin mockup (private)",
+    "the Orders mockup (private)",
+    "AiAccess.dc.html",
+    "MyAiAccess.dc.html",
+    "PlaylistAgent.dc.html",
+    "AgentTeam.dc.html",
+    "AgentProfile.dc.html",
+    "AiPermissions.dc.html",
+    "AiTokenLimits.dc.html",
+    "AiWaiting.dc.html"
+  ],
+  "pages": [
+    {
+      "id": "page-1",
+      "name": "Page 1"
+    },
+    {
+      "id": "page-34fwil",
+      "name": "Page 2"
+    }
+  ],
+  "title": "Design"
+}

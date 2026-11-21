@@ -1,0 +1,10 @@
+---
+// The product mark: a lens in a rounded square (the same mark as the app's Wordmark).
+interface Props { size?: number; hole?: string }
+const { size = 26, hole = 'var(--bg)' } = Astro.props;
+---
+<svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+  <rect width="24" height="24" rx="7" fill="currentColor"></rect>
+  <circle cx="12" cy="12" r="5.75" fill="none" stroke={hole} stroke-width="2.25"></circle>
+  <circle cx="12" cy="12" r="2" fill={hole}></circle>
+</svg>

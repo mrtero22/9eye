@@ -1,0 +1,25 @@
+---
+// A product picture from public/images: 2400 px wide (2×) with a 1200 px copy for phones and 1× screens
+// (both captured by scripts/shots.mjs). The first picture on a page passes `priority`.
+const SHOTS = {
+  orders: 'The Scheduling page: a table of series, programme and promo orders on a channel, with this week’s airings, progress and what needs attention.',
+  order: 'One series order: order details on the left, and the week with first airings at 21:00 and their repeats.',
+  templates: 'The Templates page: a channel’s week of programme blocks from Monday to Sunday, with one block’s details and linked ad breaks on the right.',
+  'checker-capture': 'A scheduling web app’s playlist page with the Check export button the Playlist Checker adds next to Export XML, and the checker’s card loading the schedule and booked spots.',
+  'checker-report': 'Broadcast playlist QC report from the Playlist Checker: 21 checks in four groups with their results, and the problems found in the day’s playlist, each with its row and time.',
+  'checker-playlist': 'The Playlist Checker’s playout playlist after auto timing: removed, moved, padded and inserted items marked before a fixed 21:00 start, a summary of the changes and the export targets.',
+};
+
+interface Props { name: keyof typeof SHOTS; priority?: boolean }
+const { name, priority = false } = Astro.props;
+---
+<img
+  src={`/images/${name}.webp`}
+  srcset={`/images/${name}-1200.webp 1200w, /images/${name}.webp 2400w`}
+  sizes="(min-width: 1200px) 1136px, calc(100vw - 32px)"
+  alt={SHOTS[name]}
+  width="2400"
+  height="1520"
+  fetchpriority={priority ? 'high' : undefined}
+  loading={priority ? undefined : 'lazy'}
+/>

@@ -1,0 +1,21 @@
+---
+// Questions and answers as native disclosure widgets. The page adds the same items as FAQPage data (seo.ts).
+import Icon from './Icon.astro';
+import type { Faq } from '../seo';
+
+interface Props { title: string; items: Faq[] }
+const { title, items } = Astro.props;
+---
+<section class="container section">
+  <div class="faq">
+    <h2 class="h2">{title}</h2>
+    <div class="faq__list">
+      {items.map((item) => (
+        <details>
+          <summary>{item.q}<Icon name="plus" /></summary>
+          <p>{item.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

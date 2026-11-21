@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Product shot: Templates</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div role="img" aria-label="The Templates page: a fictional channel's week of programme blocks, Monday to Sunday, with one block selected and its details on the right." ref="{{setFrame}}" style="position: relative; width: 100%; aspect-ratio: 1200 / 760; overflow: hidden; border-radius: 14px; background: #fafafa; box-shadow: 0 0 0 1px #e4e4e7, 0 1px 2px rgba(0, 0, 0, 0.04), 0 28px 64px -16px rgba(24, 24, 27, 0.22); font-family: Geist, ui-sans-serif, system-ui, sans-serif; color: #18181b; font-size: 13px; line-height: 1.4; box-sizing: border-box">
+<div style="position: absolute; left: 0; top: 0; width: 1200px; height: 760px; transform: scale({{scale}}); transform-origin: top left; display: flex; flex-direction: column; background: #fafafa">
+
+<div style="height: 40px; flex: none; display: flex; align-items: center; gap: 8px; padding: 0 16px; background: #f4f4f5; border-bottom: 1px solid #e4e4e7">
+<span style="width: 11px; height: 11px; border-radius: 50%; background: #d4d4d8"></span>
+<span style="width: 11px; height: 11px; border-radius: 50%; background: #d4d4d8"></span>
+<span style="width: 11px; height: 11px; border-radius: 50%; background: #d4d4d8"></span>
+</div>
+
+<div style="height: 52px; flex: none; display: flex; align-items: center; gap: 8px; padding: 0 16px; background: #ffffff; border-bottom: 1px solid #e4e4e7">
+<span style="display: flex; align-items: center; gap: 8px; padding: 0 8px">
+<span style="width: 24px; height: 24px; border-radius: 6px; background: #18181b; color: #fafafa; display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px">T</span>
+<span style="font-weight: 600">Tessaline Media</span>
+</span>
+<span style="width: 1px; height: 20px; background: #e4e4e7; margin: 0 8px"></span>
+<span style="display: flex; align-self: stretch; gap: 4px; font-weight: 500">
+<span style="display: inline-flex; align-items: center; padding: 0 10px; color: #52525b">Home</span>
+<span style="display: inline-flex; align-items: center; padding: 0 10px; color: #52525b">Catalog</span>
+<span style="display: inline-flex; align-items: center; padding: 0 10px; color: #18181b; border-bottom: 2px solid #18181b">Templates</span>
+<span style="display: inline-flex; align-items: center; padding: 0 10px; color: #52525b">Scheduling</span>
+<span style="display: inline-flex; align-items: center; padding: 0 10px; color: #52525b">Playlist</span>
+<span style="display: inline-flex; align-items: center; padding: 0 10px; color: #52525b">As-run</span>
+</span>
+<span style="flex: 1"></span>
+<span style="display: inline-flex; align-items: center; gap: 8px; height: 32px; width: 200px; padding: 0 10px; border: 1px solid #e4e4e7; border-radius: 6px; background: #fafafa; color: #6b6b74"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>Search</span>
+<span style="width: 28px; height: 28px; border-radius: 50%; background: #e9e9ec; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; margin-left: 8px">AR</span>
+</div>
+
+<div style="flex: none; display: flex; align-items: flex-end; gap: 16px; padding: 20px 24px 16px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 22px; font-weight: 600; letter-spacing: -0.02em">Templates</span>
+<span style="display: flex; align-items: center; gap: 6px; color: #52525b">
+<span style="font-weight: 500; color: #18181b">Tessa One</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+<span style="color: #a1a1aa">·</span>
+<span>Main playlist</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+<span style="color: #a1a1aa">·</span>
+<span>25 fps · Europe/Lisbon · day starts 06:00</span>
+</span>
+</div>
+<span style="flex: 1"></span>
+<span style="display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border-radius: 6px; border: 1px solid #d4d4d8; background: #ffffff; font-weight: 500">Repeat a time range</span>
+<span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 6px; color: #52525b"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="19" cy="12" r="1.6"></circle></svg></span>
+<span style="display: inline-flex; align-items: center; height: 32px; padding: 0 14px; border-radius: 6px; background: #2563eb; color: #ffffff; font-weight: 500">Save</span>
+</div>
+
+<div style="flex: 1; min-height: 0; display: flex; gap: 16px; padding: 0 24px 24px">
+
+<div style="width: 196px; flex: none; display: flex; flex-direction: column; gap: 10px; overflow: hidden">
+<span style="display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 10px; border: 1px solid #e4e4e7; border-radius: 6px; background: #ffffff; color: #6b6b74"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>Block types</span>
+<sc-for list="{{groups}}" as="g" hint-placeholder-count="5">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 12px; color: #6b6b74; padding: 2px 8px">{{g.name}}</span>
+<sc-for list="{{g.items}}" as="it" hint-placeholder-count="2">
+<span style="display: flex; align-items: center; gap: 8px; height: 30px; padding: 0 8px; border-radius: 8px; background: {{it.bg}}">
+<span style="width: 8px; height: 8px; border-radius: 2px; flex: none; background: {{it.color}}"></span>
+<span style="flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-weight: 500">{{it.name}}</span>
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 11px; color: #6b6b74">{{it.len}}</span>
+</span>
+</sc-for>
+</div>
+</sc-for>
+</div>
+
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; border: 1px solid #e4e4e7; border-radius: 10px; background: #ffffff; overflow: hidden">
+<div style="height: 36px; flex: none; display: flex; align-items: center; gap: 10px; padding: 0 12px; background: #f4f4f5; border-bottom: 1px solid #e4e4e7; color: #52525b">
+<span style="font-weight: 500; color: #18181b">Autumn schedule</span>
+<span>2 Nov – 20 Dec 2026</span>
+<span style="display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 4px; background: #e8f6ec; color: #15803d; font-size: 11px; font-weight: 500">In use</span>
+<span style="flex: 1"></span>
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 11px">26 px / h</span>
+</div>
+<div style="height: 32px; flex: none; display: grid; grid-template-columns: 52px repeat(7, minmax(0, 1fr)); border-bottom: 1px solid #e4e4e7">
+<span></span>
+<sc-for list="{{days}}" as="d" hint-placeholder-count="7">
+<span style="display: flex; align-items: center; gap: 6px; padding: 0 8px; border-left: 1px solid #f0f0f2; font-weight: 500">{{d.label}}<span style="color: #6b6b74; font-weight: 400">{{d.date}}</span></span>
+</sc-for>
+</div>
+<div style="flex: 1; min-height: 0; padding: 10px 0 10px">
+<div style="position: relative; height: 100%; display: grid; grid-template-columns: 52px repeat(7, minmax(0, 1fr))">
+<div style="position: relative">
+<sc-for list="{{hours}}" as="h" hint-placeholder-count="9">
+<span style="position: absolute; right: 8px; top: {{h.top}}; transform: translateY(-50%); font-family: 'Geist Mono', ui-monospace, monospace; font-size: 10.5px; color: #6b6b74">{{h.label}}</span>
+</sc-for>
+</div>
+<sc-for list="{{days}}" as="d" hint-placeholder-count="7">
+<div style="position: relative; border-left: 1px solid #f0f0f2; background-image: repeating-linear-gradient(to bottom, #f0f0f2 0 1px, transparent 1px 5.5556%)">
+<sc-for list="{{d.blocks}}" as="b" hint-placeholder-count="8">
+<div style="position: absolute; left: 3px; right: 3px; top: {{b.top}}; height: {{b.height}}; box-sizing: border-box; padding: 3px 6px; border-radius: 6px; background: {{b.bg}}; border: 1px solid {{b.border}}; box-shadow: {{b.ring}}; overflow: hidden; display: flex; flex-direction: column; font-size: 11px; line-height: 1.3">
+<sc-if value="{{b.showName}}" hint-placeholder-val="{{true}}"><span style="font-weight: 500; overflow: hidden; white-space: nowrap; text-overflow: ellipsis">{{b.name}}</span></sc-if>
+<sc-if value="{{b.showTime}}" hint-placeholder-val="{{false}}"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 10px; color: #52525b">{{b.time}}</span></sc-if>
+</div>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+
+<div style="width: 268px; flex: none; display: flex; flex-direction: column; border: 1px solid #e4e4e7; border-radius: 10px; background: #ffffff; overflow: hidden">
+<div style="height: 48px; flex: none; display: flex; align-items: center; gap: 8px; padding: 0 12px 0 16px; border-bottom: 1px solid #f0f0f2">
+<span style="width: 10px; height: 10px; border-radius: 3px; background: #ea580c"></span>
+<span style="flex: 1; font-weight: 600; font-size: 15px">Prime Drama</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b6b74" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+</div>
+<div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid #f0f0f2">
+<span style="display: flex; justify-content: space-between"><span style="color: #52525b">Block group</span><span>Prime time</span></span>
+<span style="display: flex; justify-content: space-between; align-items: center"><span style="color: #52525b">Days</span>
+<span style="display: flex; gap: 3px">
+<sc-for list="{{weekdays}}" as="w" hint-placeholder-count="7">
+<span style="width: 22px; height: 22px; border-radius: 5px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; background: {{w.bg}}; color: {{w.fg}}">{{w.l}}</span>
+</sc-for>
+</span>
+</span>
+<span style="display: flex; justify-content: space-between"><span style="color: #52525b">Start</span><span style="font-family: 'Geist Mono', ui-monospace, monospace">20:00:00:00</span></span>
+<span style="display: flex; justify-content: space-between"><span style="color: #52525b">End</span><span style="font-family: 'Geist Mono', ui-monospace, monospace">22:00:00:00</span></span>
+<span style="display: flex; justify-content: space-between"><span style="color: #52525b">Length</span><span style="font-family: 'Geist Mono', ui-monospace, monospace">02:00:00:00</span></span>
+</div>
+<div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 8px">
+<span style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-weight: 600">Linked breaks</span><span style="font-size: 12px; color: #6b6b74">from the ads template</span></span>
+<div style="border: 1px solid #e4e4e7; border-radius: 8px; overflow: hidden">
+<sc-for list="{{breaks}}" as="br" hint-placeholder-count="3">
+<span style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 10px; border-bottom: 1px solid #f0f0f2">
+<span style="width: 8px; height: 8px; border-radius: 2px; background: #ea580c"></span>
+<span style="flex: 1">{{br.name}}</span>
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: #52525b">{{br.at}}</span>
+</span>
+</sc-for>
+</div>
+<span style="display: inline-flex; align-items: center; gap: 6px; height: 22px; align-self: flex-start; padding: 0 8px; border-radius: 4px; background: #eaf1ff; color: #1d4ed8; font-size: 11px; font-weight: 500">Applied to 5 blocks</span>
+</div>
+<span style="flex: 1"></span>
+<div style="padding: 12px 16px; border-top: 1px solid #f0f0f2; display: flex; gap: 8px">
+<span style="display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border-radius: 6px; border: 1px solid #d4d4d8; font-weight: 500">Edit block</span>
+<span style="display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border-radius: 6px; color: #b91c1c; font-weight: 500">Remove</span>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":760}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { scale: 1 };
+    this.setFrame = (el) => {
+      if (this.observer) { this.observer.disconnect(); this.observer = null; }
+      if (!el || typeof ResizeObserver === 'undefined') return;
+      this.observer = new ResizeObserver(() => {
+        const scale = el.clientWidth / 1200;
+        if (scale > 0 && Math.abs(scale - this.state.scale) > 0.001) this.setState({ scale: scale });
+      });
+      this.observer.observe(el);
+    };
+  }
+  componentWillUnmount() {
+    if (this.observer) this.observer.disconnect();
+  }
+  renderVals() {
+    const C = { morning: '#0d9488', day: '#64748b', news: '#2563eb', movie: '#d97706', kids: '#7c3aed', ent: '#db2777', prime: '#ea580c', sport: '#16a34a', night: '#71717a' };
+    const weekday = [
+      ['Breakfast Live', 360, 540, 'morning'], ['Daytime Drama', 540, 720, 'day'], ['Midday News', 720, 750, 'news'],
+      ['Matinee Movie', 750, 900, 'movie'], ['Kids Afternoon', 900, 1080, 'kids'], ['Quiz Hour', 1080, 1140, 'ent'],
+      ['News and Weather', 1140, 1200, 'news'], ['Prime Drama', 1200, 1320, 'prime'], ['Late Movie', 1320, 1440, 'movie']
+    ];
+    const sat = [
+      ['Kids Morning', 360, 600, 'kids'], ['Weekend Sport', 600, 780, 'sport'], ['Matinee Movie', 780, 960, 'movie'],
+      ['Weekend Sport', 960, 1140, 'sport'], ['News and Weather', 1140, 1200, 'news'], ['Saturday Movie', 1200, 1350, 'movie'],
+      ['Night Repeats', 1350, 1440, 'night']
+    ];
+    const sun = [
+      ['Kids Morning', 360, 600, 'kids'], ['Documentaries', 600, 780, 'day'], ['Family Film', 780, 960, 'movie'],
+      ['Quiz Hour', 960, 1020, 'ent'], ['Sunday Magazine', 1020, 1140, 'morning'], ['News and Weather', 1140, 1200, 'news'],
+      ['Sunday Drama', 1200, 1320, 'prime'], ['Night Repeats', 1320, 1440, 'night']
+    ];
+    const span = 18 * 60;
+    const fmt = (m) => String(Math.floor(m / 60) % 24).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
+    const blocks = (list, dayIndex) => list.map((b) => {
+      const name = b[0], s = b[1], e = b[2], c = C[b[3]], len = e - s;
+      const selected = dayIndex === 0 && name === 'Prime Drama';
+      return {
+        name: name,
+        time: fmt(s) + ' – ' + fmt(e),
+        showName: len >= 60,
+        showTime: len >= 120,
+        top: ((s - 360) / span * 100).toFixed(3) + '%',
+        height: 'calc(' + (len / span * 100).toFixed(3) + '% - 2px)',
+        bg: c + '1f',
+        border: c + '59',
+        ring: selected ? '0 0 0 2px #2563eb' : 'none'
+      };
+    });
+    const labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const days = labels.map((label, i) => ({
+      label: label,
+      date: String(2 + i),
+      blocks: blocks(i < 5 ? weekday : i === 5 ? sat : sun, i)
+    }));
+    const hours = [6, 8, 10, 12, 14, 16, 18, 20, 22].map((h) => ({
+      label: String(h).padStart(2, '0') + ':00',
+      top: ((h - 6) / 18 * 100).toFixed(3) + '%'
+    }));
+    const item = (name, len, g, selected) => ({ name: name, len: len, color: C[g], bg: selected ? '#eaf1ff' : 'transparent' });
+    const groups = [
+      { name: 'Morning', items: [item('Breakfast Live', '3 h', 'morning'), item('Kids Morning', '4 h', 'kids')] },
+      { name: 'Daytime', items: [item('Daytime Drama', '3 h', 'day'), item('Kids Afternoon', '3 h', 'kids')] },
+      { name: 'News', items: [item('Midday News', '30 m', 'news'), item('News and Weather', '1 h', 'news')] },
+      { name: 'Prime time', items: [item('Prime Drama', '2 h', 'prime', true), item('Quiz Hour', '1 h', 'ent')] },
+      { name: 'Movies', items: [item('Matinee Movie', '2.5 h', 'movie'), item('Late Movie', '2 h', 'movie'), item('Saturday Movie', '2.5 h', 'movie')] }
+    ];
+    const weekdays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((l, i) => ({ l: l, bg: i < 5 ? '#2563eb' : '#f4f4f5', fg: i < 5 ? '#ffffff' : '#6b6b74' }));
+    const breaks = [{ name: 'Break 1', at: '20:14:00:00' }, { name: 'Break 2', at: '20:43:00:00' }, { name: 'Break 3', at: '21:28:00:00' }];
+    return { days: days, hours: hours, groups: groups, weekdays: weekdays, breaks: breaks, setFrame: this.setFrame, scale: this.state.scale };
+  }
+}
+</script>
+</body>
+</html>

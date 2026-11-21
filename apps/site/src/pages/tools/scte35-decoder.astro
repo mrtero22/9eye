@@ -1,0 +1,88 @@
+---
+// The free SCTE-35 decoder (seo-plan.md: free tools for broadcast departments). The first example is
+// decoded here, so the page shows a real result before any script runs (scte35-model.ts).
+import Base from '../../layouts/Base.astro';
+import Faq from '../../components/Faq.astro';
+import { BRAND, STUDIO } from '../../site';
+import { breadcrumbs, faqPage, webApplication, type Faq as FaqItem } from '../../seo';
+import { EXAMPLES, decode, renderHtml } from '../../scripts/scte35-model';
+
+const first = EXAMPLES[0];
+const title = 'SCTE-35 decoder';
+const description = 'Free SCTE-35 decoder: paste a base64 or hex cue and see the splice command, PTS times, break duration, segmentation descriptors and UPIDs.';
+const path = '/tools/scte35-decoder';
+
+const FAQ: FaqItem[] = [
+  { q: 'What is a SCTE-35 cue?', a: 'A short binary message inside a video stream that marks an event: an ad break starting or ending, a programme starting, a place where a local ad may go. Ad servers, packagers and playout systems act on it. In HLS and DASH it is carried as base64 or hex text, which is what this decoder reads.' },
+  { q: 'What is the difference between splice_insert and time_signal?', a: 'splice_insert is the older, simpler command: it says "leave the network now (or at this time) for this long" and is mostly used for ad breaks. time_signal only gives a time; what happens at that time is described by segmentation descriptors (programme start, ad opportunity, chapter, and so on), which makes it the more flexible choice in current workflows.' },
+  { q: 'Why is the time a large number like 21514.559089 seconds?', a: 'SCTE-35 times are PTS values on the 90 kHz clock of the video stream, not clock time. They count from an arbitrary start and wrap after about 26.5 hours. If the cue has a pts_adjustment, it is added to every pts_time; the decoder shows both.' },
+  { q: 'Where do I find SCTE-35 cues in HLS or DASH?', a: 'In HLS, in #EXT-X-DATERANGE tags (SCTE35-OUT, SCTE35-IN, SCTE35-CMD in hex), #EXT-OATCLS-SCTE35 (base64) or #EXT-X-SCTE35 (CUE="…"). In DASH, in an EventStream inside <Signal><Binary>. Paste the whole line: the decoder finds the cue in it.' },
+  { q: 'What does "CRC_32 does not match" mean?', a: 'Every cue ends with a checksum of its bytes. If it does not match, the cue was changed or damaged on the way — often by a tool that rewrote a field without updating the CRC. Equipment may drop such a cue, so the break never happens.' },
+  { q: 'Is my data sent anywhere?', a: 'No. The decoder runs in your browser and nothing you paste leaves the page. A copied link keeps the cue after the # sign, which browsers do not send to the server.' },
+];
+---
+<Base
+  title={`SCTE-35 Decoder: Parse Base64 and Hex Cues Online | ${BRAND}`}
+  description={description}
+  jsonLd={[webApplication(Astro.site, { name: `${BRAND} ${title}`, description, path }), breadcrumbs(Astro.site, [{ name: 'Home', path: '/' }, { name: title, path }]), faqPage(FAQ)]}
+>
+  <section class="container">
+    <div class="page-hero">
+      <span class="chip chip--accent"><span class="chip__dot"></span>Free tool</span>
+      <h1 class="h1 h1--page">SCTE-35 decoder</h1>
+      <p class="lead lead--lg" style="max-width: 760px">Paste a SCTE-35 cue — base64, hex, or the whole HLS or DASH line — and see what it says: the splice command and its times, the break duration, every segmentation descriptor and UPID, and whether the CRC is right. Free, and it runs in your browser.</p>
+    </div>
+
+    <div class="form-box stack" style="--gap: 24px; margin-top: 48px" data-scte-tool>
+      <div class="field">
+        <label for="cue">SCTE-35 cue</label>
+        <textarea id="cue" class="input mono" rows="4" data-part="cue" autocomplete="off" spellcheck="false" placeholder="/DAvAAAAAAAA… or 0xFC302F… or a whole #EXT-X-DATERANGE line">{first.cue}</textarea>
+      </div>
+      <div class="btn-row" style="justify-content: space-between">
+        <div class="stack" style="--gap: 6px">
+          <span id="examples" class="meta" style="font-weight: 500">Examples from the SCTE 35 standard</span>
+          <div class="seg" role="group" aria-labelledby="examples">
+            {EXAMPLES.map((e) => <button type="button" data-example={e.id} aria-pressed={String(e.id === first.id)}>{e.label}</button>)}
+          </div>
+        </div>
+        <div class="btn-row" style="gap: 8px; align-self: flex-end">
+          <button type="button" class="btn btn--secondary btn--sm" data-part="copy-json">Copy JSON</button>
+          <button type="button" class="btn btn--secondary btn--sm" data-part="copy-link">Copy link</button>
+        </div>
+      </div>
+      <div class="stack" style="--gap: 24px; padding-top: 24px; border-top: 1px solid var(--hairline)" data-part="out" aria-live="polite" set:html={renderHtml(decode(first.cue))} />
+      <noscript><p class="notice notice--amber">The decoder needs JavaScript. The result above is the first example.</p></noscript>
+      <p class="meta" style="margin: 0">Need cues checked inside your own workflow — every break in a playlist or a stream, automatically? <a href="/studio#start">{STUDIO} builds that</a>.</p>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="prose">
+      <section>
+        <h2>What the decoder reads</h2>
+        <ul>
+          <li><strong>Every splice command:</strong> <code>splice_insert</code>, <code>time_signal</code>, <code>splice_schedule</code>, <code>splice_null</code>, <code>bandwidth_reservation</code> and <code>private_command</code>.</li>
+          <li><strong>Every descriptor:</strong> segmentation (all segmentation types, delivery restrictions, sub-segments), avail, DTMF, time and audio. Private descriptors are shown as bytes.</li>
+          <li><strong>Every UPID type:</strong> Ad-ID, EIDR (with its check character), UMID, ISAN, TID, AiringID, ADI, MPU, URI, UUID, ATSC content ID and MID with several UPIDs inside.</li>
+          <li><strong>Checks:</strong> the CRC_32, the section and command lengths, and cues that are cut short.</li>
+          <li><strong>Input:</strong> base64, hex with or without <code>0x</code>, or a whole line: <code>#EXT-X-DATERANGE … SCTE35-OUT=0x…</code>, <code>#EXT-OATCLS-SCTE35:</code>, <code>#EXT-X-SCTE35 CUE="…"</code> or DASH <code>&lt;Binary&gt;</code>.</li>
+        </ul>
+        <p><strong>Copy JSON</strong> gives the decoded fields with the standard's names, for a ticket or a test. <strong>Copy link</strong> gives a link that opens this page with the same cue, to send to a colleague.</p>
+      </section>
+      <section>
+        <h2>SCTE-35 and SCTE-104</h2>
+        <p>SCTE-104 is how the automation system tells the encoder about a break, on the SDI or IP side before compression. The encoder turns each SCTE-104 message into a SCTE-35 cue in the compressed stream: a splice request becomes a <code>splice_insert</code>, a time signal request becomes a <code>time_signal</code>, and segmentation descriptors carry over. When a break goes missing downstream, decoding the SCTE-35 cue shows whether the encoder got the right message.</p>
+      </section>
+      <section>
+        <h2>Where the breaks come from</h2>
+        <p>The cues mark breaks that someone planned. {BRAND} is broadcast scheduling and traffic software that places ad breaks and spots frame-accurately in every playlist, for linear and FAST channels. See <a href="/tv-traffic-software">TV traffic software</a> or <a href="/fast-channel-scheduling">FAST channel scheduling</a>. More free tools: the <a href="/tools/timecode-calculator">timecode calculator</a> and the <a href="/tools/tv-schedule-template">TV schedule template</a>.</p>
+      </section>
+    </div>
+  </section>
+
+  <Faq title="SCTE-35 questions" items={FAQ} />
+</Base>
+
+<script>
+  import '../../scripts/scte35-tool.ts';
+</script>

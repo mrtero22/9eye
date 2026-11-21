@@ -1,0 +1,32 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.mrtero22/9eye",
+  "title": "9eye",
+  "description": "Broadcast scheduling and TV traffic: layouts, plans, playlists and ad campaigns in 9eye.",
+  "version": "0.2.0",
+  "websiteUrl": "https://github.com/mrtero22/9eye/blob/main/docs/mcp.md",
+  "repository": {
+    "url": "https://github.com/mrtero22/9eye",
+    "source": "github"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://{host}/api/mcp",
+      "variables": {
+        "host": {
+          "description": "The address of your 9eye installation, for example 9eye.example.com",
+          "isRequired": true
+        }
+      },
+      "headers": [
+        {
+          "name": "Authorization",
+          "description": "Bearer and a personal access token from Account > AI access in 9eye (Bearer 9eye_pat_...)",
+          "isRequired": true,
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}

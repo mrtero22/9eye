@@ -1,0 +1,108 @@
+---
+// The free ad break calculator (seo-plan.md: free tools for broadcast departments): ad inventory, the
+// programme length and breaks of one slot, and which spots fit a break. The first values are worked
+// out here, so the page shows results before any script runs (ad-break-model.ts).
+import Base from '../../layouts/Base.astro';
+import Faq from '../../components/Faq.astro';
+import { BRAND, STUDIO } from '../../site';
+import { breadcrumbs, faqPage, webApplication, type Faq as FaqItem } from '../../seo';
+import { SPOT_LENGTHS, fill, fillHtml, inventory, inventoryHtml, slot, slotHtml } from '../../scripts/ad-break-model';
+
+const first = {
+  inventory: { minutesPerHour: 12, hoursPerDay: 18, daysPerWeek: 7, spotSeconds: 30, sellOut: 70, price: 0 },
+  slot: { start: '20:00:00', slotMinutes: 60, adMinutes: 12, promoMinutes: 2, breaks: 3, breakAtEnd: true },
+  fill: { length: '3:00', counts: { 10: 0, 15: 1, 20: 2, 30: 3, 45: 0, 60: 0 } as Record<number, number> },
+};
+
+const title = 'Ad break calculator';
+const description = 'Free ad break calculator for TV: ad minutes and spots per day, week and year, how long the programme can be in each slot, and which spots fit a break.';
+const path = '/tools/ad-break-calculator';
+
+const FAQ: FaqItem[] = [
+  { q: 'How many minutes of ads per hour are allowed on TV?', a: 'It depends on the country. In the European Union, the Audiovisual Media Services Directive allows advertising and teleshopping spots to fill up to 20% of the time between 06:00 and 18:00, and 20% between 18:00 and midnight, instead of the older 12 minutes in every clock hour. Many other countries keep a limit per clock hour, often 12 minutes. In the United States there is no general limit, but programmes for children may carry at most 12 minutes an hour on weekdays and 10.5 on weekends. Always check your own regulator.' },
+  { q: 'How long is a one-hour TV programme without ads?', a: 'The slot minus the ads, promos and idents in it. With 12 minutes of ads and 2 of promos, a 60-minute slot leaves 46 minutes for the programme; with fewer ads it is longer. The second part of the calculator works it out for your numbers and shows where each part and break starts.' },
+  { q: 'What is ad inventory and sell-out?', a: 'Inventory is the ad time a channel can sell: ad minutes per hour times the hours on air. Sell-out is the share of it that is actually sold. The calculator shows both in spots of the length you choose, per day, week, month and year, and the revenue if you enter a price per spot.' },
+  { q: 'How many spots fit in a 3-minute break?', a: 'Eighteen 10-second spots, twelve of 15 seconds, nine of 20, six of 30, four of 45 or three of 60 — or any mix that adds up to 3:00. The third part of the calculator checks a mix and suggests the fewest spots that fill what is left.' },
+  { q: 'Is my data sent anywhere?', a: 'No. The calculator runs in your browser, and nothing you type leaves the page.' },
+];
+---
+<Base
+  title={`Ad Break Calculator: Commercial Minutes and Inventory | ${BRAND}`}
+  description={description}
+  jsonLd={[webApplication(Astro.site, { name: `${BRAND} ${title.toLowerCase()}`, description, path }), breadcrumbs(Astro.site, [{ name: 'Home', path: '/' }, { name: title, path }]), faqPage(FAQ)]}
+>
+  <section class="container">
+    <div class="page-hero">
+      <span class="chip chip--accent"><span class="chip__dot"></span>Free tool</span>
+      <h1 class="h1 h1--page">Ad break calculator</h1>
+      <p class="lead lead--lg" style="max-width: 760px">Three calculators for traffic, sales and scheduling teams: how much ad time a channel can sell, how long the programme can be in each slot and where its breaks go, and which spots fit a break. Free, and it runs in your browser.</p>
+    </div>
+
+    <div class="form-box stack" style="--gap: 40px; margin-top: 48px" data-ad-tool>
+      <section class="stack" style="--gap: 16px" aria-labelledby="t-inv">
+        <h2 id="t-inv" class="h3" style="font-size: 20px">Ad inventory</h2>
+        <div class="fields">
+          <div class="field"><label for="i-min">Ad minutes per hour</label><input id="i-min" class="input mono" type="number" min="0" max="60" step="0.5" value={first.inventory.minutesPerHour} data-part="i-min" /></div>
+          <div class="field"><label for="i-hours">Hours with ads per day</label><input id="i-hours" class="input mono" type="number" min="1" max="24" step="1" value={first.inventory.hoursPerDay} data-part="i-hours" /></div>
+          <div class="field"><label for="i-days">Days per week</label><input id="i-days" class="input mono" type="number" min="1" max="7" step="1" value={first.inventory.daysPerWeek} data-part="i-days" /></div>
+          <div class="field"><label for="i-spot">Spot length (seconds)</label><input id="i-spot" class="input mono" type="number" min="1" step="1" value={first.inventory.spotSeconds} data-part="i-spot" /></div>
+          <div class="field"><label for="i-sold">Sell-out (%)</label><input id="i-sold" class="input mono" type="number" min="0" max="100" step="1" value={first.inventory.sellOut} data-part="i-sold" /></div>
+          <div class="field"><label for="i-price">Price per spot <span class="optional">Optional</span></label><input id="i-price" class="input mono" type="number" min="0" step="any" placeholder="in your currency" data-part="i-price" /></div>
+        </div>
+        <div aria-live="polite" data-out="inventory" set:html={inventoryHtml(inventory(first.inventory))} />
+      </section>
+
+      <section class="stack" style="--gap: 16px; padding-top: 32px; border-top: 1px solid var(--hairline)" aria-labelledby="t-slot">
+        <h2 id="t-slot" class="h3" style="font-size: 20px">Programme length and breaks</h2>
+        <div class="fields">
+          <div class="field"><label for="s-start">Slot starts at</label><input id="s-start" class="input mono" value={first.slot.start} autocomplete="off" spellcheck="false" data-part="s-start" /></div>
+          <div class="field"><label for="s-len">Slot length (minutes)</label><input id="s-len" class="input mono" type="number" min="1" step="1" value={first.slot.slotMinutes} data-part="s-len" /></div>
+          <div class="field"><label for="s-ads">Ad minutes</label><input id="s-ads" class="input mono" type="number" min="0" step="0.5" value={first.slot.adMinutes} data-part="s-ads" /></div>
+          <div class="field"><label for="s-promo">Promo and ident minutes</label><input id="s-promo" class="input mono" type="number" min="0" step="0.5" value={first.slot.promoMinutes} data-part="s-promo" /></div>
+          <div class="field"><label for="s-breaks">Breaks</label><input id="s-breaks" class="input mono" type="number" min="1" max="20" step="1" value={first.slot.breaks} data-part="s-breaks" /></div>
+          <div class="field" style="justify-content: flex-end">
+            <label class="consent" style="min-height: 44px; align-items: center"><input type="checkbox" checked={first.slot.breakAtEnd} data-part="s-end" style="accent-color: var(--accent); width: 18px; height: 18px; margin: 0" /> Last break at the end of the slot</label>
+          </div>
+        </div>
+        <div aria-live="polite" data-out="slot" set:html={slotHtml(slot({ ...first.slot, start: 72000 }))} />
+      </section>
+
+      <section class="stack" style="--gap: 16px; padding-top: 32px; border-top: 1px solid var(--hairline)" aria-labelledby="t-fill">
+        <h2 id="t-fill" class="h3" style="font-size: 20px">Fill a break</h2>
+        <div class="fields">
+          <div class="field"><label for="f-len">Break length (m:ss)</label><input id="f-len" class="input mono" value={first.fill.length} autocomplete="off" spellcheck="false" data-part="f-len" /></div>
+          {SPOT_LENGTHS.map((l) => (
+            <div class="field"><label for={`f-${l}`}>{l}-second spots</label><input id={`f-${l}`} class="input mono" type="number" min="0" step="1" value={first.fill.counts[l]} data-part={`f-${l}`} /></div>
+          ))}
+        </div>
+        <div aria-live="polite" data-out="fill" set:html={fillHtml(fill(180, first.fill.counts))} />
+      </section>
+
+      <noscript><p class="notice notice--amber">The calculator needs JavaScript. The results above are examples.</p></noscript>
+      <p class="meta" style="margin: 0">Placing hundreds of spots a day by hand? <a href="/tv-traffic-software">{BRAND} places them for you</a>, and <a href="/studio#start">{STUDIO}</a> builds tools for your own traffic rules.</p>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="prose">
+      <section>
+        <h2>How the calculator counts</h2>
+        <ul>
+          <li><strong>Ad inventory</strong> multiplies the ad minutes per hour by the hours with ads, the days and the weeks, and counts it in spots of the length you choose. A month is 4.35 weeks, a year 52 weeks. Sold spots are rounded down to whole spots.</li>
+          <li><strong>Programme length</strong> is the slot minus its ads, promos and idents. The ad and promo time is shared equally between the breaks, and the programme equally between its parts, in whole seconds; when it does not divide evenly, the first ones get the extra second.</li>
+          <li><strong>Fill a break</strong> adds up the spots you have and finds the fewest standard-length spots (10, 15, 20, 30, 45 and 60 seconds) that fill exactly what is left.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>From the calculator to the playlist</h2>
+        <p>The calculator plans one hour or one break. A channel places hundreds of spots every day, each with its own rules: the booked break, no two competing brands in one break, first and last positions, the minutes left in every hour. {BRAND} is <a href="/tv-traffic-software">TV traffic software</a> that places ads and promos in frame-accurate playlists and keeps every hour within its limit. More free tools: the <a href="/tools/tv-schedule-template">TV schedule template</a>, the <a href="/tools/xmltv-epg-checker">XMLTV EPG checker</a>, the <a href="/tools/timecode-calculator">timecode calculator</a> and the <a href="/tools/scte35-decoder">SCTE-35 decoder</a>.</p>
+      </section>
+    </div>
+  </section>
+
+  <Faq title="Ad break questions" items={FAQ} />
+</Base>
+
+<script>
+  import '../../scripts/ad-break-tool.ts';
+</script>

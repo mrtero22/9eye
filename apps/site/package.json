@@ -1,0 +1,22 @@
+{
+  "name": "@9eye/site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "sh scripts/astro.sh dev --host 127.0.0.1 --port 4102",
+    "build": "sh scripts/astro.sh build",
+    "preview": "sh scripts/astro.sh preview --host 127.0.0.1 --port 4102",
+    "deploy": "sh scripts/deploy.sh",
+    "shots": "PLAYWRIGHT_BROWSERS_PATH=\"$(pwd)/../../.cache/ms-playwright\" node scripts/shots.mjs"
+  },
+  "dependencies": {
+    "@9eye/core": "*",
+    "@fontsource-variable/geist": "^5.2.8",
+    "@fontsource-variable/geist-mono": "^5.2.7",
+    "astro": "^7.4.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1"
+  }
+}

@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Date picker</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.ds{--bg:#fafafa;--surface:#ffffff;--surface-2:#f4f4f5;--surface-3:#e9e9ec;--hairline:#f0f0f2;--border:#e4e4e7;--border-strong:#d4d4d8;--text:#18181b;--text-2:#52525b;--text-3:#6b6b74;--accent:#2563eb;--accent-hover:#1d4ed8;--accent-soft:#eaf1ff;--accent-text:#1d4ed8;--red:#dc2626;--red-soft:#fdeeee;--red-text:#b91c1c;--amber:#d97706;--amber-soft:#fdf4e3;--amber-text:#9a5200;--green:#16a34a;--green-soft:#e8f6ec;--green-text:#15803d;--shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.08);--fs:14px;--fs-sm:13px;--row:32px;--ctl:32px;color-scheme:light;font-family:'Geist',ui-sans-serif,system-ui,sans-serif;font-size:var(--fs);line-height:1.5;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
+.ds.dark{--bg:#0a0a0b;--surface:#111113;--surface-2:#1a1a1d;--surface-3:#232327;--hairline:#19191c;--border:#26262a;--border-strong:#38383e;--text:#f4f4f5;--text-2:#a8a8b0;--text-3:#8b8b94;--accent:#2563eb;--accent-hover:#3b74f0;--accent-soft:#15203a;--accent-text:#93b4ff;--red:#ef4444;--red-soft:#2a1313;--red-text:#fca5a5;--amber:#f59e0b;--amber-soft:#2a2011;--amber-text:#fcd34d;--green:#22c55e;--green-soft:#102419;--green-text:#86efac;--shadow:0 1px 2px rgba(0,0,0,.5),0 8px 24px rgba(0,0,0,.45);color-scheme:dark}
+.ds.compact{--fs:13px;--fs-sm:12px;--row:28px;--ctl:28px}
+.dp *{box-sizing:border-box}
+.dp .mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,monospace;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.dp button,.dp input{font:inherit;color:inherit}
+.dp button:focus-visible,.dp input:focus-visible,.dp [role=grid]:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.dp button:disabled{cursor:default!important}
+.dp .hov:hover{background:var(--surface-2)!important}
+.dp .day:hover{box-shadow:inset 0 0 0 1px var(--border-strong)}
+@media (pointer:coarse){.dp .ctl{min-height:44px}}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="box-sizing: border-box; {{rootStyle}}">
+<div class="dp" style="position: relative; display: inline-flex; flex-direction: column; gap: 6px; font-size: var(--fs); color: var(--text)">
+
+<sc-if value="{{isField}}" hint-placeholder-val="{{true}}">
+<sc-if value="{{hasLabel}}" hint-placeholder-val="{{true}}"><span style="font-size: var(--fs-sm); color: var(--text-2)">{{label}}</span></sc-if>
+<div style="display: inline-flex; align-items: center; gap: 2px; height: var(--ctl); padding: 0 2px 0 10px; border-radius: 6px; border: 1px solid {{fieldBd}}; background: var(--surface); width: {{fieldW}}px">
+<input class="mono" aria-label="{{inA.aria}}" aria-invalid="{{inA.bad}}" value="{{inA.text}}" onChange="{{inA.change}}" onKeyDown="{{inA.key}}" onBlur="{{inA.commit}}" onFocus="{{openIt}}" style="flex: 1; min-width: 0; height: 100%; border: 0; outline: none; background: transparent; font-size: var(--fs-sm); color: var(--text)">
+<sc-if value="{{isRange}}" hint-placeholder-val="{{false}}">
+<span aria-hidden="true" style="color: var(--text-3); padding: 0 4px">→</span>
+<input class="mono" aria-label="{{inB.aria}}" aria-invalid="{{inB.bad}}" value="{{inB.text}}" onChange="{{inB.change}}" onKeyDown="{{inB.key}}" onBlur="{{inB.commit}}" onFocus="{{openIt}}" style="flex: 1; min-width: 0; height: 100%; border: 0; outline: none; background: transparent; font-size: var(--fs-sm); color: var(--text)">
+</sc-if>
+<button class="hov ctl" aria-label="{{calLabel}}" aria-expanded="{{open}}" onClick="{{toggleOpen}}" style="flex: none; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 5px; background: transparent; color: var(--text-3); cursor: pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg></button>
+</div>
+<sc-if value="{{hasNote}}" hint-placeholder-val="{{false}}"><span style="max-width: {{fieldW}}px; font-size: 12px; color: {{noteFg}}">{{note}}</span></sc-if>
+</sc-if>
+
+<sc-if value="{{isQuiet}}" hint-placeholder-val="{{false}}">
+<div style="display: inline-flex; align-items: center; gap: 2px">
+<sc-if value="{{hasStep}}" hint-placeholder-val="{{true}}"><button class="hov ctl" aria-label="{{prevLabel}}" disabled="{{prevOff}}" onClick="{{stepPrev}}" style="width: var(--ctl); height: var(--ctl); display: inline-flex; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 6px; background: transparent; color: var(--text-3); cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button></sc-if>
+<button class="hov ctl" aria-label="{{quietAria}}" aria-expanded="{{open}}" onClick="{{toggleOpen}}" style="display: inline-flex; align-items: center; gap: 6px; height: var(--ctl); padding: 0 8px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer; font-weight: 500; white-space: nowrap">{{quietText}}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></button>
+<sc-if value="{{hasStep}}" hint-placeholder-val="{{true}}"><button class="hov ctl" aria-label="{{nextLabel}}" disabled="{{nextOff}}" onClick="{{stepNext}}" style="width: var(--ctl); height: var(--ctl); display: inline-flex; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 6px; background: transparent; color: var(--text-3); cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></button></sc-if>
+<sc-if value="{{showNow}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; height: 22px; padding: 0 8px; margin-left: 4px; border-radius: 11px; background: var(--surface-2); font-size: 12px; color: var(--text-2); white-space: nowrap">{{nowText}}</span></sc-if>
+<sc-if value="{{showGoNow}}" hint-placeholder-val="{{false}}"><button class="hov" onClick="{{goNow}}" style="height: 24px; padding: 0 9px; margin-left: 4px; border-radius: 12px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); cursor: pointer; font-size: 12px; font-weight: 500; white-space: nowrap">{{goNowText}}</button></sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{showPanel}}" hint-placeholder-val="{{true}}">
+<div role="dialog" aria-label="{{panelAria}}" style="width: 296px; padding: 10px 12px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); display: flex; flex-direction: column; gap: 8px; {{panelPos}}">
+<div style="display: flex; align-items: center; gap: 2px">
+<button class="hov" aria-expanded="{{gridOpen}}" onClick="{{toggleGrid}}" style="display: inline-flex; align-items: center; gap: 4px; height: 30px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; cursor: pointer; font-weight: 600">{{monthTitle}}<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--text-3)"><path d="{{gridChevron}}"></path></svg></button>
+<span style="flex: 1"></span>
+<button class="hov" aria-label="{{prevMonthLabel}}" onClick="{{prevMonth}}" style="width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button>
+<button class="hov" aria-label="{{nextMonthLabel}}" onClick="{{nextMonth}}" style="width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></button>
+</div>
+
+<sc-if value="{{gridOpen}}" hint-placeholder-val="{{false}}">
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 4px 0">
+<sc-for list="{{months}}" as="m" hint-placeholder-count="12"><button class="hov" aria-pressed="{{m.on}}" onClick="{{m.pick}}" style="height: 36px; border: 0; border-radius: 6px; background: {{m.bg}}; color: {{m.fg}}; cursor: pointer; font-weight: {{m.fw}}; font-size: var(--fs-sm)">{{m.label}}</button></sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{daysOpen}}" hint-placeholder-val="{{true}}">
+<div role="grid" aria-label="{{monthTitle}}" tabIndex="0" aria-activedescendant="{{activeId}}" onKeyDown="{{gridKey}}" onMouseLeave="{{clearHover}}" style="display: flex; flex-direction: column; outline-offset: 2px; border-radius: 6px">
+<div role="row" style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr))">
+<sc-for list="{{heads}}" as="h" hint-placeholder-count="7"><span role="columnheader" aria-label="{{h.full}}" style="height: 26px; display: flex; align-items: center; justify-content: center; font-size: 11.5px; color: var(--text-3)">{{h.short}}</span></sc-for>
+</div>
+<sc-for list="{{weeks}}" as="w" hint-placeholder-count="6">
+<div role="row" style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); margin-top: 2px">
+<sc-for list="{{w.days}}" as="d" hint-placeholder-count="7">
+<button id="{{d.id}}" role="gridcell" class="day" aria-label="{{d.aria}}" aria-selected="{{d.sel}}" aria-disabled="{{d.off}}" tabIndex="-1" title="{{d.title}}" onClick="{{d.pick}}" onMouseEnter="{{d.hover}}" style="position: relative; height: 34px; padding: 0; border: 0; border-radius: {{d.radius}}; background: {{d.bg}}; color: {{d.fg}}; opacity: {{d.op}}; cursor: {{d.cursor}}; outline: {{d.ring}}; outline-offset: -2px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px">
+<span class="mono" style="font-size: 13px; line-height: 16px; font-weight: {{d.fw}}; text-decoration: {{d.deco}}; text-underline-offset: 3px">{{d.n}}</span>
+<span aria-hidden="true" style="width: 4px; height: 4px; border-radius: 50%; background: {{d.dot}}"></span>
+</button>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{hasPresets}}" hint-placeholder-val="{{true}}">
+<div style="display: flex; flex-wrap: wrap; gap: 4px; padding-top: 8px; border-top: 1px solid var(--hairline)">
+<sc-for list="{{presets}}" as="p" hint-placeholder-count="3"><button class="hov" disabled="{{p.off}}" onClick="{{p.pick}}" style="height: 26px; padding: 0 9px; border-radius: 13px; border: 1px solid var(--border); background: var(--surface); cursor: pointer; font-size: 12px; font-weight: 500; opacity: {{p.op}}">{{p.label}}</button></sc-for>
+</div>
+</sc-if>
+<sc-if value="{{hasSummary}}" hint-placeholder-val="{{false}}"><span style="font-size: 12.5px; color: {{summaryFg}}">{{summary}}</span></sc-if>
+<sc-if value="{{hasLegend}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12px; color: var(--text-3)"><sc-for list="{{legendRows}}" as="l" hint-placeholder-count="3"><span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 6px; height: 6px; border-radius: 50%; background: {{l.color}}"></span>{{l.label}}</span></sc-for></div>
+</sc-if>
+<span style="font-size: 11.5px; color: var(--text-3)">{{keysHint}}</span>
+</div>
+</sc-if>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"mode":{"editor":"enum","options":["day","range","week"],"default":"day","section":"Picker"},"variant":{"editor":"enum","options":["field","quiet","inline"],"default":"field","section":"Picker"},"weekStart":{"editor":"enum","options":["sat","sun","mon","fri"],"default":"sat","section":"Picker"},"wholeWeeks":{"editor":"boolean","default":false,"section":"Picker"},"step":{"editor":"boolean","default":false,"section":"Picker"},"label":{"editor":"text","default":"Date","section":"Values"},"value":{"editor":"text","default":"2026-10-17","section":"Values"},"from":{"editor":"text","default":"2026-09-23","section":"Values"},"to":{"editor":"text","default":"2026-11-22","section":"Values"},"today":{"editor":"text","default":"2026-10-17","section":"Values"},"min":{"editor":"text","default":"","section":"Values"},"max":{"editor":"text","default":"","section":"Values"},"limitText":{"editor":"text","default":"","section":"Values"},"typed":{"editor":"text","default":"","section":"Values"},"help":{"editor":"text","default":"","section":"Values"},"startOpen":{"editor":"boolean","default":true,"section":"Values"},"align":{"editor":"enum","options":["start","end"],"default":"start","section":"Picker"},"width":{"editor":"int","default":0,"section":"Picker"},"marks":{"editor":null},"legend":{"editor":null},"onChange":{"editor":null},"embedded":{"editor":null},"dark":{"editor":"boolean","default":false},"compact":{"editor":"boolean","default":false},"$preview":{"width":380,"height":520}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dark: null, compact: null, open: null, view: null, focus: null, kb: false, hover: null, a: null,
+      val: null, from: null, to: null, ta: null, tb: null, err: '', grid: false
+    };
+  }
+  renderVals() {
+    const P = this.props;
+    const st = this.state;
+    const embedded = !!P.embedded;
+    const mode = P.mode || 'day';
+    const variant = P.variant || 'field';
+    const isRange = mode === 'range';
+    const WSI = { sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6 }[P.weekStart || 'sat'];
+    const today = P.today || '2026-10-17';
+    const pad = (n) => String(n).padStart(2, '0');
+    // Dates are plain calendar days (YYYY-MM-DD). All arithmetic is on UTC midnights, so no
+    // browser or channel time zone ever shifts a day.
+    const ms = (s) => { const p = s.split('-').map(Number); return Date.UTC(p[0], p[1] - 1, p[2]); };
+    const iso = (t) => new Date(t).toISOString().slice(0, 10);
+    const add = (s, n) => iso(ms(s) + n * 86400000);
+    const wd = (s) => new Date(ms(s)).getUTCDay();
+    const parts = (s) => s.split('-').map(Number);
+    const dim = (y, m) => new Date(Date.UTC(y, m, 0)).getUTCDate();
+    const mk = (y, m, d) => (m >= 1 && m <= 12 && d >= 1 && d <= dim(y, m) ? y + '-' + pad(m) + '-' + pad(d) : null);
+    const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const MONL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const WDS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const WDL = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const fmt = (s, withWd) => { const [y, m, d] = parts(s); return (withWd ? WDS[wd(s)] + ' ' : '') + d + ' ' + MON[m - 1] + ' ' + y; };
+    const fmtLong = (s) => { const [y, m, d] = parts(s); return WDL[wd(s)] + ' ' + d + ' ' + MONL[m - 1] + ' ' + y; };
+    const weekOf = (s) => { const a = add(s, -((wd(s) - WSI + 7) % 7)); return [a, add(a, 6)]; };
+    const span = (a, b) => {
+      const [ya, ma, da] = parts(a); const [yb, mb, db] = parts(b);
+      if (ya !== yb) return fmt(a) + ' – ' + fmt(b);
+      if (ma !== mb) return da + ' ' + MON[ma - 1] + ' – ' + db + ' ' + MON[mb - 1] + ' ' + yb;
+      return da + ' – ' + db + ' ' + MON[mb - 1] + ' ' + yb;
+    };
+    const days = (a, b) => Math.round((ms(b) - ms(a)) / 86400000) + 1;
+    const monIdx = (w) => { const i = MONL.findIndex((x) => w.length >= 3 && x.toLowerCase().startsWith(w)); return i + 1; };
+
+    // ----- typing: day-first numbers, ISO, month names, today / tomorrow / yesterday, +N / -N days, +Nw weeks -----
+    const parse = (txt) => {
+      const raw = (txt || '').trim();
+      const s = raw.toLowerCase().replace(/,/g, ' ').replace(/\s+/g, ' ');
+      if (!s) return { err: 'Type a date, e.g. 17 Oct 2026' };
+      const ty = parts(today)[0];
+      if (s === 'today') return { v: today };
+      if (s === 'tomorrow') return { v: add(today, 1) };
+      if (s === 'yesterday') return { v: add(today, -1) };
+      let m = s.match(/^([+-])\s*(\d{1,3})\s*(d|w)?$/);
+      if (m) return { v: add(today, (+m[2]) * (m[3] === 'w' ? 7 : 1) * (m[1] === '-' ? -1 : 1)) };
+      const bad = (d, mi, y) => ({ err: 'There is no ' + d + ' ' + MONL[mi - 1] + (y ? ' ' + y : '') + '.' });
+      m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+      if (m) { const v = mk(+m[1], +m[2], +m[3]); return v ? { v } : (+m[2] >= 1 && +m[2] <= 12 ? bad(+m[3], +m[2], +m[1]) : { err: 'There is no month ' + m[2] + '.' }); }
+      m = s.match(/^(\d{1,2})[/.-](\d{1,2})(?:[/.-](\d{2}|\d{4}))?$/);
+      if (m) { const y = m[3] ? (m[3].length === 2 ? 2000 + +m[3] : +m[3]) : ty; const v = mk(y, +m[2], +m[1]); return v ? { v } : (+m[2] >= 1 && +m[2] <= 12 ? bad(+m[1], +m[2], y) : { err: 'There is no month ' + m[2] + '. Numbers are read day first: 17/10/2026.' }); }
+      const s2 = s.replace(/^(sun|mon|tue|wed|thu|fri|sat)[a-z]*\.?\s+/, '');
+      m = s2.match(/^(\d{1,2})\s*([a-z]{3,})\.?(?:\s+(\d{4}))?$/) || null;
+      let d = 0, mi = 0, y = ty, hasY = false;
+      if (m) { d = +m[1]; mi = monIdx(m[2]); if (m[3]) { y = +m[3]; hasY = true; } }
+      else { m = s2.match(/^([a-z]{3,})\.?\s+(\d{1,2})(?:\s+(\d{4}))?$/); if (m) { d = +m[2]; mi = monIdx(m[1]); if (m[3]) { y = +m[3]; hasY = true; } } }
+      if (m && mi) { const v = mk(y, mi, d); return v ? { v } : bad(d, mi, hasY ? y : 0); }
+      return { err: 'Can\'t read "' + raw + '". Try 17 Oct 2026, 17/10/2026, today or +7.' };
+    };
+    const min = P.min || '', max = P.max || '';
+    const outOf = (v) => (min && v < min) || (max && v > max);
+    const weekOut = (v) => { const w = weekOf(v); return (min && w[1] < min) || (max && w[0] > max); };
+    const limitMsg = P.limitText || (min && max ? 'Pick a day from ' + fmt(min) + ' to ' + fmt(max) + '.' : min ? 'Pick ' + fmt(min) + ' or later.' : 'Pick ' + fmt(max) + ' or earlier.');
+
+    // ----- current values -----
+    const cur = st.val || P.value || today;
+    const rFrom = st.from || P.from || today;
+    const rTo = st.to || P.to || add(today, 6);
+    const [wa, wb] = weekOf(cur);
+    const open = st.open === null ? (P.startOpen !== undefined ? !!P.startOpen : !embedded) : st.open;
+    const inline = variant === 'inline';
+    const anchor = isRange ? rFrom : cur;
+    const view = st.view || anchor.slice(0, 7) + '-01';
+    const [vy, vm] = parts(view);
+    const snapA = (d) => (P.wholeWeeks ? weekOf(d)[0] : d);
+    const snapB = (d) => (P.wholeWeeks ? weekOf(d)[1] : d);
+    const emit = (o) => { if (typeof P.onChange === 'function') P.onChange(o); };
+    const closeAfter = !inline;
+    const pickDay = (d) => {
+      if (outOf(d)) return;
+      if (mode === 'day') { this.setState({ val: d, focus: d, open: closeAfter ? false : open, ta: null, err: '' }); emit({ value: d }); return; }
+      if (mode === 'week') { const w = weekOf(d); this.setState({ val: d, focus: d, open: closeAfter ? false : open }); emit({ from: w[0], to: w[1] }); return; }
+      if (!st.a) { this.setState({ a: snapA(d), focus: d, err: '' }); return; }
+      let lo = st.a, hi = snapB(d);
+      if (d < st.a) { lo = snapA(d); hi = P.wholeWeeks ? weekOf(st.a)[1] : st.a; }
+      this.setState({ from: lo, to: hi, a: null, hover: null, focus: d, open: closeAfter ? false : open, ta: null, tb: null, err: '' });
+      emit({ from: lo, to: hi });
+    };
+
+    // ----- typed text -----
+    const typedA = st.ta !== null ? st.ta : (P.typed && !st.val && !st.from ? P.typed : null);
+    const checkTyped = (txt, which) => {
+      const r = parse(txt);
+      if (r.err) return r;
+      let v = r.v;
+      if (isRange && P.wholeWeeks) v = which === 'b' ? snapB(v) : snapA(v);
+      if (outOf(v)) return { err: limitMsg };
+      if (isRange && which === 'a' && v > rTo) return { err: 'The start is after the end (' + fmt(rTo) + ').' };
+      if (isRange && which === 'b' && v < rFrom) return { err: 'The end is before the start (' + fmt(rFrom) + ').' };
+      return { v };
+    };
+    const shownErr = st.err || (typedA !== null && st.ta === null ? (checkTyped(typedA, 'a').err || '') : '');
+    const mkInput = (which) => {
+      const typed = which === 'a' ? typedA : st.tb;
+      const val = isRange ? (which === 'a' ? rFrom : rTo) : cur;
+      const text = typed !== null ? typed : (isRange ? fmt(val) : mode === 'week' ? span(wa, wb) : fmt(val, true));
+      const commit = () => {
+        if (typed === null) return;
+        const r = checkTyped(typed, which);
+        if (r.err) { this.setState({ err: r.err }); return; }
+        const v = r.v;
+        const upd = { err: '', view: v.slice(0, 7) + '-01', focus: v };
+        if (isRange) { upd[which === 'a' ? 'from' : 'to'] = v; upd[which === 'a' ? 'ta' : 'tb'] = null; this.setState(upd); emit({ from: which === 'a' ? v : rFrom, to: which === 'b' ? v : rTo }); }
+        else { upd.val = v; upd.ta = null; this.setState(upd); emit(mode === 'week' ? { from: weekOf(v)[0], to: weekOf(v)[1] } : { value: v }); }
+      };
+      return {
+        text, bad: !!shownErr && typed !== null,
+        aria: (P.label || 'Date') + (isRange ? (which === 'a' ? ', from' : ', to') : '') + '. Type a date or press Down for the calendar',
+        change: (e) => this.setState({ [which === 'a' ? 'ta' : 'tb']: e && e.target ? e.target.value : '', err: '' }),
+        key: (e) => { if (!e) return; if (e.key === 'Enter') commit(); else if (e.key === 'Escape') this.setState({ open: false, ta: null, tb: null, err: '' }); else if (e.key === 'ArrowDown') this.setState({ open: true, kb: true, focus: val }); },
+        commit
+      };
+    };
+
+    // ----- calendar -----
+    const first = vy + '-' + pad(vm) + '-01';
+    const start = add(first, -((wd(first) - WSI + 7) % 7));
+    const marks = P.marks || {};
+    const legend = P.legend || [];
+    const TONE = { ok: 'var(--green)', warn: 'var(--amber)', error: 'var(--red)', info: 'var(--accent)', muted: 'var(--text-3)', none: 'transparent' };
+    const toneLabel = (t) => { const l = legend.find((x) => x.tone === t); return l ? l.label : ''; };
+    let lo = null, hi = null;
+    if (isRange) {
+      if (st.a) { const b = st.hover || st.a; lo = b < st.a ? snapA(b) : st.a; hi = b < st.a ? (P.wholeWeeks ? weekOf(st.a)[1] : st.a) : snapB(b); }
+      else { lo = rFrom; hi = rTo; }
+    } else if (mode === 'week') { lo = wa; hi = wb; }
+    const hw = mode === 'week' && st.hover ? weekOf(st.hover) : null;
+    const focus = st.focus || anchor;
+    const weeks = [];
+    for (let r = 0; r < 6; r++) {
+      const row = [];
+      for (let c = 0; c < 7; c++) {
+        const d = add(start, r * 7 + c);
+        const inMonth = d.slice(0, 7) === first.slice(0, 7);
+        const off = !!outOf(d);
+        const isToday = d === today;
+        const mark = marks[d];
+        let bg = 'transparent', fg = 'var(--text)', radius = '6px', fw = 400, sel = false;
+        if (mode === 'day') {
+          if (d === cur) { bg = 'var(--accent)'; fg = '#ffffff'; fw = 600; sel = true; }
+        } else if (lo && d >= lo && d <= hi) {
+          sel = true;
+          const startEnd = d === lo || d === hi;
+          const l = d === lo || c === 0, rr = d === hi || c === 6;
+          radius = (l ? '6px' : '0') + ' ' + (rr ? '6px' : '0') + ' ' + (rr ? '6px' : '0') + ' ' + (l ? '6px' : '0');
+          if (isRange && startEnd) { bg = 'var(--accent)'; fg = '#ffffff'; fw = 600; } else { bg = 'var(--accent-soft)'; fg = 'var(--accent-text)'; fw = 500; }
+        } else if (hw && d >= hw[0] && d <= hw[1]) {
+          bg = 'var(--surface-2)';
+          radius = (d === hw[0] || c === 0 ? '6px' : '0') + ' ' + (d === hw[1] || c === 6 ? '6px' : '0') + ' ' + (d === hw[1] || c === 6 ? '6px' : '0') + ' ' + (d === hw[0] || c === 0 ? '6px' : '0');
+        }
+        if (!inMonth && !sel) fg = 'var(--text-3)';
+        const filled = bg === 'var(--accent)';
+        const [y, m, dd] = parts(d);
+        row.push({
+          id: 'dp-' + d, n: dd, sel, off, fw: isToday ? 600 : fw, bg, fg, radius,
+          op: off ? 0.35 : (!inMonth && !sel ? 0.6 : 1),
+          cursor: off ? 'default' : 'pointer',
+          deco: isToday ? 'underline' : 'none',
+          dot: mark ? (filled ? '#ffffff' : TONE[mark] || 'var(--text-3)') : 'transparent',
+          ring: st.kb && d === focus ? '2px solid var(--accent)' : 'none',
+          title: off ? limitMsg : (mark ? toneLabel(mark) : ''),
+          aria: WDL[wd(d)] + ' ' + dd + ' ' + MONL[m - 1] + ' ' + y + (isToday ? ', today' : '') + (mark && toneLabel(mark) ? ', ' + toneLabel(mark) : '') + (off ? ', not available' : ''),
+          pick: () => pickDay(d),
+          hover: () => { if ((isRange && st.a) || mode === 'week') { if (st.hover !== d) this.setState({ hover: d }); } }
+        });
+      }
+      weeks.push({ days: row });
+    }
+    const heads = Array.from({ length: 7 }, (_, i) => { const w = (WSI + i) % 7; return { short: WDS[w].slice(0, 2), full: WDL[w] }; });
+    const shiftMonth = (s, n) => { const [y, m, d] = parts(s); const t = (y * 12 + m - 1) + n; const ny = Math.floor(t / 12), nm = t % 12 + 1; return mk(ny, nm, Math.min(d, dim(ny, nm))); };
+    const gridKey = (e) => {
+      if (!e) return;
+      const k = e.key;
+      let f = focus;
+      const mv = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 }[k];
+      if (mv) f = add(f, mv);
+      else if (k === 'PageUp' || k === 'PageDown') f = shiftMonth(f, k === 'PageUp' ? -1 : 1);
+      else if (k === 'Home') f = weekOf(f)[0];
+      else if (k === 'End') f = weekOf(f)[1];
+      else if (k === 'Enter' || k === ' ') { if (e.preventDefault) e.preventDefault(); pickDay(f); return; }
+      else if (k === 'Escape') { this.setState({ open: false, a: null, hover: null }); return; }
+      else return;
+      if (e.preventDefault) e.preventDefault();
+      this.setState({ focus: f, kb: true, view: f.slice(0, 7) + '-01', hover: (isRange && st.a) || mode === 'week' ? f : st.hover });
+    };
+    const months = MON.map((label, i) => {
+      const isView = i + 1 === vm; const isSel = anchor.slice(0, 7) === vy + '-' + pad(i + 1);
+      return { label, on: isView, bg: isSel ? 'var(--accent-soft)' : isView ? 'var(--surface-2)' : 'transparent', fg: isSel ? 'var(--accent-text)' : 'var(--text)', fw: isView || isSel ? 600 : 400, pick: () => this.setState({ view: vy + '-' + pad(i + 1) + '-01', grid: false }) };
+    });
+    const gridOpen = !!st.grid;
+
+    // ----- presets -----
+    const tw = weekOf(today);
+    const P_DAY = [['Today', today], ['Tomorrow', add(today, 1)], ['Next ' + WDL[WSI], add(tw[0], 7)]];
+    const presetsRaw = mode === 'day' ? P_DAY.map(([label, v]) => ({ label, off: !!outOf(v), go: () => pickDay(v) }))
+      : mode === 'week' ? [['This week', today], ['Next week', add(today, 7)], ['In 2 weeks', add(today, 14)]].map(([label, v]) => ({ label, off: !!weekOut(v), go: () => pickDay(weekOut(v) ? v : (min && v < min ? min : v)) }))
+        : (P.wholeWeeks
+          ? [['This week', 1], ['4 weeks', 4], ['13 weeks', 13]].map(([label, n]) => ({ label, off: false, go: () => { const a = tw[0], b = add(tw[0], n * 7 - 1); this.setState({ from: a, to: b, a: null, open: closeAfter ? false : open, err: '' }); emit({ from: a, to: b }); } }))
+          : [['This week', [tw[0], tw[1]]], ['Next 4 weeks', [today, add(today, 27)]], ['Rest of the month', [today, mk(parts(today)[0], parts(today)[1], dim(parts(today)[0], parts(today)[1]))]]].map(([label, [a, b]]) => ({ label, off: !!(outOf(a) || outOf(b)), go: () => { this.setState({ from: a, to: b, a: null, open: closeAfter ? false : open, err: '' }); emit({ from: a, to: b }); } })));
+    const presets = presetsRaw.map((p) => ({ label: p.label, off: p.off, op: p.off ? 0.45 : 1, pick: p.go }));
+
+    // ----- summary line -----
+    let summary = '', summaryFg = 'var(--text-2)';
+    if (isRange) {
+      if (st.a) summary = 'From ' + fmt(st.a) + '. Now pick the last day' + (P.wholeWeeks ? ' (its whole week is taken).' : '.');
+      else { const nW = Math.round((ms(weekOf(rTo)[0]) - ms(weekOf(rFrom)[0])) / (7 * 86400000)) + 1; summary = days(rFrom, rTo) + ' days · ' + nW + ' channel week' + (nW > 1 ? 's' : '') + (P.wholeWeeks ? ' · whole weeks, ' + WDL[WSI] + ' to ' + WDL[(WSI + 6) % 7] : ''); }
+    } else if (mode === 'week') summary = span(wa, wb) + ' · ' + WDL[WSI] + ' to ' + WDL[(WSI + 6) % 7];
+    else summary = fmtLong(cur) + (cur === today ? ' · today' : '');
+    if (st.err) { summary = st.err; summaryFg = 'var(--red-text)'; }
+
+    // ----- quiet trigger -----
+    const step = mode === 'week' ? 7 : 1;
+    const inNow = mode === 'week' ? today >= wa && today <= wb : cur === today;
+    const go = (n) => { const v = add(cur, n); if (mode === 'week' ? weekOut(v) : outOf(v)) return; this.setState({ val: v, view: v.slice(0, 7) + '-01' }); emit(mode === 'week' ? { from: weekOf(v)[0], to: weekOf(v)[1] } : { value: v }); };
+    const isField = variant === 'field';
+    const fieldW = P.width ? +P.width : isRange ? 300 : mode === 'week' ? 230 : 200;
+    const note = shownErr || P.help || '';
+    const dark = st.dark === null ? !!(P.dark ?? false) : st.dark;
+    const compact = st.compact === null ? !!(P.compact ?? false) : st.compact;
+    const pos = 'position: absolute; top: calc(100% + 6px); ' + (P.align === 'end' ? 'right: 0' : 'left: 0') + '; z-index: 40; box-shadow: var(--shadow);';
+    return {
+      rootClass: embedded ? '' : 'ds' + (dark ? ' dark' : '') + (compact ? ' compact' : ''),
+      rootStyle: embedded ? 'display: inline-block' : 'min-height: 100vh; padding: 24px; background: var(--bg)',
+      isField, isQuiet: variant === 'quiet', isRange, hasLabel: !!P.label && isField, label: P.label || '',
+      fieldW, fieldBd: shownErr ? 'var(--red)' : open && !inline ? 'var(--accent)' : 'var(--border-strong)',
+      inA: mkInput('a'), inB: mkInput('b'),
+      hasNote: !!note, note, noteFg: shownErr ? 'var(--red-text)' : 'var(--text-3)',
+      open: !!open, calLabel: open ? 'Close calendar' : 'Open calendar',
+      openIt: () => { if (!open) this.setState({ open: true }); },
+      toggleOpen: () => this.setState({ open: !open, a: null, hover: null, grid: false }),
+      hasStep: !!P.step, prevLabel: mode === 'week' ? 'Previous week' : 'Previous day', nextLabel: mode === 'week' ? 'Next week' : 'Next day',
+      prevOff: !!(min && add(mode === 'week' ? wb : cur, -step) < min), nextOff: !!(max && add(mode === 'week' ? wa : cur, step) > max),
+      stepPrev: () => go(-step), stepNext: () => go(step),
+      quietText: mode === 'week' ? span(wa, wb) : isRange ? span(rFrom, rTo) : fmt(cur, true),
+      quietAria: 'Pick ' + (mode === 'week' ? 'week' : 'day') + ', current ' + (mode === 'week' ? span(wa, wb) : fmtLong(cur)),
+      showNow: inNow && variant === 'quiet', nowText: mode === 'week' ? 'This week' : 'Today',
+      showGoNow: !inNow && variant === 'quiet', goNowText: mode === 'week' ? 'This week' : 'Today', goNow: () => pickDay(today),
+      showPanel: inline || !!open,
+      panelPos: inline ? '' : pos,
+      panelAria: (P.label || 'Date') + ' calendar',
+      monthTitle: MONL[vm - 1] + ' ' + vy, gridOpen, daysOpen: !gridOpen, gridChevron: gridOpen ? 'm18 15-6-6-6 6' : 'm6 9 6 6 6-6',
+      toggleGrid: () => this.setState({ grid: !gridOpen }),
+      prevMonthLabel: gridOpen ? 'Previous year' : 'Previous month', nextMonthLabel: gridOpen ? 'Next year' : 'Next month',
+      prevMonth: () => this.setState({ view: gridOpen ? (vy - 1) + '-' + pad(vm) + '-01' : shiftMonth(first, -1) }),
+      nextMonth: () => this.setState({ view: gridOpen ? (vy + 1) + '-' + pad(vm) + '-01' : shiftMonth(first, 1) }),
+      months, heads, weeks, activeId: 'dp-' + focus, gridKey, clearHover: () => { if (st.hover) this.setState({ hover: null }); },
+      hasPresets: presets.length > 0, presets,
+      hasSummary: !!summary, summary, summaryFg,
+      hasLegend: legend.length > 0, legendRows: legend.map((l) => ({ label: l.label, color: TONE[l.tone] || 'var(--text-3)' })),
+      keysHint: '← → ↑ ↓ move · PgUp PgDn month · Enter pick · Esc close'
+    };
+  }
+}
+</script>
+</body>
+</html>

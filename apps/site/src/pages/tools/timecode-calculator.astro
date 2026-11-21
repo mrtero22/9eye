@@ -1,0 +1,142 @@
+---
+// The free timecode calculator: three small tools on the product's frame-accurate time (timecode-model.ts).
+// The first values are calculated here, so the page shows working results before any script runs.
+import Base from '../../layouts/Base.astro';
+import Faq from '../../components/Faq.astro';
+import { BRAND } from '../../site';
+import { breadcrumbs, faqPage, webApplication, type Faq as FaqItem } from '../../seo';
+import { RATES, changeRate, count, rateById, readTimecode, realTime, tc } from '../../scripts/timecode-model';
+
+const DF = rateById('29.97df');
+const first = { tc: '01:00:00;00', a: '00:28:30;00', b: '00:01:30;00', from: '25', fromTc: '00:00:30:00', to: '29.97df' };
+const frames = (text: string, r = DF) => { const read = readTimecode(text, r); return 'error' in read ? 0 : read.frames; };
+const c = frames(first.tc);
+const s = frames(first.a) + frames(first.b);
+const ch = changeRate(frames(first.fromTc, rateById(first.from)), rateById(first.from), rateById(first.to));
+
+const title = 'Timecode calculator';
+const description = 'Free timecode calculator: convert timecode to frames and back, add and subtract durations, and change frame rate — 23.976 to 60 fps, drop-frame and non-drop.';
+const path = '/tools/timecode-calculator';
+
+const FAQ: FaqItem[] = [
+  { q: 'What is drop-frame timecode?', a: 'A way of counting 29.97 and 59.94 fps video so that the timecode keeps up with the clock. The frame numbers ;00 and ;01 (four numbers at 59.94) are skipped at the start of every minute except every tenth. No picture is dropped — only labels.' },
+  { q: 'How many frames are in one hour at 29.97 fps?', a: '107,892 frames in one real hour, which drop-frame timecode labels 01:00:00;00. Non-drop timecode reaches 01:00:00:00 only after 108,000 frames, 3.6 seconds later.' },
+  { q: 'Why is the real time different from the timecode?', a: 'At 23.976, 29.97 and 59.94 fps a frame lasts slightly longer than the timecode assumes. Drop-frame timecode corrects most of that; non-drop timecode runs 0.1% slow against the clock. The calculator shows both.' },
+  { q: 'How is timecode converted to another frame rate?', a: 'By keeping its real time: the timecode becomes a duration in seconds, which is counted again in frames of the new rate and rounded to the nearest whole frame.' },
+  { q: 'Is my data sent anywhere?', a: 'No. The calculator runs in your browser, and nothing you type leaves the page.' },
+];
+
+const rateOptions = (selected: string) => RATES.map((r) => ({ value: r.id, label: r.rate.label, selected: r.id === selected }));
+---
+<Base
+  title={`Timecode Calculator: Frames, Drop-Frame, 29.97 fps | ${BRAND}`}
+  description={description}
+  jsonLd={[webApplication(Astro.site, { name: `${BRAND} ${title.toLowerCase()}`, description, path }), breadcrumbs(Astro.site, [{ name: 'Home', path: '/' }, { name: title, path }]), faqPage(FAQ)]}
+>
+  <section class="container">
+    <div class="page-hero">
+      <span class="chip chip--accent"><span class="chip__dot"></span>Free tool</span>
+      <h1 class="h1 h1--page">Timecode calculator</h1>
+      <p class="lead lead--lg" style="max-width: 760px">Convert timecode to frames and back, add and subtract durations, and change frame rate — from 23.976 to 60 fps, drop-frame and non-drop. Free, and it runs in your browser.</p>
+    </div>
+
+    <div class="form-box stack" style="--gap: 40px; margin-top: 48px" data-tc-tool>
+      <section class="stack" style="--gap: 16px" aria-labelledby="t-convert">
+        <h2 id="t-convert" class="h3" style="font-size: 20px">Timecode and frames</h2>
+        <div class="fields">
+          <div class="field">
+            <label for="c-rate">Frame rate</label>
+            <select id="c-rate" class="input" data-part="c-rate">{rateOptions('29.97df').map((o) => <option value={o.value} selected={o.selected}>{o.label}</option>)}</select>
+          </div>
+          <div class="field">
+            <label for="c-tc">Timecode</label>
+            <input id="c-tc" class="input mono" data-part="c-tc" value={first.tc} autocomplete="off" spellcheck="false" />
+          </div>
+          <div class="field">
+            <label for="c-frames">Frames</label>
+            <input id="c-frames" class="input mono" data-part="c-frames" value={String(c)} inputmode="numeric" autocomplete="off" />
+          </div>
+        </div>
+        <p class="muted" style="margin: 0" aria-live="polite">Real time <output class="mono" data-part="c-real" style="color: var(--text)">{realTime(c, DF)}</output></p>
+        <p class="notice notice--amber" data-part="c-note" role="status" hidden></p>
+      </section>
+
+      <section class="stack" style="--gap: 16px; padding-top: 32px; border-top: 1px solid var(--hairline)" aria-labelledby="t-sum">
+        <h2 id="t-sum" class="h3" style="font-size: 20px">Add or subtract timecode</h2>
+        <div class="fields">
+          <div class="field">
+            <label for="s-rate">Frame rate</label>
+            <select id="s-rate" class="input" data-part="s-rate">{rateOptions('29.97df').map((o) => <option value={o.value} selected={o.selected}>{o.label}</option>)}</select>
+          </div>
+          <div class="field">
+            <label for="s-a">Timecode</label>
+            <input id="s-a" class="input mono" data-part="s-a" value={first.a} autocomplete="off" spellcheck="false" />
+          </div>
+          <div class="field">
+            <span id="s-op" style="font-size: 14px; font-weight: 500">Add or subtract</span>
+            <div class="seg" role="group" aria-labelledby="s-op" style="align-self: flex-start">
+              <button type="button" data-op="+" aria-pressed="true" aria-label="Add">+</button>
+              <button type="button" data-op="-" aria-pressed="false" aria-label="Subtract">−</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="s-b">Timecode</label>
+            <input id="s-b" class="input mono" data-part="s-b" value={first.b} autocomplete="off" spellcheck="false" />
+          </div>
+        </div>
+        <div class="stack" style="--gap: 4px" aria-live="polite">
+          <span class="meta">Result</span>
+          <output class="mono" data-part="s-tc" style="font-size: 28px; font-weight: 500">{tc(s, DF)}</output>
+          <span class="meta" data-part="s-meta">{`${count(s)} frames · real time ${realTime(s, DF)}`}</span>
+        </div>
+        <p class="notice notice--amber" data-part="s-note" role="status" hidden></p>
+      </section>
+
+      <section class="stack" style="--gap: 16px; padding-top: 32px; border-top: 1px solid var(--hairline)" aria-labelledby="t-rate">
+        <h2 id="t-rate" class="h3" style="font-size: 20px">Change frame rate</h2>
+        <div class="fields">
+          <div class="field">
+            <label for="r-from">From</label>
+            <select id="r-from" class="input" data-part="r-from">{rateOptions(first.from).map((o) => <option value={o.value} selected={o.selected}>{o.label}</option>)}</select>
+          </div>
+          <div class="field">
+            <label for="r-tc">Timecode</label>
+            <input id="r-tc" class="input mono" data-part="r-tc" value={first.fromTc} autocomplete="off" spellcheck="false" />
+          </div>
+          <div class="field">
+            <label for="r-to">To</label>
+            <select id="r-to" class="input" data-part="r-to">{rateOptions(first.to).map((o) => <option value={o.value} selected={o.selected}>{o.label}</option>)}</select>
+          </div>
+        </div>
+        <div class="stack" style="--gap: 4px" aria-live="polite">
+          <span class="meta">Same real time at the new rate</span>
+          <output class="mono" data-part="r-tc-out" style="font-size: 28px; font-weight: 500">{tc(ch.frames, rateById(first.to))}</output>
+          <span class="meta" data-part="r-meta">{`${count(ch.frames)} frames (${ch.exact.toFixed(2)}, rounded) · real time ${realTime(ch.frames, rateById(first.to))}`}</span>
+        </div>
+        <p class="notice notice--amber" data-part="r-note" role="status" hidden></p>
+      </section>
+      <noscript><p class="notice notice--amber">The calculator needs JavaScript. The values above are examples.</p></noscript>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="prose">
+      <section>
+        <h2>How the calculator counts</h2>
+        <p>Every value is kept as a whole number of frames, the way broadcast scheduling systems count time; timecode is only how the frames are labelled. Typing <code>HH:MM</code> or <code>HH:MM:SS</code> also works, and hours can go past 24 for long durations.</p>
+        <p>In <strong>drop-frame</strong> timecode (29.97 and 59.94 fps) some labels do not exist: <code>00:01:00;00</code> and <code>00:01:00;01</code> are skipped, so the minute starts at <code>00:01:00;02</code>. If you type a skipped label, the calculator moves it to the next one and tells you. The reason for the skipped numbers is in our guide <a href="/guides/drop-frame-timecode">Drop-frame timecode, explained</a>.</p>
+        <p><strong>Real time</strong> is the actual duration on the clock. At 25 fps it always matches the timecode. At 23.976, 29.97 and 59.94 fps each frame lasts 1.001 times longer than the timecode assumes, so the real time differs slightly — by 3.6 seconds an hour in non-drop timecode.</p>
+      </section>
+      <section>
+        <h2>Where frame-accurate time matters</h2>
+        <p>A TV channel’s day is planned to the frame: programmes, ad breaks and fixed starts like the news at 19:00. {BRAND} is broadcast scheduling and traffic software that keeps every time as frames at each channel’s own rate, from 23.976 to 59.94 drop-frame — the same counting this calculator uses. See the <a href="/platform">platform</a> or <a href="/tv-traffic-software">TV traffic software</a>.</p>
+      </section>
+    </div>
+  </section>
+
+  <Faq title="Timecode questions" items={FAQ} />
+</Base>
+
+<script>
+  import '../../scripts/timecode-tool.ts';
+</script>
