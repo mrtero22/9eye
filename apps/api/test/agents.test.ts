@@ -127,6 +127,16 @@ async function chat(agentId: string, text: string, who = admin()) {
   return (await who.get(`/agents/${agentId}/chat`).expect(200)).body as { messages: { kind: string; text: string; author: { kind: string; name: string }; change: { id: string; status: string; canDecide: boolean; [k: string]: unknown } | null; skill: { status: string } | null; id: string }[]; running: unknown[] };
 }
 
+/** The audit log is written when the answer has gone out (audit.ts, on finish): wait for the row, at most 3 s. */
+async function auditRow(action: string) {
+  for (let i = 0; i < 30; i++) {
+    const row = await platformDb.auditEvent.findFirst({ where: { action } });
+    if (row) return row;
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+  return platformDb.auditEvent.findFirstOrThrow({ where: { action } });
+}
+
 // ---------------------------------------------------------------- tests
 
 describe('provider keys', () => {
@@ -140,7 +150,7 @@ describe('provider keys', () => {
     expect(JSON.stringify(list)).not.toContain('sk-ant');
     const row = await platformDb.aiProvider.findFirstOrThrow({ where: { tenantId: a.tenantId } });
     expect(row.secret).not.toContain('sk-ant');
-    const audit = await platformDb.auditEvent.findFirstOrThrow({ where: { action: 'PUT /admin/ai-providers/:provider' } });
+    const audit = await auditRow('PUT /admin/ai-providers/:provider');
     expect(audit.input).toEqual({ apiKey: '[hidden]' });
     await admin().put('/admin/ai-providers/openai', { apiKey: 'not a key' }).expect(422);
     expect((await admin().delete('/admin/ai-providers/anthropic').expect(200)).body[0]).toMatchObject({ set: false });

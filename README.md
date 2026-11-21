@@ -127,6 +127,8 @@ made by 9eye's own MCP tools. Every name is made up.
 
 | | |
 |---|---|
+| <img src="docs/images/agents-waiting.png" alt="Agents › Waiting for you: changes an AI app asked first, each with its preview, waiting for a person to approve or reject"> | <img src="docs/images/agents-settings.png" alt="An agent's settings: its job, model, role, what it may read or change in each part, and its step-by-step skill"> |
+| **Waiting for you** — what AI asked to change, held until a person approves | **An agent** — its job, model, role, what it may read or change, and its skill |
 | <img src="docs/images/layouts-week.png" alt="Layouts: a channel's week grid with programme blocks and linked ad breaks"> | <img src="docs/images/playlist-day.png" alt="Playlist: one broadcast day, frame-accurate, programme parts split across their ad breaks"> |
 | **Layouts** — a channel's week, block by block | **Playlist** — one day, frame-accurate, with its breaks and spots |
 | <img src="docs/images/ads-campaign.png" alt="Ads: a campaign's week board with booked spots in each break"> | <img src="docs/images/ai-access.png" alt="Settings › AI access: what AI may do per part and action"> |

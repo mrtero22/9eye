@@ -1,14 +1,19 @@
 // The demo's working data (docker/demo), made with 9eye's own MCP tools — the same calls an AI agent
 // makes, each previewed and then applied. All names are made up. Dates follow the day it runs:
 // this week and next get their playlists, this week's days are filled, and the sample station gets
-// ad clients, deals and campaigns booked into its breaks. A step that fails is reported and skipped.
+// ad clients, deals and campaigns booked into its breaks, a team of agents with a room, and an AI app
+// whose changes ask first and wait for a person. No chat is made up: the agents have no key to run on.
+// A step that fails is reported and skipped.
 //   npm -w @9eye/api run demo:data      (after db:seed and demo:setup)
 
 import { uuidv7 } from '@9eye/core';
 import { platformDb, withTenant, db } from '../src/db';
 import { accessOf } from '../src/access';
-import type { Principal } from '../src/mcp/auth';
+import { createAgent, createRoom } from '../src/agents/service';
+import { preset } from '../src/aiPolicy';
+import { checkAccessToken, newAccessToken, type Principal } from '../src/mcp/auth';
 import { invokeTool, toolDefs } from '../src/mcp/tools';
+import { ensureCompanyBasics } from '../src/services/admin';
 
 const EMAIL = (process.env.NINEEYE_DEMO_EMAIL ?? 'demo@9eye.local').trim().toLowerCase();
 let failures = 0;
@@ -105,6 +110,50 @@ async function ads(p: Principal, channelName: string, first: string) {
   }
 }
 
+/** The station's team of agents (decision 0024) and their room. They run on the company's own key, so they wait for one. */
+async function agents(p: Principal) {
+  const user = await platformDb.user.findUniqueOrThrow({ where: { email: EMAIL } });
+  await withTenant(p.tenant.id, async () => {
+    await ensureCompanyBasics(); // the built-in roles
+    const role = await db.role.findFirstOrThrow({ where: { systemKey: 'traffic' } });
+    for (const template of ['playlist-checker', 'gap-filler', 'media-fixer', 'ads-booker']) {
+      await createAgent(user, { template, roleId: role.id }).catch((e: Error) => fail('create agent', { template }, e.message));
+    }
+    await createRoom({ name: 'playlist-desk', description: "Tomorrow's playlists: checks, gaps and missing media" }).catch((e: Error) =>
+      fail('create room', {}, e.message),
+    );
+  });
+}
+
+/**
+ * An AI app whose own table asks first for approvals and ad changes (decision 0025): its calls do
+ * not change anything, they wait in Agents › Waiting for you until a person approves them.
+ */
+async function askingApp(p: Principal, first: string) {
+  const user = await platformDb.user.findUniqueOrThrow({ where: { email: EMAIL } });
+  const own = preset('full');
+  own.playlist.approve = 'ask';
+  own.ads.change = 'ask';
+  const { token, hash } = newAccessToken();
+  await platformDb.accessToken.create({
+    data: { id: uuidv7(), userId: user.id, tenantId: p.tenant.id, name: 'Claude Desktop (demo)', tokenHash: hash, expiresAt: new Date(Date.now() + 365 * 86_400_000), access: 'edit', policy: own },
+  });
+  const checked = await checkAccessToken(token);
+  if (!checked.ok) return fail('asking app', {}, checked.message);
+  const app = checked.principal;
+  const c = await channel(app);
+  const today = iso(new Date());
+  const ask = async (name: string, args: Record<string, unknown>) => {
+    const def = toolDefs(app).find((d) => d.name === name)!;
+    const r = await invokeTool(app, def, def.input.parse({ ...args, apply: true }));
+    if (r.isError || !/waits for a person/.test(r.text)) fail(name, args, r.text);
+  };
+  await ask('approve_day', { channel: c.name, date: addDays(today, 1), playlist: 'main' });
+  await ask('approve_day', { channel: c.name, date: addDays(today, 2), playlist: 'main' });
+  await ask('edit_deal', { deal: `Velora · Winter ${first.slice(0, 4)}`, value: 34000, notes: 'Two more weeks of evening spots agreed by phone.' });
+  return null;
+}
+
 // The sample station: ads first (the day fill copies the booked spots into the breaks).
 const station = await principal('sample-station');
 if (station) {
@@ -113,6 +162,8 @@ if (station) {
   await promoList(station, 'Station promos', 'Station promos');
   await ads(station, c.name, first);
   await weeksAndDays(station, true);
+  await agents(station);
+  await askingApp(station, first);
 }
 // The public broadcaster: no ads; idents fill the gaps.
 const pub = await principal('sample-public');
